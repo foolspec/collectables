@@ -59,7 +59,7 @@ jobs:
         run: |
           set -euxo pipefail
           PATCH="$GITHUB_WORKSPACE/ayugram-local-profile-render-overrides.patch"
-          EXPECTED_SHA256="420bbeb6bb1249b524cbd4cf7a5b5bb48e05a0e2d329fe0ca1b7ebc2232d933c"
+          EXPECTED_SHA256="648f85725ce77ab2d7b1eff80c372c413bc5399ac7427bc81f1b3375b88ad300"
           ACTUAL_SHA256="$(shasum -a 256 "$PATCH" | awk '{print $1}')"
           test "$ACTUAL_SHA256" = "$EXPECTED_SHA256"
           git -C tdesktop apply --check "$PATCH"
