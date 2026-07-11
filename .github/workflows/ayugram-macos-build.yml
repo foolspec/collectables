@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    name: Build patched AyuGram v6.7.8 (Debug arm64)
+    name: Build patched AyuGram v6.7.8
     runs-on: macos-26
     timeout-minutes: 350
     env:
@@ -84,31 +84,31 @@ jobs:
         run: |
           set -euxo pipefail
           cd tdesktop
-          ./Telegram/build/prepare/mac.sh skip-release
+          ./Telegram/build/prepare/mac.sh
           df -h
 
-      - name: Configure Debug arm64 project
+      - name: Configure Release project
         shell: bash
         run: |
           set -euxo pipefail
           cd tdesktop/Telegram
-          ./configure.sh -D DESKTOP_APP_MAC_ARCH=arm64 -D TDESKTOP_API_ID=2040             -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+          ./configure.sh             -D TDESKTOP_API_ID=2040             -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
           test -d ../out
           df -h
 
-      - name: Build Debug arm64 application
+      - name: Build Release application
         shell: bash
         run: |
           set -euxo pipefail
           cd tdesktop/Telegram
-          cmake --build ../out --config Debug --target Telegram --parallel 3
+          cmake --build ../out --config Release --target Telegram --parallel 3
           df -h
 
       - name: Locate and inspect application
         shell: bash
         run: |
           set -euxo pipefail
-          APP_PATH="$(find "$GITHUB_WORKSPACE/tdesktop/out/Debug" -maxdepth 2 -type d -name '*.app' | sed -n '1p')"
+          APP_PATH="$(find "$GITHUB_WORKSPACE/tdesktop/out/Release" -maxdepth 2 -type d -name '*.app' | sed -n '1p')"
           if [[ -z "$APP_PATH" || ! -d "$APP_PATH" ]]; then
             find "$GITHUB_WORKSPACE/tdesktop/out" -maxdepth 5 -type d -name '*.app' -print
             exit 1
@@ -118,8 +118,6 @@ jobs:
           test -x "$APP_BINARY"
           {
             echo "Source tag: v6.7.8"
-            echo "Build configuration: Debug"
-            echo "Requested architecture: arm64"
             echo "Source commit: $(git -C "$GITHUB_WORKSPACE/tdesktop" rev-parse HEAD)"
             echo "Patch SHA-256: $(shasum -a 256 "$GITHUB_WORKSPACE/ayugram-local-profile-render-overrides.patch" | awk '{print $1}')"
             echo "Application: $APP_PATH"
@@ -188,18 +186,18 @@ jobs:
         run: |
           set -euxo pipefail
           ln -s /Applications "$(dirname "$PACKAGE_APP")/Applications"
-          ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_APP" "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.zip"
-          hdiutil create             -volname "AyuGram Local Profile"             -srcfolder "$(dirname "$PACKAGE_APP")"             -ov             -format UDZO             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.dmg"
-          shasum -a 256             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.zip"             | tee "$GITHUB_WORKSPACE/artifact-sha256.txt"
-          ls -lh             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-arm64.zip"
+          ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_APP" "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
+          hdiutil create             -volname "AyuGram Local Profile"             -srcfolder "$(dirname "$PACKAGE_APP")"             -ov             -format UDZO             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"
+          shasum -a 256             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"             | tee "$GITHUB_WORKSPACE/artifact-sha256.txt"
+          ls -lh             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
 
       - name: Upload runnable application
         uses: actions/upload-artifact@v4
         with:
-          name: AyuGram-Local-Profile-macOS-arm64
+          name: AyuGram-Local-Profile-macOS-universal
           path: |
-            AyuGram-Local-Profile-macOS-arm64.dmg
-            AyuGram-Local-Profile-macOS-arm64.zip
+            AyuGram-Local-Profile-macOS-universal.dmg
+            AyuGram-Local-Profile-macOS-universal.zip
             artifact-sha256.txt
             build-metadata.txt
             validation.txt
