@@ -1,0 +1,1306 @@
+diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
+index 7380587..72966a2 100644
+--- a/Telegram/Resources/langs/lang.strings
++++ b/Telegram/Resources/langs/lang.strings
+@@ -8070,6 +8070,15 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ "ayu_SupportBoxReceiveBadgeInfo" = "After payment verification, you will receive a unique badge that will be displayed on your profile and visible to other users.";
+ "ayu_CrashReporting" = "Crash Reporting";
+ "ayu_CrashReportingDescription" = "When this option is enabled, you'll be prompted to send a report after the app crashes. You can decide whether to send it or not.";
++"ayu_LocalProfileHeader" = "Local profile";
++"ayu_LocalProfileNameEnabled" = "Use local profile name";
++"ayu_LocalProfileName" = "Local profile name";
++"ayu_LocalProfileUsernameEnabled" = "Use local profile usernames";
++"ayu_LocalProfileUsername" = "Local username";
++"ayu_LocalProfileUsernames" = "Other usernames";
++"ayu_LocalProfilePhoneEnabled" = "Use local anonymous number";
++"ayu_LocalProfilePhone" = "Local anonymous number";
++"ayu_LocalProfileDescription" = "Changes how your own profile details appear in this AyuGram client. Your Telegram profile is not changed.";
+ "ayu_ResetSettings" = "Reset Settings";
+ "ayu_ResetSettingsConfirmation" = "Are you sure you want to reset **all** AyuGram preferences to their defaults?";
+ "ayu_DisableColorfulCover" = "Disable adaptive color";
+diff --git a/Telegram/SourceFiles/ayu/ayu_settings.cpp b/Telegram/SourceFiles/ayu/ayu_settings.cpp
+index 2280020..1ff6d94 100644
+--- a/Telegram/SourceFiles/ayu/ayu_settings.cpp
++++ b/Telegram/SourceFiles/ayu/ayu_settings.cpp
+@@ -11,6 +11,7 @@
+ #include "ayu/ayu_ui_settings.h"
+ #include "ayu/ayu_worker.h"
+ #include "ayu/ui/ayu_logo.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "core/application.h"
+ #include "features/filters/filters_cache_controller.h"
+ #include "features/translator/ayu_translator.h"
+@@ -681,6 +682,52 @@ void AyuSettings::setLocalPremium(bool val) {
+ 	save();
+ }
+ 
++void AyuSettings::setLocalProfileNameEnabled(bool val) {
++	if (_localProfileNameEnabled.current() == val) return;
++	_localProfileNameEnabled = val;
++	save();
++}
++
++void AyuSettings::setLocalProfileName(const QString &val) {
++	const auto normalized = Ayu::NormalizeLocalProfileName(val);
++	if (_localProfileName.current() == normalized) return;
++	_localProfileName = normalized;
++	save();
++}
++
++void AyuSettings::setLocalProfileUsernameEnabled(bool val) {
++	if (_localProfileUsernameEnabled.current() == val) return;
++	_localProfileUsernameEnabled = val;
++	save();
++}
++
++void AyuSettings::setLocalProfileUsername(const QString &val) {
++	const auto normalized = Ayu::NormalizeLocalProfileUsername(val);
++	if (_localProfileUsername.current() == normalized) return;
++	_localProfileUsername = normalized;
++	save();
++}
++
++void AyuSettings::setLocalProfileUsernames(const QString &val) {
++	const auto normalized = Ayu::NormalizeLocalProfileUsernames(val);
++	if (_localProfileUsernames.current() == normalized) return;
++	_localProfileUsernames = normalized;
++	save();
++}
++
++void AyuSettings::setLocalProfilePhoneEnabled(bool val) {
++	if (_localProfilePhoneEnabled.current() == val) return;
++	_localProfilePhoneEnabled = val;
++	save();
++}
++
++void AyuSettings::setLocalProfilePhone(const QString &val) {
++	const auto normalized = Ayu::NormalizeLocalProfilePhone(val);
++	if (_localProfilePhone.current() == normalized) return;
++	_localProfilePhone = normalized;
++	save();
++}
++
+ void AyuSettings::setShowChannelReactions(bool val) {
+ 	if (_showChannelReactions.current() == val) return;
+ 	_showChannelReactions = val;
+@@ -1083,6 +1130,13 @@ void to_json(nlohmann::json &j, const AyuSettings &s) {
+ 		{"removeMessageTail", s._removeMessageTail.current()},
+ 		{"disableNotificationsDelay", s._disableNotificationsDelay.current()},
+ 		{"localPremium", s._localPremium.current()},
++		{"localProfileNameEnabled", s._localProfileNameEnabled.current()},
++		{"localProfileName", s._localProfileName.current()},
++		{"localProfileUsernameEnabled", s._localProfileUsernameEnabled.current()},
++		{"localProfileUsername", s._localProfileUsername.current()},
++		{"localProfileUsernames", s._localProfileUsernames.current()},
++		{"localProfilePhoneEnabled", s._localProfilePhoneEnabled.current()},
++		{"localProfilePhone", s._localProfilePhone.current()},
+ 		{"showChannelReactions", s._showChannelReactions.current()},
+ 		{"showGroupReactions", s._showGroupReactions.current()},
+ 		{"showPrivateChatReactions", s._showPrivateChatReactions.current()},
+@@ -1183,6 +1237,13 @@ void from_json(const nlohmann::json &j, AyuSettings &s) {
+ 	s._removeMessageTail = j.value("removeMessageTail", defaults._removeMessageTail.current());
+ 	s._disableNotificationsDelay = j.value("disableNotificationsDelay", defaults._disableNotificationsDelay.current());
+ 	s._localPremium = j.value("localPremium", defaults._localPremium.current());
++	s._localProfileNameEnabled = j.value("localProfileNameEnabled", defaults._localProfileNameEnabled.current());
++	s._localProfileName = Ayu::NormalizeLocalProfileName(j.value("localProfileName", defaults._localProfileName.current()));
++	s._localProfileUsernameEnabled = j.value("localProfileUsernameEnabled", defaults._localProfileUsernameEnabled.current());
++	s._localProfileUsername = Ayu::NormalizeLocalProfileUsername(j.value("localProfileUsername", defaults._localProfileUsername.current()));
++	s._localProfileUsernames = Ayu::NormalizeLocalProfileUsernames(j.value("localProfileUsernames", defaults._localProfileUsernames.current()));
++	s._localProfilePhoneEnabled = j.value("localProfilePhoneEnabled", defaults._localProfilePhoneEnabled.current());
++	s._localProfilePhone = Ayu::NormalizeLocalProfilePhone(j.value("localProfilePhone", defaults._localProfilePhone.current()));
+ 	s._showChannelReactions = j.value("showChannelReactions", defaults._showChannelReactions.current());
+ 	s._showGroupReactions = j.value("showGroupReactions", defaults._showGroupReactions.current());
+ 	s._showPrivateChatReactions = j.value("showPrivateChatReactions", defaults._showPrivateChatReactions.current());
+diff --git a/Telegram/SourceFiles/ayu/ayu_settings.h b/Telegram/SourceFiles/ayu/ayu_settings.h
+index 97a0439..5719d65 100644
+--- a/Telegram/SourceFiles/ayu/ayu_settings.h
++++ b/Telegram/SourceFiles/ayu/ayu_settings.h
+@@ -291,6 +291,13 @@ public:
+ 	[[nodiscard]] bool removeMessageTail() const { return _removeMessageTail.current(); }
+ 	[[nodiscard]] bool disableNotificationsDelay() const { return _disableNotificationsDelay.current(); }
+ 	[[nodiscard]] bool localPremium() const { return _localPremium.current(); }
++	[[nodiscard]] bool localProfileNameEnabled() const { return _localProfileNameEnabled.current(); }
++	[[nodiscard]] const QString &localProfileName() const { return _localProfileName.current(); }
++	[[nodiscard]] bool localProfileUsernameEnabled() const { return _localProfileUsernameEnabled.current(); }
++	[[nodiscard]] const QString &localProfileUsername() const { return _localProfileUsername.current(); }
++	[[nodiscard]] const QString &localProfileUsernames() const { return _localProfileUsernames.current(); }
++	[[nodiscard]] bool localProfilePhoneEnabled() const { return _localProfilePhoneEnabled.current(); }
++	[[nodiscard]] const QString &localProfilePhone() const { return _localProfilePhone.current(); }
+ 	[[nodiscard]] bool showChannelReactions() const { return _showChannelReactions.current(); }
+ 	[[nodiscard]] bool showGroupReactions() const { return _showGroupReactions.current(); }
+ 	[[nodiscard]] bool showPrivateChatReactions() const { return _showPrivateChatReactions.current(); }
+@@ -375,6 +382,13 @@ public:
+ 	void setRemoveMessageTail(bool val);
+ 	void setDisableNotificationsDelay(bool val);
+ 	void setLocalPremium(bool val);
++	void setLocalProfileNameEnabled(bool val);
++	void setLocalProfileName(const QString &val);
++	void setLocalProfileUsernameEnabled(bool val);
++	void setLocalProfileUsername(const QString &val);
++	void setLocalProfileUsernames(const QString &val);
++	void setLocalProfilePhoneEnabled(bool val);
++	void setLocalProfilePhone(const QString &val);
+ 	void setShowChannelReactions(bool val);
+ 	void setShowGroupReactions(bool val);
+ 	void setShowPrivateChatReactions(bool val);
+@@ -485,6 +499,20 @@ public:
+ 	[[nodiscard]] rpl::producer<bool> disableNotificationsDelayChanges() const { return _disableNotificationsDelay.changes(); }
+ 	[[nodiscard]] rpl::producer<bool> localPremiumValue() const { return _localPremium.value(); }
+ 	[[nodiscard]] rpl::producer<bool> localPremiumChanges() const { return _localPremium.changes(); }
++	[[nodiscard]] rpl::producer<bool> localProfileNameEnabledValue() const { return _localProfileNameEnabled.value(); }
++	[[nodiscard]] rpl::producer<bool> localProfileNameEnabledChanges() const { return _localProfileNameEnabled.changes(); }
++	[[nodiscard]] rpl::producer<QString> localProfileNameValue() const { return _localProfileName.value(); }
++	[[nodiscard]] rpl::producer<QString> localProfileNameChanges() const { return _localProfileName.changes(); }
++	[[nodiscard]] rpl::producer<bool> localProfileUsernameEnabledValue() const { return _localProfileUsernameEnabled.value(); }
++	[[nodiscard]] rpl::producer<bool> localProfileUsernameEnabledChanges() const { return _localProfileUsernameEnabled.changes(); }
++	[[nodiscard]] rpl::producer<QString> localProfileUsernameValue() const { return _localProfileUsername.value(); }
++	[[nodiscard]] rpl::producer<QString> localProfileUsernameChanges() const { return _localProfileUsername.changes(); }
++	[[nodiscard]] rpl::producer<QString> localProfileUsernamesValue() const { return _localProfileUsernames.value(); }
++	[[nodiscard]] rpl::producer<QString> localProfileUsernamesChanges() const { return _localProfileUsernames.changes(); }
++	[[nodiscard]] rpl::producer<bool> localProfilePhoneEnabledValue() const { return _localProfilePhoneEnabled.value(); }
++	[[nodiscard]] rpl::producer<bool> localProfilePhoneEnabledChanges() const { return _localProfilePhoneEnabled.changes(); }
++	[[nodiscard]] rpl::producer<QString> localProfilePhoneValue() const { return _localProfilePhone.value(); }
++	[[nodiscard]] rpl::producer<QString> localProfilePhoneChanges() const { return _localProfilePhone.changes(); }
+ 	[[nodiscard]] rpl::producer<bool> showChannelReactionsValue() const { return _showChannelReactions.value(); }
+ 	[[nodiscard]] rpl::producer<bool> showChannelReactionsChanges() const { return _showChannelReactions.changes(); }
+ 	[[nodiscard]] rpl::producer<bool> showGroupReactionsValue() const { return _showGroupReactions.value(); }
+@@ -636,6 +664,13 @@ private:
+ 	rpl::variable<bool> _removeMessageTail = false;
+ 	rpl::variable<bool> _disableNotificationsDelay = false;
+ 	rpl::variable<bool> _localPremium = false;
++	rpl::variable<bool> _localProfileNameEnabled = false;
++	rpl::variable<QString> _localProfileName;
++	rpl::variable<bool> _localProfileUsernameEnabled = false;
++	rpl::variable<QString> _localProfileUsername;
++	rpl::variable<QString> _localProfileUsernames;
++	rpl::variable<bool> _localProfilePhoneEnabled = false;
++	rpl::variable<QString> _localProfilePhone;
+ 	rpl::variable<bool> _showChannelReactions = true;
+ 	rpl::variable<bool> _showGroupReactions = true;
+ 	rpl::variable<bool> _showPrivateChatReactions = true;
+diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+index 929cf46..ed23a58 100644
+--- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
++++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+@@ -12,11 +12,13 @@
+ #include "ayu/ui/settings/ayu_builder.h"
+ #include "ayu/ui/settings/settings_ayu_utils.h"
+ #include "ayu/ui/settings/settings_main.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "boxes/abstract_box.h"
+ #include "core/application.h"
+ #include "lang/lang_text_entity.h"
+ #include "settings/settings_builder.h"
+ #include "settings/settings_common.h"
++#include "styles/style_boxes.h"
+ #include "styles/style_menu_icons.h"
+ #include "styles/style_settings.h"
+ #include "ui/integration.h"
+@@ -26,6 +28,7 @@
+ #include "ui/boxes/confirm_box.h"
+ #include "ui/text/text_utilities.h"
+ #include "ui/widgets/buttons.h"
++#include "ui/widgets/fields/input_field.h"
+ #include "ui/wrap/vertical_layout.h"
+ #include "window/window_session_controller.h"
+ #include "window/themes/window_theme.h"
+@@ -193,6 +196,146 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
+ #endif
+ }
+ 
++void BuildLocalProfile(SectionBuilder &builder, AyuSectionBuilder &ayu) {
++	builder.addSkip();
++	builder.addSubsectionTitle(tr::ayu_LocalProfileHeader());
++
++	ayu.addSettingToggle({
++		.id = u"ayu/localProfileNameEnabled"_q,
++		.title = tr::ayu_LocalProfileNameEnabled(),
++		.getter = &AyuSettings::localProfileNameEnabled,
++		.setter = &AyuSettings::setLocalProfileNameEnabled,
++		.icon = { &st::menuIconProfile },
++	});
++	builder.add([](const WidgetContext &wctx) {
++		auto field = object_ptr<Ui::InputField>(
++			wctx.container,
++			st::settingsDeviceName,
++			tr::ayu_LocalProfileName(),
++			AyuSettings::getInstance().localProfileName());
++		const auto raw = field.data();
++		raw->setMaxLength(Ayu::kMaxLocalProfileNameLength);
++		raw->changes(
++		) | rpl::on_next([=] {
++			AyuSettings::getInstance().setLocalProfileName(
++				raw->getLastText());
++		}, raw->lifetime());
++		return SectionBuilder::WidgetToAdd{
++			.widget = std::move(field),
++			.margin = st::boxRowPadding - style::margins(
++				st::settingsDeviceName.textMargins.left(),
++				0,
++				st::settingsDeviceName.textMargins.right(),
++				0),
++		};
++	}, [] {
++		return SearchEntry{
++			.id = u"ayu/localProfileName"_q,
++			.title = tr::ayu_LocalProfileName(tr::now),
++			.icon = { &st::menuIconProfile },
++		};
++	});
++	ayu.addSettingToggle({
++		.id = u"ayu/localProfileUsernameEnabled"_q,
++		.title = tr::ayu_LocalProfileUsernameEnabled(),
++		.getter = &AyuSettings::localProfileUsernameEnabled,
++		.setter = &AyuSettings::setLocalProfileUsernameEnabled,
++		.icon = { &st::menuIconLink },
++	});
++	builder.add([](const WidgetContext &wctx) {
++		auto field = object_ptr<Ui::InputField>(
++			wctx.container,
++			st::settingsDeviceName,
++			tr::ayu_LocalProfileUsername(),
++			AyuSettings::getInstance().localProfileUsername());
++		const auto raw = field.data();
++		raw->setMaxLength(Ayu::kMaxLocalProfileUsernameLength);
++		raw->changes(
++		) | rpl::on_next([=] {
++			AyuSettings::getInstance().setLocalProfileUsername(
++				raw->getLastText());
++		}, raw->lifetime());
++		return SectionBuilder::WidgetToAdd{
++			.widget = std::move(field),
++			.margin = st::boxRowPadding - style::margins(
++				st::settingsDeviceName.textMargins.left(),
++				0,
++				st::settingsDeviceName.textMargins.right(),
++				0),
++		};
++	}, [] {
++		return SearchEntry{
++			.id = u"ayu/localProfileUsername"_q,
++			.title = tr::ayu_LocalProfileUsername(tr::now),
++			.icon = { &st::menuIconLink },
++		};
++	});
++	builder.add([](const WidgetContext &wctx) {
++		auto field = object_ptr<Ui::InputField>(
++			wctx.container,
++			st::settingsDeviceName,
++			tr::ayu_LocalProfileUsernames(),
++			AyuSettings::getInstance().localProfileUsernames());
++		const auto raw = field.data();
++		raw->setMaxLength(Ayu::kMaxLocalProfileUsernamesLength);
++		raw->changes(
++		) | rpl::on_next([=] {
++			AyuSettings::getInstance().setLocalProfileUsernames(
++				raw->getLastText());
++		}, raw->lifetime());
++		return SectionBuilder::WidgetToAdd{
++			.widget = std::move(field),
++			.margin = st::boxRowPadding - style::margins(
++				st::settingsDeviceName.textMargins.left(),
++				0,
++				st::settingsDeviceName.textMargins.right(),
++				0),
++		};
++	}, [] {
++		return SearchEntry{
++			.id = u"ayu/localProfileUsernames"_q,
++			.title = tr::ayu_LocalProfileUsernames(tr::now),
++			.icon = { &st::menuIconLink },
++		};
++	});
++	ayu.addSettingToggle({
++		.id = u"ayu/localProfilePhoneEnabled"_q,
++		.title = tr::ayu_LocalProfilePhoneEnabled(),
++		.getter = &AyuSettings::localProfilePhoneEnabled,
++		.setter = &AyuSettings::setLocalProfilePhoneEnabled,
++		.icon = { &st::menuIconPhone },
++	});
++	builder.add([](const WidgetContext &wctx) {
++		auto field = object_ptr<Ui::InputField>(
++			wctx.container,
++			st::settingsDeviceName,
++			tr::ayu_LocalProfilePhone(),
++			AyuSettings::getInstance().localProfilePhone());
++		const auto raw = field.data();
++		raw->setMaxLength(Ayu::kMaxLocalProfilePhoneLength);
++		raw->changes(
++		) | rpl::on_next([=] {
++			AyuSettings::getInstance().setLocalProfilePhone(
++				raw->getLastText());
++		}, raw->lifetime());
++		return SectionBuilder::WidgetToAdd{
++			.widget = std::move(field),
++			.margin = st::boxRowPadding - style::margins(
++				st::settingsDeviceName.textMargins.left(),
++				0,
++				st::settingsDeviceName.textMargins.right(),
++				0),
++		};
++	}, [] {
++		return SearchEntry{
++			.id = u"ayu/localProfilePhone"_q,
++			.title = tr::ayu_LocalProfilePhone(tr::now),
++			.icon = { &st::menuIconPhone },
++		};
++	});
++	builder.addDividerText(tr::ayu_LocalProfileDescription());
++}
++
+ void BuildOtherThings(SectionBuilder &builder) {
+ 	const auto controller = builder.controller();
+ 
+@@ -236,6 +379,7 @@ const auto kMeta = BuildHelper({
+ 	builder.addSkip();
+ 	BuildDonations(builder);
+ 	BuildCrashReporting(builder, ayu);
++	BuildLocalProfile(builder, ayu);
+ 	BuildOtherThings(builder);
+ });
+ 
+diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+index c9d247a..20cfccb 100644
+--- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
++++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+@@ -8,11 +8,374 @@
+ 
+ #include "ayu/ayu_settings.h"
+ #include "ayu/utils/telegram_helpers.h"
++#include "data/data_channel.h"
++#include "data/data_changes.h"
+ #include "data/data_peer.h"
++#include "data/data_user.h"
+ #include "lang/lang_text_entity.h"
++#include "rpl/combine.h"
+ 
+ constexpr auto kMaxChannelId = -1000000000000;
+ 
++namespace Ayu {
++namespace {
++
++using UpdateFlag = Data::PeerUpdate::Flag;
++
++[[nodiscard]] QString ResolveLocalProfileName(
++		not_null<PeerData*> peer,
++		QString realName,
++		bool enabled,
++		QString localName) {
++	if (!peer->isSelf() || !enabled) {
++		return realName;
++	}
++	localName = NormalizeLocalProfileName(std::move(localName));
++	return localName.isEmpty() ? realName : localName;
++}
++
++void AddLocalProfileUsername(
++		std::vector<QString> &result,
++		QString username) {
++	username = NormalizeLocalProfileUsername(std::move(username));
++	if (username.isEmpty()) {
++		return;
++	}
++	const auto duplicate = ranges::any_of(result, [&](const auto &entry) {
++		return entry.compare(username, Qt::CaseInsensitive) == 0;
++	});
++	if (!duplicate && result.size() < kMaxLocalProfileUsernamesCount) {
++		result.push_back(std::move(username));
++	}
++}
++
++[[nodiscard]] std::vector<QString> ParseLocalProfileUsernames(
++		QString primary,
++		QString usernames) {
++	auto result = std::vector<QString>();
++	AddLocalProfileUsername(result, std::move(primary));
++
++	auto token = QString();
++	const auto flush = [&] {
++		AddLocalProfileUsername(result, std::move(token));
++		token = QString();
++	};
++	for (const auto ch : usernames) {
++		if (ch.isSpace() || ch == ',' || ch == ';') {
++			flush();
++		} else {
++			token.append(ch);
++		}
++	}
++	flush();
++	return result;
++}
++
++[[nodiscard]] std::vector<QString> RealProfileUsernames(
++		not_null<PeerData*> peer) {
++	if (const auto user = peer->asUser()) {
++		return user->usernames();
++	} else if (const auto channel = peer->asChannel()) {
++		return channel->usernames();
++	}
++	return {};
++}
++
++[[nodiscard]] QString ResolveLocalProfileUsername(
++		not_null<PeerData*> peer,
++		QString realUsername,
++		bool enabled,
++		QString localUsername,
++		QString localUsernames) {
++	if (!peer->isSelf() || !enabled) {
++		return realUsername;
++	}
++	const auto local = ParseLocalProfileUsernames(
++		std::move(localUsername),
++		std::move(localUsernames));
++	return local.empty() ? realUsername : local.front();
++}
++
++[[nodiscard]] std::vector<QString> ResolveLocalProfileUsernames(
++		not_null<PeerData*> peer,
++		std::vector<QString> realUsernames,
++		bool enabled,
++		QString localUsername,
++		QString localUsernames) {
++	if (!peer->isSelf() || !enabled) {
++		return realUsernames;
++	}
++	auto local = ParseLocalProfileUsernames(
++		std::move(localUsername),
++		std::move(localUsernames));
++	return local.empty() ? realUsernames : std::move(local);
++}
++
++[[nodiscard]] QString ResolveLocalProfilePhone(
++		not_null<UserData*> user,
++		QString realPhone,
++		bool enabled,
++		QString localPhone) {
++	if (!user->isSelf() || !enabled) {
++		return realPhone;
++	}
++	localPhone = NormalizeLocalProfilePhone(std::move(localPhone));
++	return localPhone.isEmpty() ? realPhone : localPhone;
++}
++
++} // namespace
++
++QString NormalizeLocalProfileName(QString name) {
++	auto result = name.trimmed();
++	if (result.size() > kMaxLocalProfileNameLength) {
++		result.truncate(kMaxLocalProfileNameLength);
++	}
++	return result;
++}
++
++QString NormalizeLocalProfileUsername(QString username) {
++	auto result = username.trimmed();
++	const auto prefixes = {
++		u"https://t.me/"_q,
++		u"http://t.me/"_q,
++		u"t.me/"_q,
++	};
++	for (const auto &prefix : prefixes) {
++		if (result.startsWith(prefix, Qt::CaseInsensitive)) {
++			result = result.mid(prefix.size());
++			break;
++		}
++	}
++	while (result.startsWith('@')) {
++		result = result.mid(1);
++	}
++	auto filtered = QString();
++	for (const auto ch : result) {
++		if (ch.isLetterOrNumber()
++			|| ch == '_'
++			|| ch == '-'
++			|| ch == '.') {
++			filtered.append(ch);
++		}
++		if (filtered.size() >= kMaxLocalProfileUsernameLength) {
++			break;
++		}
++	}
++	return filtered;
++}
++
++QString NormalizeLocalProfileUsernames(QString usernames) {
++	auto result = QStringList();
++	for (auto &username : ParseLocalProfileUsernames(
++			QString(),
++			std::move(usernames))) {
++		result.push_back(std::move(username));
++	}
++	auto joined = result.join(u", "_q);
++	if (joined.size() > kMaxLocalProfileUsernamesLength) {
++		joined.truncate(kMaxLocalProfileUsernamesLength);
++	}
++	return joined;
++}
++
++QString NormalizeLocalProfilePhone(QString phone) {
++	auto result = QString();
++	phone = phone.trimmed();
++	for (const auto ch : phone) {
++		if (ch.isDigit() || (result.isEmpty() && ch == '+')) {
++			result.append(ch);
++		}
++		if (result.size() >= kMaxLocalProfilePhoneLength) {
++			break;
++		}
++	}
++	return result;
++}
++
++bool LocalProfileNameActive(not_null<PeerData*> peer) {
++	if (!peer->isSelf()) {
++		return false;
++	}
++	const auto &settings = AyuSettings::getInstance();
++	return settings.localProfileNameEnabled()
++		&& !NormalizeLocalProfileName(settings.localProfileName()).isEmpty();
++}
++
++bool LocalProfileUsernameActive(not_null<PeerData*> peer) {
++	if (!peer->isSelf()) {
++		return false;
++	}
++	const auto &settings = AyuSettings::getInstance();
++	return settings.localProfileUsernameEnabled()
++		&& !ParseLocalProfileUsernames(
++			settings.localProfileUsername(),
++			settings.localProfileUsernames()).empty();
++}
++
++bool LocalProfilePhoneActive(not_null<UserData*> user) {
++	if (!user->isSelf()) {
++		return false;
++	}
++	const auto &settings = AyuSettings::getInstance();
++	return settings.localProfilePhoneEnabled()
++		&& !NormalizeLocalProfilePhone(settings.localProfilePhone()).isEmpty();
++}
++
++QString LocalProfileName(not_null<PeerData*> peer) {
++	const auto &settings = AyuSettings::getInstance();
++	return ResolveLocalProfileName(
++		peer,
++		peer->name(),
++		settings.localProfileNameEnabled(),
++		settings.localProfileName());
++}
++
++QString LocalProfileUsername(not_null<PeerData*> peer) {
++	const auto &settings = AyuSettings::getInstance();
++	return ResolveLocalProfileUsername(
++		peer,
++		peer->username(),
++		settings.localProfileUsernameEnabled(),
++		settings.localProfileUsername(),
++		settings.localProfileUsernames());
++}
++
++std::vector<QString> LocalProfileUsernames(not_null<PeerData*> peer) {
++	const auto &settings = AyuSettings::getInstance();
++	return ResolveLocalProfileUsernames(
++		peer,
++		RealProfileUsernames(peer),
++		settings.localProfileUsernameEnabled(),
++		settings.localProfileUsername(),
++		settings.localProfileUsernames());
++}
++
++QString LocalProfilePhone(not_null<UserData*> user) {
++	const auto &settings = AyuSettings::getInstance();
++	return ResolveLocalProfilePhone(
++		user,
++		user->phone(),
++		settings.localProfilePhoneEnabled(),
++		settings.localProfilePhone());
++}
++
++rpl::producer<QString> LocalProfileNameValue(not_null<PeerData*> peer) {
++	auto name = peer->session().changes().peerFlagsValue(
++		peer,
++		UpdateFlag::Name
++	) | rpl::map([=] {
++		return peer->name();
++	});
++	if (!peer->isSelf()) {
++		return std::move(name);
++	}
++	auto &settings = AyuSettings::getInstance();
++	return rpl::combine(
++		std::move(name),
++		settings.localProfileNameEnabledValue(),
++		settings.localProfileNameValue()
++	) | rpl::map([=](
++			QString realName,
++			bool enabled,
++			QString localName) {
++		return ResolveLocalProfileName(
++			peer,
++			std::move(realName),
++			enabled,
++			std::move(localName));
++	});
++}
++
++rpl::producer<QString> LocalProfileUsernameValue(not_null<PeerData*> peer) {
++	auto username = rpl::merge(
++		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Username),
++		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Usernames)
++	) | rpl::map([=] {
++		return peer->username();
++	});
++	if (!peer->isSelf()) {
++		return std::move(username);
++	}
++	auto &settings = AyuSettings::getInstance();
++	return rpl::combine(
++		std::move(username),
++		settings.localProfileUsernameEnabledValue(),
++		settings.localProfileUsernameValue(),
++		settings.localProfileUsernamesValue()
++	) | rpl::map([=](
++			QString realUsername,
++			bool enabled,
++			QString localUsername,
++			QString localUsernames) {
++		return ResolveLocalProfileUsername(
++			peer,
++			std::move(realUsername),
++			enabled,
++			std::move(localUsername),
++			std::move(localUsernames));
++	});
++}
++
++rpl::producer<std::vector<QString>> LocalProfileUsernamesValue(
++		not_null<PeerData*> peer) {
++	auto usernames = rpl::merge(
++		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Username),
++		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Usernames)
++	) | rpl::map([=] {
++		return RealProfileUsernames(peer);
++	});
++	if (!peer->isSelf()) {
++		return std::move(usernames);
++	}
++	auto &settings = AyuSettings::getInstance();
++	return rpl::combine(
++		std::move(usernames),
++		settings.localProfileUsernameEnabledValue(),
++		settings.localProfileUsernameValue(),
++		settings.localProfileUsernamesValue()
++	) | rpl::map([=](
++			std::vector<QString> realUsernames,
++			bool enabled,
++			QString localUsername,
++			QString localUsernames) {
++		return ResolveLocalProfileUsernames(
++			peer,
++			std::move(realUsernames),
++			enabled,
++			std::move(localUsername),
++			std::move(localUsernames));
++	});
++}
++
++rpl::producer<QString> LocalProfilePhoneValue(not_null<UserData*> user) {
++	auto phone = user->session().changes().peerFlagsValue(
++		user,
++		UpdateFlag::PhoneNumber
++	) | rpl::map([=] {
++		return user->phone();
++	});
++	if (!user->isSelf()) {
++		return std::move(phone);
++	}
++	auto &settings = AyuSettings::getInstance();
++	return rpl::combine(
++		std::move(phone),
++		settings.localProfilePhoneEnabledValue(),
++		settings.localProfilePhoneValue()
++	) | rpl::map([=](
++			QString realPhone,
++			bool enabled,
++			QString localPhone) {
++		return ResolveLocalProfilePhone(
++			user,
++			std::move(realPhone),
++			enabled,
++			std::move(localPhone));
++	});
++}
++
++} // namespace Ayu
++
+ QString IDString(const not_null<PeerData*> peer) {
+ 	auto resultId = QString::number(getBareID(peer));
+ 
+diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
+index 950f22d..f6d7d12 100644
+--- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
++++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
+@@ -6,8 +6,44 @@
+ // Copyright @Radolyn, 2026
+ #pragma once
+ 
++#include <vector>
++
++class PeerData;
++class UserData;
++
++namespace Ayu {
++
++constexpr auto kMaxLocalProfileNameLength = 128;
++constexpr auto kMaxLocalProfileUsernameLength = 64;
++constexpr auto kMaxLocalProfileUsernamesCount = 20;
++constexpr auto kMaxLocalProfileUsernamesLength = 512;
++constexpr auto kMaxLocalProfilePhoneLength = 40;
++
++[[nodiscard]] QString NormalizeLocalProfileName(QString name);
++[[nodiscard]] QString NormalizeLocalProfileUsername(QString username);
++[[nodiscard]] QString NormalizeLocalProfileUsernames(QString usernames);
++[[nodiscard]] QString NormalizeLocalProfilePhone(QString phone);
++[[nodiscard]] bool LocalProfileNameActive(not_null<PeerData*> peer);
++[[nodiscard]] bool LocalProfileUsernameActive(not_null<PeerData*> peer);
++[[nodiscard]] bool LocalProfilePhoneActive(not_null<UserData*> user);
++[[nodiscard]] QString LocalProfileName(not_null<PeerData*> peer);
++[[nodiscard]] QString LocalProfileUsername(not_null<PeerData*> peer);
++[[nodiscard]] std::vector<QString> LocalProfileUsernames(
++	not_null<PeerData*> peer);
++[[nodiscard]] QString LocalProfilePhone(not_null<UserData*> user);
++[[nodiscard]] rpl::producer<QString> LocalProfileNameValue(
++	not_null<PeerData*> peer);
++[[nodiscard]] rpl::producer<QString> LocalProfileUsernameValue(
++	not_null<PeerData*> peer);
++[[nodiscard]] rpl::producer<std::vector<QString>> LocalProfileUsernamesValue(
++	not_null<PeerData*> peer);
++[[nodiscard]] rpl::producer<QString> LocalProfilePhoneValue(
++	not_null<UserData*> user);
++
++} // namespace Ayu
++
+ QString IDString(not_null<PeerData*> peer);
+ QString IDString(MsgId topicRootId);
+ 
+ rpl::producer<TextWithEntities> IDValue(not_null<PeerData*> peer);
+-rpl::producer<TextWithEntities> IDValue(MsgId topicRootId);
+\ No newline at end of file
++rpl::producer<TextWithEntities> IDValue(MsgId topicRootId);
+diff --git a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
+index 9e94048..09fa81e 100644
+--- a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
++++ b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "dialogs/dialogs_inner_widget.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "dialogs/dialogs_three_state_icon.h"
+ #include "dialogs/ui/chat_search_empty.h"
+ #include "dialogs/ui/chat_search_in.h"
+@@ -1604,10 +1605,10 @@ void InnerWidget::paintPeerSearchResult(
+ 	}
+ 	QRect rectForName(nameleft, context.st->nameTop, namewidth, st::semiboldFont->height);
+ 
+-	if (result->name.isEmpty()) {
++	if (result->name.isEmpty() || peer->isSelf()) {
+ 		result->name.setText(
+ 			st::semiboldTextStyle,
+-			peer->name(),
++			Ayu::LocalProfileName(peer),
+ 			Ui::NameTextOptions());
+ 	}
+ 
+@@ -4627,7 +4628,9 @@ void InnerWidget::updateSearchIn() {
+ 		? Ui::MakeUserpicThumbnail(_searchFromShown)
+ 		: nullptr;
+ 	const auto fromName = _searchFromShown
+-		? _searchFromShown->shortName()
++		? (Ayu::LocalProfileNameActive(_searchFromShown)
++			? Ayu::LocalProfileName(_searchFromShown)
++			: _searchFromShown->shortName())
+ 		: QString();
+ 	_searchIn->apply({
+ 		{ ChatSearchTab::ThisTopic, topicIcon },
+diff --git a/Telegram/SourceFiles/dialogs/dialogs_row.cpp b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
+index 3bcfab9..2fa76d8 100644
+--- a/Telegram/SourceFiles/dialogs/dialogs_row.cpp
++++ b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
+@@ -40,6 +40,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "ayu/ayu_settings.h"
+ #include "ayu/features/filters/filters_controller.h"
+ #include "ayu/ui/ayu_userpic.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ 
+ 
+ namespace Dialogs {
+@@ -773,15 +774,15 @@ void FakeRow::invalidateTopic() {
+ }
+ 
+ const Ui::Text::String &FakeRow::name() const {
+-	if (_name.isEmpty()) {
+-		const auto from = _searchInChat
+-			&& !FiltersController::filtered(_item)
+-			? _item->displayFrom()
+-			: nullptr;
+-		const auto peer = from ? from : _item->history()->peer.get();
++	const auto from = _searchInChat
++		&& !FiltersController::filtered(_item)
++		? _item->displayFrom()
++		: nullptr;
++	const auto peer = from ? from : _item->history()->peer.get();
++	if (_name.isEmpty() || peer->isSelf()) {
+ 		_name.setText(
+ 			st::semiboldTextStyle,
+-			peer->name(),
++			Ayu::LocalProfileName(peer),
+ 			Ui::NameTextOptions());
+ 	}
+ 	return _name;
+diff --git a/Telegram/SourceFiles/history/view/history_view_about_view.cpp b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
+index c30fcf2..f2a647a 100644
+--- a/Telegram/SourceFiles/history/view/history_view_about_view.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_about_view.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "api/api_peer_colors.h"
+ #include "api/api_premium.h"
+ #include "api/api_sending.h"
+@@ -999,7 +1000,7 @@ void AboutView::setItem(AdminLog::OwnedItem item, DocumentData *sticker) {
+ AdminLog::OwnedItem AboutView::makeNewPeerInfo(not_null<UserData*> user) {
+ 	_commonGroupsStale = false;
+ 
+-	const auto text = user->name();
++	const auto text = Ayu::LocalProfileName(user);
+ 	const auto item = _history->makeMessage({
+ 		.id = _history->nextNonHistoryEntryId(),
+ 		.flags = (MessageFlag::FakeAboutView
+@@ -1180,12 +1181,12 @@ AdminLog::OwnedItem AboutView::makeManagedBotInfo(
+ 	const auto managerId = user->botManagerId();
+ 	const auto managerUser = user->owner().userLoaded(managerId);
+ 	const auto parentName = managerUser
+-		? managerUser->name()
++		? Ayu::LocalProfileName(managerUser)
+ 		: QString();
+ 	auto text = tr::lng_managed_bot_ready(
+ 		tr::now,
+ 		lt_name,
+-		tr::bold(user->name()),
++		tr::bold(Ayu::LocalProfileName(user)),
+ 		lt_parent,
+ 		tr::bold(parentName),
+ 		tr::rich);
+diff --git a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
+index 2c52f4b..9dcd1e7 100644
+--- a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_chat_section.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "history/view/controls/history_view_compose_controls.h"
+ #include "history/view/controls/history_view_compose_search.h"
+ #include "history/view/controls/history_view_draft_options.h"
+@@ -118,9 +119,10 @@ rpl::producer<Ui::MessageBarContent> RootViewContent(
+ 		const auto sender = (item && item->discussionPostOriginalSender())
+ 			? item->discussionPostOriginalSender()
+ 			: history->peer.get();
+-		content.title = sender->name().isEmpty()
++		const auto senderName = Ayu::LocalProfileName(sender);
++		content.title = senderName.isEmpty()
+ 			? "Message"
+-			: sender->name();
++			: senderName;
+ 		return std::move(content);
+ 	});
+ }
+diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegram/SourceFiles/history/view/history_view_message.cpp
+index 9d18199..4e8074c 100644
+--- a/Telegram/SourceFiles/history/view/history_view_message.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_message.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "api/api_suggest_post.h"
+ #include "api/api_transcribes.h"
+ #include "base/qt/qt_key_modifiers.h"
+@@ -1278,9 +1279,10 @@ void Message::draw(Painter &p, const PaintContext &context) const {
+ 		context.highlightPathCache->clear();
+ 	}
+ 	if (bubble) {
++		const auto from = item->displayFrom();
+ 		if (displayFromName()
+-			&& item->displayFrom()
+-			&& (_fromNameVersion < item->displayFrom()->nameVersion())) {
++			&& from
++			&& (from->isSelf() || (_fromNameVersion < from->nameVersion()))) {
+ 			fromNameUpdated(g.width());
+ 		}
+ 		Ui::PaintBubble(
+@@ -4208,11 +4210,11 @@ void Message::validateFromNameText(PeerData *from) const {
+ 		return;
+ 	}
+ 	const auto version = from->nameVersion();
+-	if (_fromNameVersion < version) {
++	if (from->isSelf() || (_fromNameVersion < version)) {
+ 		_fromNameVersion = version;
+ 		_fromName.setText(
+ 			st::msgNameStyle,
+-			from->name(),
++			Ayu::LocalProfileName(from),
+ 			Ui::NameTextOptions());
+ 	}
+ 	if (from->isPremium()
+diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+index 841d239..2edac8b 100644
+--- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_reply.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "core/click_handler_types.h"
+ #include "core/ui_integration.h"
+ #include "data/stickers/data_custom_emoji.h"
+@@ -584,6 +585,9 @@ QString Reply::senderName(
+ QString Reply::senderName(
+ 		not_null<PeerData*> peer,
+ 		bool shorten) const {
++	if (Ayu::LocalProfileNameActive(peer)) {
++		return Ayu::LocalProfileName(peer);
++	}
+ 	const auto user = shorten ? peer->asUser() : nullptr;
+ 	return user ? user->firstName : peer->name();
+ }
+@@ -592,7 +596,7 @@ bool Reply::isNameUpdated(
+ 		not_null<const Element*> view,
+ 		not_null<HistoryMessageReply*> data) const {
+ 	if (const auto from = sender(view, data)) {
+-		if (_nameVersion < from->nameVersion()) {
++		if (from->isSelf() || (_nameVersion < from->nameVersion())) {
+ 			updateName(view, data, from);
+ 			return true;
+ 		}
+@@ -651,12 +655,12 @@ void Reply::updateName(
+ 	nameFull.append(name);
+ 	if (groupNameAdded) {
+ 		nameFull.append(' ').append(PeerEmoji(externalPeer));
+-		nameFull.append(externalPeer->name());
++		nameFull.append(Ayu::LocalProfileName(externalPeer));
+ 	} else if (originalNameAdded) {
+ 		nameFull.append(' ').append(
+ 			st::historyReplyForward
+ 		).append(forwarded->originalSender
+-			? forwarded->originalSender->name()
++			? Ayu::LocalProfileName(forwarded->originalSender)
+ 			: forwarded->originalHiddenSenderInfo->name);
+ 	}
+ 	if (!viaBotUsername.isEmpty()) {
+@@ -1155,10 +1159,12 @@ TextWithEntities Reply::ComposePreviewName(
+ 	if (displayAsExternal && !groupNameAdded) {
+ 		nameFull.append(Reply::PeerEmoji(sender));
+ 	}
+-	nameFull.append(shorten ? sender->shortName() : sender->name());
++	nameFull.append((shorten && !Ayu::LocalProfileNameActive(sender))
++		? sender->shortName()
++		: Ayu::LocalProfileName(sender));
+ 	if (groupNameAdded) {
+ 		nameFull.append(' ').append(Reply::PeerEmoji(toPeer));
+-		nameFull.append(toPeer->name());
++		nameFull.append(Ayu::LocalProfileName(toPeer));
+ 	}
+ 	return (quote
+ 		? tr::lng_preview_reply_to_quote
+diff --git a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
+index 63b23a4..9c7dee6 100644
+--- a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
+@@ -74,6 +74,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ 
+ // AyuGram includes
+ #include "ayu/ayu_settings.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "boxes/peers/edit_participants_box.h"
+ #include "data/data_chat_filters.h"
+ #include "history/admin_log/history_admin_log_section.h"
+@@ -104,7 +105,9 @@ QString TopBarNameText(
+ 			return tr::lng_hidden_author_messages(tr::now);
+ 		}
+ 	}
+-	return peer->topBarNameText();
++	return Ayu::LocalProfileNameActive(peer)
++		? Ayu::LocalProfileName(peer)
++		: peer->topBarNameText();
+ }
+ 
+ } // namespace
+@@ -671,7 +674,8 @@ void TopBarWidget::paintTopBar(Painter &p) {
+ 			paintStatus(p, statusleft, statustop, statuswidth, width());
+ 		}
+ 	} else if (namePeer) {
+-		if (_titleNameVersion < namePeer->nameVersion()) {
++		if (namePeer->isSelf()
++			|| (_titleNameVersion < namePeer->nameVersion())) {
+ 			_titleNameVersion = namePeer->nameVersion();
+ 			_title.setText(
+ 				st::msgNameStyle,
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+index 594061d..d6028cf 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "info/profile/info_profile_actions.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "api/api_blocked_peers.h"
+ #include "api/api_chat_participants.h"
+ #include "api/api_credits.h"
+@@ -1766,7 +1767,8 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupInfo() {
+ 			st::infoProfileLabeledButtonQr);
+ 		qrButton->setAccessibleName(tr::lng_group_invite_context_qr(tr::now));
+ 		UsernamesValue(_peer) | rpl::on_next([=](const auto &u) {
+-			qrButton->setVisible(!u.empty());
++			qrButton->setVisible(
++				!u.empty() && !Ayu::LocalProfileUsernameActive(_peer));
+ 		}, qrButton->lifetime());
+ 		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
+ 		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+index 19c194b..ee43340 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "info/profile/info_profile_values.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "api/api_chat_participants.h"
+ #include "apiwrap.h"
+ #include "info/profile/info_profile_phone_menu.h"
+@@ -52,12 +53,7 @@ auto PlainAboutValue(not_null<PeerData*> peer) {
+ }
+ 
+ auto PlainUsernameValue(not_null<PeerData*> peer) {
+-	return rpl::merge(
+-		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Username),
+-		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Usernames)
+-	) | rpl::map([=] {
+-		return peer->username();
+-	});
++	return Ayu::LocalProfileUsernameValue(peer);
+ }
+ 
+ auto PlainPrimaryUsernameValue(not_null<PeerData*> peer) {
+@@ -96,10 +92,7 @@ rpl::producer<QString> NameValue(not_null<PeerData*> peer) {
+ 	if (const auto broadcast = peer->monoforumBroadcast()) {
+ 		return NameValue(broadcast);
+ 	}
+-	return peer->session().changes().peerFlagsValue(
+-		peer,
+-		UpdateFlag::Name
+-	) | rpl::map([=] { return peer->name(); });
++	return Ayu::LocalProfileNameValue(peer);
+ }
+ 
+ rpl::producer<QString> TitleValue(not_null<Data::ForumTopic*> topic) {
+@@ -126,11 +119,9 @@ rpl::producer<int32> ColorIdValue(not_null<Data::ForumTopic*> topic) {
+ rpl::producer<TextWithEntities> PhoneValue(not_null<UserData*> user) {
+ 	return rpl::merge(
+ 		Countries::Instance().updated(),
+-		user->session().changes().peerFlagsValue(
+-			user,
+-			UpdateFlag::PhoneNumber) | rpl::to_empty
++		Ayu::LocalProfilePhoneValue(user) | rpl::to_empty
+ 	) | rpl::map([=] {
+-		return tr::marked(Ui::FormatPhone(user->phone()));
++		return tr::marked(Ui::FormatPhone(Ayu::LocalProfilePhone(user)));
+ 	});
+ }
+ 
+@@ -147,7 +138,8 @@ rpl::producer<TextWithEntities> PhoneOrHiddenValue(not_null<UserData*> user) {
+ 			const QString &hidden) {
+ 		if (phone.text.isEmpty() && username.isEmpty() && about.isEmpty()) {
+ 			return tr::marked(hidden);
+-		} else if (IsCollectiblePhone(user)) {
++		} else if (!Ayu::LocalProfilePhoneActive(user)
++			&& IsCollectiblePhone(user)) {
+ 			return tr::link(phone, u"internal:collectible_phone/"_q
+ 				+ user->phone() + '@' + QString::number(user->id.value));
+ 		} else {
+@@ -174,6 +166,7 @@ QString UsernameUrl(
+ 		const QString &username,
+ 		bool link) {
+ 	const auto type = !peer->isUsernameEditable(username)
++		&& !Ayu::LocalProfileUsernameActive(peer)
+ 		? u"collectible_username"_q
+ 		: link
+ 		? u"username_link"_q
+@@ -195,21 +188,11 @@ rpl::producer<std::vector<TextWithEntities>> UsernamesValue(
+ 			return tr::link(u, UsernameUrl(peer, u));
+ 		}) | ranges::to_vector;
+ 	};
+-	auto value = rpl::merge(
+-		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Username),
+-		peer->session().changes().peerFlagsValue(peer, UpdateFlag::Usernames)
+-	);
+-	if (const auto user = peer->asUser()) {
+-		return std::move(value) | rpl::map([=] {
+-			return map(user->usernames());
+-		});
+-	} else if (const auto channel = peer->asChannel()) {
+-		return std::move(value) | rpl::map([=] {
+-			return map(channel->usernames());
+-		});
+-	} else {
+-		return rpl::single(std::vector<TextWithEntities>());
+-	}
++	return Ayu::LocalProfileUsernamesValue(
++		peer
++	) | rpl::map([=](std::vector<QString> usernames) {
++		return map(usernames);
++	});
+ }
+ 
+ TextWithEntities AboutWithEntities(
+diff --git a/Telegram/SourceFiles/settings/sections/settings_information.cpp b/Telegram/SourceFiles/settings/sections/settings_information.cpp
+index 24f2034..530dc05 100644
+--- a/Telegram/SourceFiles/settings/sections/settings_information.cpp
++++ b/Telegram/SourceFiles/settings/sections/settings_information.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "settings/sections/settings_information.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "settings/sections/settings_main.h"
+ #include "settings/settings_builder.h"
+ #include "settings/settings_common_session.h"
+@@ -560,7 +561,7 @@ void SetupRows(
+ 	}
+ 
+ 	const auto copyPhone = [=] {
+-		QGuiApplication::clipboard()->setText(self->phone());
++		QGuiApplication::clipboard()->setText(Ayu::LocalProfilePhone(self));
+ 		controller->showToast(tr::lng_text_copied(tr::now), 500);
+ 	};
+ 	const auto phoneButton = AddRow(
+@@ -776,13 +777,7 @@ void SetupAccountsWrap(
+ 	const auto session = &account->session();
+ 	const auto user = session->user();
+ 
+-	auto text = rpl::single(
+-		user->name()
+-	) | rpl::then(session->changes().realtimeNameUpdates(
+-		user
+-	) | rpl::map([=] {
+-		return user->name();
+-	}));
++	auto text = Ayu::LocalProfileNameValue(user);
+ 	auto result = object_ptr<Ui::SettingsButton>(
+ 		parent,
+ 		rpl::duplicate(text),
+diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
+index fbe74c4..8e4d450 100644
+--- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
++++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
+@@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ 
+ #include "settings/settings_common_session.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "api/api_cloud_password.h"
+ #include "api/api_credits.h"
+ #include "api/api_global_privacy.h"
+@@ -251,7 +252,8 @@ Cover::Cover(
+ 	Info::Profile::UsernamesValue(
+ 		_user
+ 	) | rpl::on_next([=](const auto &usernames) {
+-		_qrButton->setVisible(!usernames.empty());
++		_qrButton->setVisible(
++			!usernames.empty() && !Ayu::LocalProfileUsernameActive(_user));
+ 		refreshNameGeometry(width());
+ 		refreshQrButtonGeometry(width());
+ 	}, _qrButton->lifetime());
+@@ -302,7 +304,7 @@ void Cover::initViewers() {
+ 		if (_controller->showFrozenError()) {
+ 			return;
+ 		}
+-		const auto username = _user->username();
++		const auto username = Ayu::LocalProfileUsername(_user);
+ 		if (username.isEmpty()) {
+ 			_controller->show(Box(UsernamesBox, _user));
+ 		} else {
+diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
+index 40692d9..744bccc 100644
+--- a/Telegram/SourceFiles/ui/controls/table_rows.cpp
++++ b/Telegram/SourceFiles/ui/controls/table_rows.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "ui/controls/table_rows.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "base/event_filter.h"
+ #include "base/timer_rpl.h"
+ #include "boxes/peers/prepare_short_info_box.h"
+@@ -160,7 +161,9 @@ object_ptr<RpWidget> MakePeerTableValue(
+ 	const auto userpic = CreateChild<UserpicButton>(raw, peer, st);
+ 	const auto label = CreateChild<FlatLabel>(
+ 		raw,
+-		(button && handler) ? peer->shortName() : peer->name(),
++		(button && handler && !Ayu::LocalProfileNameActive(peer))
++			? peer->shortName()
++			: Ayu::LocalProfileName(peer),
+ 		table->st().defaultValue);
+ 
+ 	raw->widthValue() | rpl::on_next([=](int width) {
+diff --git a/Telegram/SourceFiles/window/window_main_menu.cpp b/Telegram/SourceFiles/window/window_main_menu.cpp
+index 61524ae..0567809 100644
+--- a/Telegram/SourceFiles/window/window_main_menu.cpp
++++ b/Telegram/SourceFiles/window/window_main_menu.cpp
+@@ -83,6 +83,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ // AyuGram includes
+ #include "ayu/ayu_settings.h"
+ #include "ayu/utils/telegram_helpers.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "boxes/abstract_box.h"
+ #include "ayu/features/streamer_mode/streamer_mode.h"
+ #include "styles/style_ayu_icons.h"
+@@ -358,6 +359,19 @@ MainMenu::MainMenu(
+ 	setupArchive();
+ 	setupMenu();
+ 
++	Ayu::LocalProfileNameValue(
++		_controller->session().user()
++	) | rpl::on_next([=](const QString &name) {
++		const auto user = _controller->session().user();
++		_nameVersion = user->nameVersion();
++		_name.setText(
++			st::semiboldTextStyle,
++			name,
++			Ui::NameTextOptions());
++		moveBadge();
++		update();
++	}, lifetime());
++
+ 	const auto shadow = Ui::CreateChild<Ui::PlainShadow>(this);
+ 	widthValue(
+ 	) | rpl::on_next([=](int width) {
+@@ -1009,7 +1023,7 @@ void MainMenu::drawName(Painter &p) {
+ 		_nameVersion = user->nameVersion();
+ 		_name.setText(
+ 			st::semiboldTextStyle,
+-			user->name(),
++			Ayu::LocalProfileName(user),
+ 			Ui::NameTextOptions());
+ 		moveBadge();
+ 	}
