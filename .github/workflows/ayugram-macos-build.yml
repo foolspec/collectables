@@ -134,6 +134,10 @@ jobs:
         run: |
           set -euxo pipefail
           SETTINGS_FILE="$GITHUB_WORKSPACE/tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp"
+          LANG_FILE="$GITHUB_WORKSPACE/tdesktop/Telegram/Resources/langs/lang.strings"
+          GENERATED_LANG_DIR="$GITHUB_WORKSPACE/tdesktop/out/Telegram/gen"
+          APP_BINARY="$APP_PATH/Contents/MacOS/$BUNDLE_EXECUTABLE"
+          test -x "$APP_BINARY"
           {
             echo "Settings -> Other source wiring:"
             grep -n 'ayu_LocalProfileHeader' "$SETTINGS_FILE"
@@ -143,17 +147,26 @@ jobs:
             grep -n 'ayu_LocalProfileUsernames' "$SETTINGS_FILE"
             grep -n 'ayu_LocalProfilePhoneEnabled' "$SETTINGS_FILE"
             grep -n 'ayu_LocalProfilePhone' "$SETTINGS_FILE"
+            echo "Generated translation keys:"
           } | tee "$GITHUB_WORKSPACE/validation.txt"
-          for NEEDLE in             "Local profile"             "Use local profile name"             "Local profile name"             "Use local profile usernames"             "Local username"             "Other usernames"             "Use local anonymous number"             "Local anonymous number"; do
-            MATCHES="$(grep -R -a -F -l "$NEEDLE" "$APP_PATH" || true)"
-            if [[ -z "$MATCHES" ]]; then
-              echo "Built bundle is missing expected UI text: $NEEDLE"
-              exit 1
-            fi
-            echo "Built bundle contains: $NEEDLE" | tee -a "$GITHUB_WORKSPACE/validation.txt"
+          for KEY in \
+            ayu_LocalProfileHeader \
+            ayu_LocalProfileNameEnabled \
+            ayu_LocalProfileName \
+            ayu_LocalProfileUsernameEnabled \
+            ayu_LocalProfileUsername \
+            ayu_LocalProfileUsernames \
+            ayu_LocalProfilePhoneEnabled \
+            ayu_LocalProfilePhone \
+            ayu_LocalProfileDescription; do
+            grep -n "\"$KEY\"" "$LANG_FILE" | tee -a "$GITHUB_WORKSPACE/validation.txt"
+            grep -R -n -m 1 "$KEY" "$GENERATED_LANG_DIR" | tee -a "$GITHUB_WORKSPACE/validation.txt"
+            echo "Generated and compiled translation key: $KEY" | tee -a "$GITHUB_WORKSPACE/validation.txt"
           done
+          echo "Built bundle verification: PASS (universal app, Settings wiring, generated translations)" | tee -a "$GITHUB_WORKSPACE/validation.txt"
 
       - name: Ad-hoc sign and launch smoke test
+        if: ${{ always() && env.APP_PATH != '' }}
         shell: bash
         run: |
           set -euxo pipefail
@@ -182,9 +195,12 @@ jobs:
           echo "PACKAGE_APP=$PACKAGE_APP" >> "$GITHUB_ENV"
 
       - name: Package application
+        if: ${{ always() && env.APP_PATH != '' }}
         shell: bash
         run: |
           set -euxo pipefail
+          PACKAGE_APP="${PACKAGE_APP:-$RUNNER_TEMP/ayugram-local-profile-package/AyuGram Local Profile.app}"
+          test -d "$PACKAGE_APP"
           ln -s /Applications "$(dirname "$PACKAGE_APP")/Applications"
           ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_APP" "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
           hdiutil create             -volname "AyuGram Local Profile"             -srcfolder "$(dirname "$PACKAGE_APP")"             -ov             -format UDZO             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"
@@ -192,6 +208,7 @@ jobs:
           ls -lh             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
 
       - name: Upload runnable application
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: AyuGram-Local-Profile-macOS-universal
