@@ -1,0 +1,33 @@
+name: AyuGram macOS Build
+
+on:
+  push:
+    branches:
+      - codex/ayugram-local-profile-build-20260711
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe macOS builder
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - name: Probe runner
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sw_vers
+          uname -a
+          xcode-select -p
+          xcodebuild -version
+          df -h
+          sysctl -n hw.optional.arm64 || true
+          command -v cmake
+          cmake --version
+          command -v ninja || true
+          ninja --version || true
+          git --version
+          brew --version
