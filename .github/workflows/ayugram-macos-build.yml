@@ -3,11 +3,11 @@ name: AyuGram macOS Build
 on:
   push:
     branches:
-      - codex/ayugram-local-profile-build-20260711
+      - codex/ayugram-local-collectibles-20260712
   workflow_dispatch:
 
 concurrency:
-  group: ayugram-local-profile-macos-build
+  group: ayugram-local-collectibles-macos-build
   cancel-in-progress: true
 
 permissions:
@@ -59,7 +59,7 @@ jobs:
         run: |
           set -euxo pipefail
           PATCH="$GITHUB_WORKSPACE/ayugram-local-profile-render-overrides.patch"
-          EXPECTED_SHA256="648f85725ce77ab2d7b1eff80c372c413bc5399ac7427bc81f1b3375b88ad300"
+          EXPECTED_SHA256="060b3b8234bf485c830660a4e7297ef8cd360ed90d96df0d6a211fe81e5b3b65"
           ACTUAL_SHA256="$(shasum -a 256 "$PATCH" | awk '{print $1}')"
           test "$ACTUAL_SHA256" = "$EXPECTED_SHA256"
           git -C tdesktop apply --check "$PATCH"
@@ -74,9 +74,15 @@ jobs:
           grep -n 'ayu_LocalProfileNameEnabled' "$SETTINGS_FILE"
           grep -n 'ayu_LocalProfileUsernameEnabled' "$SETTINGS_FILE"
           grep -n 'ayu_LocalProfilePhoneEnabled' "$SETTINGS_FILE"
+          grep -n 'ayu_LocalProfileGiftEnabled' "$SETTINGS_FILE"
+          grep -n 'ayu_LocalProfileGift' "$SETTINGS_FILE"
+          grep -n 'ayu_LocalProfileGifts' "$SETTINGS_FILE"
           grep -n 'localProfileNameEnabled' tdesktop/Telegram/SourceFiles/ayu/ayu_settings.cpp
           grep -n 'localProfileUsernameEnabled' tdesktop/Telegram/SourceFiles/ayu/ayu_settings.cpp
           grep -n 'localProfilePhoneEnabled' tdesktop/Telegram/SourceFiles/ayu/ayu_settings.cpp
+          grep -n 'localProfileGiftEnabled' tdesktop/Telegram/SourceFiles/ayu/ayu_settings.cpp
+          grep -n 'MTPpayments_GetUniqueStarGift' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'ResolveAndShowUniqueGift' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
           git -C tdesktop diff --stat
 
       - name: Prepare AyuGram macOS dependencies
@@ -147,6 +153,9 @@ jobs:
             grep -n 'ayu_LocalProfileUsernames' "$SETTINGS_FILE"
             grep -n 'ayu_LocalProfilePhoneEnabled' "$SETTINGS_FILE"
             grep -n 'ayu_LocalProfilePhone' "$SETTINGS_FILE"
+            grep -n 'ayu_LocalProfileGiftEnabled' "$SETTINGS_FILE"
+            grep -n 'ayu_LocalProfileGift' "$SETTINGS_FILE"
+            grep -n 'ayu_LocalProfileGifts' "$SETTINGS_FILE"
             echo "Generated translation keys:"
           } | tee "$GITHUB_WORKSPACE/validation.txt"
           for KEY in \
@@ -158,6 +167,11 @@ jobs:
             ayu_LocalProfileUsernames \
             ayu_LocalProfilePhoneEnabled \
             ayu_LocalProfilePhone \
+            ayu_LocalProfileGiftEnabled \
+            ayu_LocalProfileGift \
+            ayu_LocalProfileGifts \
+            ayu_LocalProfileGiftBrowse \
+            ayu_LocalProfileGiftDescription \
             ayu_LocalProfileDescription; do
             grep -n "\"$KEY\"" "$LANG_FILE" | tee -a "$GITHUB_WORKSPACE/validation.txt"
             grep -R -n -m 1 "$KEY" "$GENERATED_LANG_DIR" | tee -a "$GITHUB_WORKSPACE/validation.txt"
