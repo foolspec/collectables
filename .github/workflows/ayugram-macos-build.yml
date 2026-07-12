@@ -54,12 +54,18 @@ jobs:
           git -C tdesktop submodule status --recursive
           df -h
 
+      - name: Restore prepared macOS dependencies
+        uses: actions/cache@v4
+        with:
+          path: Libraries
+          key: ayugram-v6.7.8-macos26-libraries-v1
+
       - name: Apply and validate render-only patch
         shell: bash
         run: |
           set -euxo pipefail
           PATCH="$GITHUB_WORKSPACE/ayugram-local-profile-render-overrides.patch"
-          EXPECTED_SHA256="060b3b8234bf485c830660a4e7297ef8cd360ed90d96df0d6a211fe81e5b3b65"
+          EXPECTED_SHA256="d02183f62c2eca6bd2355c5427b958755f24e52399c84dcdedace89d3fbdea29"
           ACTUAL_SHA256="$(shasum -a 256 "$PATCH" | awk '{print $1}')"
           test "$ACTUAL_SHA256" = "$EXPECTED_SHA256"
           git -C tdesktop apply --check "$PATCH"
