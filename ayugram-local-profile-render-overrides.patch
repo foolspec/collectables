@@ -225,7 +225,7 @@ index 97a0439..456da70 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf46..8b7e242 100644
+index 929cf46..274ca41 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 @@ -12,11 +12,13 @@
@@ -397,7 +397,7 @@ index 929cf46..8b7e242 100644
 +		.title = tr::ayu_LocalProfileGiftEnabled(),
 +		.getter = &AyuSettings::localProfileGiftEnabled,
 +		.setter = &AyuSettings::setLocalProfileGiftEnabled,
-+		.icon = { &st::menuIconGift },
++		.icon = { &st::menuIconGiftPremium },
 +	});
 +	builder.add([](const WidgetContext &wctx) {
 +		auto field = object_ptr<Ui::InputField>(
@@ -424,7 +424,7 @@ index 929cf46..8b7e242 100644
 +		return SearchEntry{
 +			.id = u"ayu/localProfileGift"_q,
 +			.title = tr::ayu_LocalProfileGift(tr::now),
-+			.icon = { &st::menuIconGift },
++			.icon = { &st::menuIconGiftPremium },
 +		};
 +	});
 +	builder.add([](const WidgetContext &wctx) {
@@ -452,13 +452,13 @@ index 929cf46..8b7e242 100644
 +		return SearchEntry{
 +			.id = u"ayu/localProfileGifts"_q,
 +			.title = tr::ayu_LocalProfileGifts(tr::now),
-+			.icon = { &st::menuIconGift },
++			.icon = { &st::menuIconGiftPremium },
 +		};
 +	});
 +	builder.addButton({
 +		.id = u"ayu/localProfileGiftBrowse"_q,
 +		.title = tr::ayu_LocalProfileGiftBrowse(),
-+		.icon = { &st::menuIconGift },
++		.icon = { &st::menuIconGiftPremium },
 +		.onClick = [] {
 +			QDesktopServices::openUrl(u"https://getgems.io/"_q);
 +		},
