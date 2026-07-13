@@ -1,9 +1,9 @@
 name: IntelGram Multiplatform Build
 
 on:
-  push:
+  pull_request:
     branches:
-      - codex/intelgram-multiplatform-20260713
+      - codex/ayugram-local-collectibles-20260712
   workflow_dispatch:
 
 concurrency:
@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: Libraries
-          key: intelgram-v6.7.8-macos26-libraries-v1
+          key: ayugram-v6.7.8-macos26-libraries-v1
 
       - name: Apply IntelGram changes
         run: |
@@ -73,7 +73,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: Libraries
-          key: intelgram-v6.7.8-macos26-libraries-v1
+          key: ayugram-v6.7.8-macos26-libraries-v1
 
       - name: Configure and build
         run: |
@@ -132,8 +132,60 @@ jobs:
           if-no-files-found: error
           compression-level: 0
 
+  windows_dependencies_1:
+    name: Windows dependencies 1 of 6
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      stages: patches msys64 python NuGet jom gyp lzma zlib
+
+  windows_dependencies_2:
+    name: Windows dependencies 2 of 6
+    needs: windows_dependencies_1
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      stages: mozjpeg openssl3 opus rnnoise gas-preprocessor
+
+  windows_dependencies_3:
+    name: Windows dependencies 3 of 6
+    needs: windows_dependencies_2
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-2
+      stages: dav1d openh264 libavif libde265 libwebp libheif
+
+  windows_dependencies_4:
+    name: Windows dependencies 4 of 6
+    needs: windows_dependencies_3
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-3
+      stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
+
+  windows_dependencies_5:
+    name: Windows dependencies 5 of 6
+    needs: windows_dependencies_4
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-4
+      stages: stackwalk breakpad crashpad tg_angle tg_owt ada protobuf tde2e
+
+  windows_dependencies_6:
+    name: Windows dependencies 6 of 6
+    needs: windows_dependencies_5
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-5
+
   windows:
     name: Windows x64
+    needs: windows_dependencies_6
     runs-on: windows-2025
     timeout-minutes: 350
     env:
@@ -160,7 +212,7 @@ jobs:
           path: |
             Libraries
             ThirdParty
-          key: intelgram-v6.7.8-windows2025-libraries-v1
+          key: intelgram-v6.7.8-windows2025-libraries-stage-6
 
       - name: Apply IntelGram changes
         shell: pwsh
@@ -181,19 +233,6 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
           Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
-
-      - name: Prepare dependencies
-        shell: cmd
-        run: tdesktop\Telegram\build\prepare\win.bat
-
-      - name: Save dependencies
-        if: steps.windows-dependencies.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            Libraries
-            ThirdParty
-          key: intelgram-v6.7.8-windows2025-libraries-v1
 
       - name: Configure and build
         shell: cmd
@@ -279,6 +318,7 @@ jobs:
           docker pull ghcr.io/telegramdesktop/tdesktop/centos_env:latest
           docker run --rm \
             -u "$(id -u)" \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=3 \
             -v "$GITHUB_WORKSPACE/tdesktop:/usr/src/tdesktop" \
             ghcr.io/telegramdesktop/tdesktop/centos_env:latest \
             /usr/src/tdesktop/Telegram/build/docker/centos_env/build.sh \
