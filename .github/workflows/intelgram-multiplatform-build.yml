@@ -15,7 +15,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: fd7bccaddeef90f784a69af86583c0cb72772f66aaa61b800aa887422909471f
+  PATCH_SHA256: e06fc648bf1188dbc6f69f6e1b2c9c0a8bd554bc90251497fe032b67b7d42551
 
 jobs:
   macos:
@@ -165,6 +165,9 @@ jobs:
       - name: Apply IntelGram changes
         shell: pwsh
         run: |
+          $patchPath = Join-Path $env:GITHUB_WORKSPACE "intelgram-local-profile-render-overrides.patch"
+          $patch = [IO.File]::ReadAllText($patchPath).Replace("`r`n", "`n")
+          [IO.File]::WriteAllText($patchPath, $patch, [Text.UTF8Encoding]::new($false))
           $actual = (Get-FileHash intelgram-local-profile-render-overrides.patch -Algorithm SHA256).Hash.ToLower()
           if ($actual -ne $env:PATCH_SHA256) { throw "Patch hash mismatch" }
           git -C tdesktop apply --check "$env:GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
