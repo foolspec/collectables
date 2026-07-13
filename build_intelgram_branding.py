@@ -104,4 +104,5 @@ for old, new in (
 	("com.ayugram.desktop.service", "io.github.foolspec.intelgram.service"),
 	("com.ayugram.desktop.metainfo.xml", "io.github.foolspec.intelgram.metainfo.xml"),
 ):
-	(ROOT / "lib/xdg" / old).rename(ROOT / "lib/xdg" / new)
+	source = ROOT / "lib/xdg" / old
+	(ROOT / "lib/xdg" / new).write_bytes(source.read_bytes())
