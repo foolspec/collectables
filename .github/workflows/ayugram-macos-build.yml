@@ -112,7 +112,10 @@ jobs:
         run: |
           set -euxo pipefail
           cd tdesktop/Telegram
-          ./configure.sh             -D TDESKTOP_API_ID=2040             -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+          ./configure.sh \
+            -D TDESKTOP_API_ID=2040 \
+            -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 \
+            -D CMAKE_OSX_ARCHITECTURES=arm64
           test -d ../out
           df -h
 
@@ -191,7 +194,7 @@ jobs:
             grep -R -n -m 1 "$KEY" "$GENERATED_LANG_DIR" | tee -a "$GITHUB_WORKSPACE/validation.txt"
             echo "Generated and compiled translation key: $KEY" | tee -a "$GITHUB_WORKSPACE/validation.txt"
           done
-          echo "Built bundle verification: PASS (universal app, Settings wiring, generated translations)" | tee -a "$GITHUB_WORKSPACE/validation.txt"
+          echo "Built bundle verification: PASS (Apple Silicon app, Settings wiring, generated translations)" | tee -a "$GITHUB_WORKSPACE/validation.txt"
 
       - name: Ad-hoc sign and launch smoke test
         if: ${{ always() && env.APP_PATH != '' }}
@@ -230,19 +233,19 @@ jobs:
           PACKAGE_APP="${PACKAGE_APP:-$RUNNER_TEMP/ayugram-local-profile-package/AyuGram Local Profile.app}"
           test -d "$PACKAGE_APP"
           ln -s /Applications "$(dirname "$PACKAGE_APP")/Applications"
-          ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_APP" "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
-          hdiutil create             -volname "AyuGram Local Profile"             -srcfolder "$(dirname "$PACKAGE_APP")"             -ov             -format UDZO             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"
-          shasum -a 256             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"             | tee "$GITHUB_WORKSPACE/artifact-sha256.txt"
-          ls -lh             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-universal.zip"
+          ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_APP" "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.zip"
+          hdiutil create             -volname "AyuGram Local Profile"             -srcfolder "$(dirname "$PACKAGE_APP")"             -ov             -format UDZO             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.dmg"
+          shasum -a 256             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.zip"             | tee "$GITHUB_WORKSPACE/artifact-sha256.txt"
+          ls -lh             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.dmg"             "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.zip"
 
       - name: Upload runnable application
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: AyuGram-Local-Profile-macOS-universal
+          name: AyuGram-Local-Profile-macOS-Apple-Silicon
           path: |
-            AyuGram-Local-Profile-macOS-universal.dmg
-            AyuGram-Local-Profile-macOS-universal.zip
+            AyuGram-Local-Profile-macOS-Apple-Silicon.dmg
+            AyuGram-Local-Profile-macOS-Apple-Silicon.zip
             artifact-sha256.txt
             build-metadata.txt
             validation.txt
