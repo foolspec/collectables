@@ -137,10 +137,10 @@ jobs:
     name: Windows dependencies 1 of 6
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-1-
+        intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-1-
       stages: patches msys64 python NuGet jom gyp lzma zlib
       completion_marker: windows-dependencies-stage-1.complete
       stage_timeout_minutes: 100
@@ -150,12 +150,12 @@ jobs:
     needs: windows_dependencies_1
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
-        intelgram-v6.7.8-windows2025-libraries-stage-2-
-      prerequisite_cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-2-
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-1.complete
       stages: jom mozjpeg openssl3 opus rnnoise gas-preprocessor
       completion_marker: windows-dependencies-stage-2.complete
@@ -166,12 +166,12 @@ jobs:
     needs: windows_dependencies_2
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
-        intelgram-v6.7.8-windows2025-libraries-stage-3-
-      prerequisite_cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-3-
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-2.complete
       stages: dav1d openh264 libavif libde265 libwebp libheif
       completion_marker: windows-dependencies-stage-3.complete
@@ -182,12 +182,12 @@ jobs:
     needs: windows_dependencies_3
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
-        intelgram-v6.7.8-windows2025-libraries-stage-4-
-      prerequisite_cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-4-
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-3.complete
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
       completion_marker: windows-dependencies-stage-4.complete
@@ -198,12 +198,12 @@ jobs:
     needs: windows_dependencies_4
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
-        intelgram-v6.7.8-windows2025-libraries-stage-5-
-      prerequisite_cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-5-
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-4.complete
       stages: breakpad tg_angle tg_owt ada protobuf tde2e
       completion_marker: windows-dependencies-stage-5.complete
@@ -214,12 +214,12 @@ jobs:
     needs: windows_dependencies_5
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
-        intelgram-v6.7.8-windows2025-libraries-stage-6-
-      prerequisite_cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2022-libraries-stage-6-
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-5.complete
       completion_marker: windows-dependencies-stage-6.complete
       stage_timeout_minutes: 330
@@ -227,7 +227,7 @@ jobs:
   windows:
     name: Windows x64
     needs: windows_dependencies_6
-    runs-on: windows-2025
+    runs-on: windows-2022
     timeout-minutes: 350
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: "3"
@@ -250,7 +250,7 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           $deadline = (Get-Date).AddMinutes(12)
           do {
@@ -272,7 +272,7 @@ jobs:
             Libraries
             ThirdParty
             windows-dependencies-stage-*.complete
-          key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+          key: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Verify final Windows dependency cache
         shell: pwsh
@@ -352,7 +352,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install launch-test tools
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+        run: sudo apt-get update && sudo apt-get install -y libopengl0 xvfb
 
       - name: Clone official source
         run: |
