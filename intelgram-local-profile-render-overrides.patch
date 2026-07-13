@@ -2098,11 +2098,6 @@ index f5dea0f..db4692a 100644
  	auto result = object_ptr<Ui::SettingsButton>(
  		parent,
  		rpl::duplicate(text),
-@@ -1519,4 +1518,3 @@ SectionBuildMethod InformationSection = kMeta.build;
- 
- } // namespace Builder
- } // namespace Settings
--
 diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
 index 86ff926..f16d9a1 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
@@ -2157,11 +2152,6 @@ index 86ff926..f16d9a1 100644
  		}
  	});
  }
-@@ -1243,4 +1244,3 @@ void OpenAskQuestionConfirm(not_null<Window::SessionController*> window) {
- }
- 
- } // namespace Settings
--
 diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
 index 48b13da..86973ef 100644
 --- a/Telegram/SourceFiles/ui/controls/table_rows.cpp
