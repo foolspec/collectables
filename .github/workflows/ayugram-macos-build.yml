@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -253,3 +253,24 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
+
+      - name: Publish permanent GitHub Release
+        if: ${{ success() }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          TAG="ayugram-local-profile-v6.7.8-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "AyuGram Local Profile v6.7.8 (Apple Silicon)" \
+            --notes "Client-render-only AyuGram build with local display name, primary and other usernames, anonymous number, featured collectible gift, and pinned collectible gifts. No Telegram profile mutation is included." \
+            "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.dmg" \
+            "$GITHUB_WORKSPACE/AyuGram-Local-Profile-macOS-Apple-Silicon.zip" \
+            "$GITHUB_WORKSPACE/ayugram-local-profile-render-overrides.patch" \
+            "$GITHUB_WORKSPACE/artifact-sha256.txt" \
+            "$GITHUB_WORKSPACE/build-metadata.txt" \
+            "$GITHUB_WORKSPACE/validation.txt" \
+            "$GITHUB_WORKSPACE/launch.log"
