@@ -1,0 +1,392 @@
+name: IntelGram Multiplatform Build
+
+on:
+  pull_request:
+    branches:
+      - codex/ayugram-local-collectibles-20260712
+  workflow_dispatch:
+
+concurrency:
+  group: intelgram-multiplatform-build
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  SOURCE_TAG: v6.7.8
+  PATCH_SHA256: e06fc648bf1188dbc6f69f6e1b2c9c0a8bd554bc90251497fe032b67b7d42551
+
+jobs:
+  macos:
+    name: macOS Apple Silicon
+    runs-on: macos-26
+    timeout-minutes: 350
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+      CMAKE_BUILD_PARALLEL_LEVEL: "3"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install documented tools
+        run: brew install automake wget pkg-config gnu-tar nasm meson
+
+      - name: Clone official source
+        run: |
+          set -euxo pipefail
+          git clone --recursive --branch "$SOURCE_TAG" --single-branch https://github.com/AyuGram/AyuGramDesktop.git tdesktop
+          test "$(git -C tdesktop rev-parse HEAD)" = "b25513a06ff88be0b3f4c928252b56c3da39cec7"
+          git -C tdesktop submodule status --recursive
+
+      - name: Restore dependencies
+        id: macos-dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: Libraries
+          key: ayugram-v6.7.8-macos26-libraries-v1
+
+      - name: Apply IntelGram changes
+        run: |
+          set -euxo pipefail
+          test "$(shasum -a 256 intelgram-local-profile-render-overrides.patch | awk '{print $1}')" = "$PATCH_SHA256"
+          git -C tdesktop apply --check "$GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          git -C tdesktop apply "$GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          (cd tdesktop && python3 "$GITHUB_WORKSPACE/build_intelgram_branding.py")
+          git -C tdesktop diff --check
+          if git -C tdesktop diff --no-ext-diff | grep -E 'updateProfile|updateUsername|MTPaccount_|MTPusers_|account\.update|users\..*update'; then
+            echo "Unexpected Telegram profile mutation reference."
+            exit 1
+          fi
+          grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
+
+      - name: Prepare dependencies
+        run: |
+          set -euxo pipefail
+          cd tdesktop
+          ./Telegram/build/prepare/mac.sh
+
+      - name: Save dependencies
+        if: steps.macos-dependencies.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: Libraries
+          key: ayugram-v6.7.8-macos26-libraries-v1
+
+      - name: Configure and build
+        run: |
+          set -euxo pipefail
+          cd tdesktop/Telegram
+          ./configure.sh \
+            -D TDESKTOP_API_ID=2040 \
+            -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 \
+            -D CMAKE_OSX_ARCHITECTURES=arm64
+          cmake --build ../out --config Release --target Telegram --parallel 3
+
+      - name: Verify, launch, and package
+        run: |
+          set -euxo pipefail
+          APP_PATH="$(find tdesktop/out/Release -maxdepth 2 -type d -name 'IntelGram.app' | head -n 1)"
+          test -d "$APP_PATH"
+          BINARY="$APP_PATH/Contents/MacOS/IntelGram"
+          test -x "$BINARY"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Contents/Info.plist")" = "io.github.foolspec.IntelGram"
+          PACKAGE_ROOT="$RUNNER_TEMP/intelgram-package"
+          TEST_ROOT="$RUNNER_TEMP/intelgram-smoke"
+          mkdir -p "$PACKAGE_ROOT" "$TEST_ROOT"
+          ditto "$APP_PATH" "$PACKAGE_ROOT/IntelGram.app"
+          xattr -cr "$PACKAGE_ROOT/IntelGram.app"
+          codesign --force --deep --sign - "$PACKAGE_ROOT/IntelGram.app"
+          codesign --verify --deep --strict --verbose=2 "$PACKAGE_ROOT/IntelGram.app"
+          "$PACKAGE_ROOT/IntelGram.app/Contents/MacOS/IntelGram" -many -workdir "$TEST_ROOT" > launch-macos.log 2>&1 &
+          PID=$!
+          sleep 12
+          kill -0 "$PID"
+          kill "$PID"
+          wait "$PID" || true
+          ln -s /Applications "$PACKAGE_ROOT/Applications"
+          ditto -c -k --sequesterRsrc --keepParent "$PACKAGE_ROOT/IntelGram.app" IntelGram-macOS-Apple-Silicon.zip
+          hdiutil create -volname "IntelGram" -srcfolder "$PACKAGE_ROOT" -ov -format UDZO IntelGram-macOS-Apple-Silicon.dmg
+          shasum -a 256 IntelGram-macOS-Apple-Silicon.dmg IntelGram-macOS-Apple-Silicon.zip > IntelGram-macOS-sha256.txt
+          {
+            echo "Platform: macOS Apple Silicon"
+            echo "Application: IntelGram.app"
+            echo "Bundle identifier: io.github.foolspec.IntelGram"
+            echo "Source: $SOURCE_TAG ($(git -C tdesktop rev-parse HEAD))"
+            echo "Patch: $PATCH_SHA256"
+            echo "Launch smoke test: PASS"
+          } > IntelGram-macOS-validation.txt
+
+      - name: Upload macOS package
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntelGram-macOS-Apple-Silicon
+          path: |
+            IntelGram-macOS-Apple-Silicon.dmg
+            IntelGram-macOS-Apple-Silicon.zip
+            IntelGram-macOS-sha256.txt
+            IntelGram-macOS-validation.txt
+            launch-macos.log
+          if-no-files-found: error
+          compression-level: 0
+
+  windows_dependencies_1:
+    name: Windows dependencies 1 of 6
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      stages: patches msys64 python NuGet jom gyp lzma zlib
+
+  windows_dependencies_2:
+    name: Windows dependencies 2 of 6
+    needs: windows_dependencies_1
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      stages: mozjpeg openssl3 opus rnnoise gas-preprocessor
+
+  windows_dependencies_3:
+    name: Windows dependencies 3 of 6
+    needs: windows_dependencies_2
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-2
+      stages: dav1d openh264 libavif libde265 libwebp libheif
+
+  windows_dependencies_4:
+    name: Windows dependencies 4 of 6
+    needs: windows_dependencies_3
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-3
+      stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
+
+  windows_dependencies_5:
+    name: Windows dependencies 5 of 6
+    needs: windows_dependencies_4
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-4
+      stages: stackwalk breakpad crashpad tg_angle tg_owt ada protobuf tde2e
+
+  windows_dependencies_6:
+    name: Windows dependencies 6 of 6
+    needs: windows_dependencies_5
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6
+      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-5
+
+  windows:
+    name: Windows x64
+    needs: windows_dependencies_6
+    runs-on: windows-2025
+    timeout-minutes: 350
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: "3"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Visual Studio build environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Clone official source
+        shell: pwsh
+        run: |
+          git clone --recursive --branch $env:SOURCE_TAG --single-branch https://github.com/AyuGram/AyuGramDesktop.git tdesktop
+          if ((git -C tdesktop rev-parse HEAD) -ne "b25513a06ff88be0b3f4c928252b56c3da39cec7") { throw "Unexpected source commit" }
+          git -C tdesktop submodule status --recursive
+
+      - name: Restore dependencies
+        id: windows-dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            Libraries
+            ThirdParty
+          key: intelgram-v6.7.8-windows2025-libraries-stage-6
+
+      - name: Apply IntelGram changes
+        shell: pwsh
+        run: |
+          $patchPath = Join-Path $env:GITHUB_WORKSPACE "intelgram-local-profile-render-overrides.patch"
+          $patch = [IO.File]::ReadAllText($patchPath).Replace("`r`n", "`n")
+          [IO.File]::WriteAllText($patchPath, $patch, [Text.UTF8Encoding]::new($false))
+          $actual = (Get-FileHash intelgram-local-profile-render-overrides.patch -Algorithm SHA256).Hash.ToLower()
+          if ($actual -ne $env:PATCH_SHA256) { throw "Patch hash mismatch" }
+          git -C tdesktop apply --check "$env:GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          git -C tdesktop apply "$env:GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          Push-Location tdesktop
+          python "$env:GITHUB_WORKSPACE/build_intelgram_branding.py"
+          Pop-Location
+          git -C tdesktop diff --check
+          $diff = git -C tdesktop diff --no-ext-diff
+          if ($diff | Select-String -Pattern 'updateProfile|updateUsername|MTPaccount_|MTPusers_|account\.update|users\..*update') { throw "Unexpected Telegram profile mutation reference" }
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
+          Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
+
+      - name: Configure and build
+        shell: cmd
+        working-directory: tdesktop\Telegram
+        run: |
+          configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+          cmake --build ..\out --config Release --target Telegram --parallel 3
+
+      - name: Verify, launch, and package
+        shell: pwsh
+        run: |
+          $binary = Resolve-Path "tdesktop/out/Release/IntelGram.exe"
+          $testRoot = Join-Path $env:RUNNER_TEMP "intelgram-smoke"
+          New-Item -ItemType Directory -Force $testRoot | Out-Null
+          $process = Start-Process -FilePath $binary -ArgumentList "-many", "-workdir", "`"$testRoot`"" -PassThru -RedirectStandardOutput launch-windows.log -RedirectStandardError launch-windows-error.log
+          Start-Sleep -Seconds 12
+          if ($process.HasExited) { throw "IntelGram exited during launch smoke test" }
+          Stop-Process -Id $process.Id -Force
+          $package = New-Item -ItemType Directory -Force IntelGram-Windows-x64
+          Copy-Item $binary $package
+          Get-ChildItem tdesktop/out/Release -Filter *.dll | Copy-Item -Destination $package
+          if (Test-Path tdesktop/out/Release/Updater.exe) { Copy-Item tdesktop/out/Release/Updater.exe $package }
+          Compress-Archive -Path IntelGram-Windows-x64 -DestinationPath IntelGram-Windows-x64.zip -CompressionLevel Optimal
+          (Get-FileHash IntelGram-Windows-x64.zip -Algorithm SHA256).Hash.ToLower() + "  IntelGram-Windows-x64.zip" | Set-Content IntelGram-Windows-sha256.txt
+          @(
+            "Platform: Windows x64",
+            "Application: IntelGram.exe",
+            "Application ID: {7AF76B28-0DD4-4CCB-BFA8-53CC3079650D}",
+            "Source: $env:SOURCE_TAG (b25513a06ff88be0b3f4c928252b56c3da39cec7)",
+            "Patch: $env:PATCH_SHA256",
+            "Launch smoke test: PASS"
+          ) | Set-Content IntelGram-Windows-validation.txt
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntelGram-Windows-x64
+          path: |
+            IntelGram-Windows-x64.zip
+            IntelGram-Windows-sha256.txt
+            IntelGram-Windows-validation.txt
+            launch-windows.log
+            launch-windows-error.log
+          if-no-files-found: error
+          compression-level: 0
+
+  linux:
+    name: Linux x64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install launch-test tools
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Clone official source
+        run: |
+          set -euxo pipefail
+          git clone --recursive --branch "$SOURCE_TAG" --single-branch https://github.com/AyuGram/AyuGramDesktop.git tdesktop
+          test "$(git -C tdesktop rev-parse HEAD)" = "b25513a06ff88be0b3f4c928252b56c3da39cec7"
+          git -C tdesktop submodule status --recursive
+
+      - name: Apply IntelGram changes
+        run: |
+          set -euxo pipefail
+          test "$(sha256sum intelgram-local-profile-render-overrides.patch | awk '{print $1}')" = "$PATCH_SHA256"
+          git -C tdesktop apply --check "$GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          git -C tdesktop apply "$GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          (cd tdesktop && python3 "$GITHUB_WORKSPACE/build_intelgram_branding.py")
+          git -C tdesktop diff --check
+          if git -C tdesktop diff --no-ext-diff | grep -E 'updateProfile|updateUsername|MTPaccount_|MTPusers_|account\.update|users\..*update'; then
+            echo "Unexpected Telegram profile mutation reference."
+            exit 1
+          fi
+          grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'AppFile = "IntelGram"' tdesktop/Telegram/SourceFiles/core/version.h
+
+      - name: Build with the documented Linux container
+        run: |
+          set -euxo pipefail
+          docker pull ghcr.io/telegramdesktop/tdesktop/centos_env:latest
+          docker run --rm \
+            -u "$(id -u)" \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=3 \
+            -v "$GITHUB_WORKSPACE/tdesktop:/usr/src/tdesktop" \
+            ghcr.io/telegramdesktop/tdesktop/centos_env:latest \
+            /usr/src/tdesktop/Telegram/build/docker/centos_env/build.sh \
+            -D TDESKTOP_API_ID=2040 \
+            -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+
+      - name: Verify, launch, and package
+        run: |
+          set -euxo pipefail
+          BINARY="$(find tdesktop/out -type f -name IntelGram -perm -111 | head -n 1)"
+          test -x "$BINARY"
+          TEST_ROOT="$RUNNER_TEMP/intelgram-smoke"
+          mkdir -p "$TEST_ROOT" IntelGram-Linux-x64
+          set +e
+          timeout 12s xvfb-run -a "$BINARY" -many -workdir "$TEST_ROOT" > launch-linux.log 2>&1
+          STATUS=$?
+          set -e
+          test "$STATUS" = 124
+          cp "$BINARY" IntelGram-Linux-x64/IntelGram
+          tar -C IntelGram-Linux-x64 -czf IntelGram-Linux-x64.tar.gz IntelGram
+          sha256sum IntelGram-Linux-x64.tar.gz > IntelGram-Linux-sha256.txt
+          {
+            echo "Platform: Linux x64"
+            echo "Application: IntelGram"
+            echo "Desktop ID: io.github.foolspec.intelgram"
+            echo "Source: $SOURCE_TAG ($(git -C tdesktop rev-parse HEAD))"
+            echo "Patch: $PATCH_SHA256"
+            echo "Launch smoke test: PASS"
+          } > IntelGram-Linux-validation.txt
+
+      - name: Upload Linux package
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntelGram-Linux-x64
+          path: |
+            IntelGram-Linux-x64.tar.gz
+            IntelGram-Linux-sha256.txt
+            IntelGram-Linux-validation.txt
+            launch-linux.log
+          if-no-files-found: error
+          compression-level: 0
+
+  release:
+    name: Publish IntelGram release
+    runs-on: ubuntu-24.04
+    needs: [macos, windows, linux]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: IntelGram-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish permanent release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          cp intelgram-local-profile-render-overrides.patch release-assets/
+          cp build_intelgram_branding.py release-assets/
+          find release-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
+          TAG="intelgram-v6.7.8-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --latest \
+            --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, and collectible gifts. The username editor shows the original Telegram username. No Telegram profile, username, UID, phone number, or NFT ownership mutation is included." \
+            release-assets/*
