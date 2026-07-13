@@ -15,7 +15,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 55c07cd7c69b63c221fefd7ffc2dab8a5bf25424b09b7301e114946d92c5414b
+  PATCH_SHA256: 2a6f81a0620d6f88e34b7840fcc89a4193083e6e4c375eaea757cdc003ff79fa
 
 jobs:
   macos:
@@ -136,52 +136,82 @@ jobs:
     name: Windows dependencies 1 of 6
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-1-
       stages: patches msys64 python NuGet jom gyp lzma zlib
+      completion_marker: windows-dependencies-stage-1.complete
+      stage_timeout_minutes: 100
 
   windows_dependencies_2:
     name: Windows dependencies 2 of 6
     needs: windows_dependencies_1
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2
-      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-1
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-2-
+        intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
       stages: mozjpeg openssl3 opus rnnoise gas-preprocessor
+      completion_marker: windows-dependencies-stage-2.complete
+      stage_timeout_minutes: 180
 
   windows_dependencies_3:
     name: Windows dependencies 3 of 6
     needs: windows_dependencies_2
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3
-      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-2
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-3-
+        intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       stages: dav1d openh264 libavif libde265 libwebp libheif
+      completion_marker: windows-dependencies-stage-3.complete
+      stage_timeout_minutes: 180
 
   windows_dependencies_4:
     name: Windows dependencies 4 of 6
     needs: windows_dependencies_3
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4
-      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-3
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-4-
+        intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
+      completion_marker: windows-dependencies-stage-4.complete
+      stage_timeout_minutes: 240
 
   windows_dependencies_5:
     name: Windows dependencies 5 of 6
     needs: windows_dependencies_4
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5
-      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-4
-      stages: stackwalk breakpad crashpad tg_angle tg_owt ada protobuf tde2e
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-5-
+        intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+      stages: breakpad tg_angle tg_owt ada protobuf tde2e
+      completion_marker: windows-dependencies-stage-5.complete
+      stage_timeout_minutes: 300
 
   windows_dependencies_6:
     name: Windows dependencies 6 of 6
     needs: windows_dependencies_5
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6
-      restore_key: intelgram-v6.7.8-windows2025-libraries-stage-5
+      cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2025-libraries-stage-6-
+        intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+      completion_marker: windows-dependencies-stage-6.complete
+      stage_timeout_minutes: 330
 
   windows:
     name: Windows x64
@@ -212,7 +242,7 @@ jobs:
           path: |
             Libraries
             ThirdParty
-          key: intelgram-v6.7.8-windows2025-libraries-stage-6
+          key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Apply IntelGram changes
         shell: pwsh
