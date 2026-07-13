@@ -111,8 +111,9 @@ jobs:
         if: ${{ inputs.serialize_libvpx_msbuild }}
         shell: pwsh
         run: |
-          $path = "ThirdParty/patches/build_libvpx_win.sh"
-          if (-not (Test-Path $path)) { throw "Missing upstream libvpx build helper: $path" }
+          $matches = @(Get-ChildItem Libraries -Filter build_libvpx_win.sh -Recurse -File -ErrorAction SilentlyContinue)
+          if ($matches.Count -ne 1) { throw "Expected exactly one upstream libvpx build helper under Libraries, found $($matches.Count)" }
+          $path = $matches[0].FullName
           $content = [System.IO.File]::ReadAllText($path)
           $needle = 'make -j$NUMBER_OF_PROCESSORS'
           $injection = "sed -i 's/msbuild.exe vpx.sln -m /msbuild.exe vpx.sln -m:1 /' vpx.sln.mk`n`n"
