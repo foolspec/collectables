@@ -114,6 +114,10 @@ jobs:
           $matches = @(Get-ChildItem Libraries -Filter build_libvpx_win.sh -Recurse -File -ErrorAction SilentlyContinue)
           if ($matches.Count -ne 1) { throw "Expected exactly one upstream libvpx build helper under Libraries, found $($matches.Count)" }
           $path = $matches[0].FullName
+          $directory = $matches[0].DirectoryName
+          $name = $matches[0].Name
+          git -C $directory checkout -- $name
+          if ($LASTEXITCODE -ne 0) { throw "Could not restore the pinned upstream libvpx build helper" }
           $content = [System.IO.File]::ReadAllText($path)
           $needle = 'make -j$NUMBER_OF_PROCESSORS'
           $injection = "make vpx.sln`nsed -i 's/msbuild.exe vpx.sln -m /msbuild.exe vpx.sln -m:1 /' vpx.sln.mk`n`n"
