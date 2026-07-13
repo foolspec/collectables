@@ -32,7 +32,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: windows-2025
+    runs-on: windows-2022
     timeout-minutes: 355
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: "3"
