@@ -52,6 +52,15 @@ jobs:
           key: ${{ inputs.cache_key }}
           restore-keys: ${{ inputs.restore_key }}
 
+      - name: Restore cached tool paths
+        shell: pwsh
+        run: |
+          $jom = Get-ChildItem ThirdParty -Filter jom.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($jom) {
+            $jom.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            Write-Host "Using jom from $($jom.DirectoryName)"
+          }
+
       - name: Prepare dependency stage
         shell: cmd
         timeout-minutes: ${{ inputs.stage_timeout_minutes }}
