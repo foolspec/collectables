@@ -29,6 +29,10 @@ on:
         required: false
         default: 300
         type: number
+      number_of_processors:
+        required: false
+        default: "3"
+        type: string
 
 jobs:
   prepare:
@@ -36,6 +40,7 @@ jobs:
     timeout-minutes: 355
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: "3"
+      NUMBER_OF_PROCESSORS: ${{ inputs.number_of_processors }}
       PYTHONUNBUFFERED: "1"
     steps:
       - name: Configure Visual Studio build environment
