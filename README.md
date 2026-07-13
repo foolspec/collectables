@@ -48,7 +48,7 @@ IntelGram uses its own visible application name, macOS bundle ID, and Windows ap
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `55c07cd7c69b63c221fefd7ffc2dab8a5bf25424b09b7301e114946d92c5414b`
+- Patch SHA-256: `2a6f81a0620d6f88e34b7840fcc89a4193083e6e4c375eaea757cdc003ff79fa`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.
