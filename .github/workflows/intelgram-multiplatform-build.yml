@@ -153,8 +153,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
         intelgram-v6.7.8-windows2022-libraries-stage-2-
+        intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-1.complete
       stages: jom mozjpeg openssl3 opus rnnoise gas-preprocessor
@@ -169,8 +169,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
         intelgram-v6.7.8-windows2022-libraries-stage-3-
+        intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-2.complete
       stages: dav1d openh264 libavif libde265 libwebp libheif
@@ -185,8 +185,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
         intelgram-v6.7.8-windows2022-libraries-stage-4-
+        intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-3.complete
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
@@ -203,8 +203,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
         intelgram-v6.7.8-windows2022-libraries-stage-5-
+        intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-4.complete
       stages: breakpad tg_angle tg_owt ada protobuf tde2e
@@ -219,8 +219,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
         intelgram-v6.7.8-windows2022-libraries-stage-6-
+        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-5.complete
       completion_marker: windows-dependencies-stage-6.complete
