@@ -14,6 +14,13 @@ on:
         required: false
         default: ""
         type: string
+      completion_marker:
+        required: true
+        type: string
+      stage_timeout_minutes:
+        required: false
+        default: 300
+        type: number
 
 jobs:
   prepare:
@@ -21,6 +28,7 @@ jobs:
     timeout-minutes: 355
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: "3"
+      PYTHONUNBUFFERED: "1"
     steps:
       - name: Configure Visual Studio build environment
         uses: ilammy/msvc-dev-cmd@v1
@@ -40,24 +48,32 @@ jobs:
           path: |
             Libraries
             ThirdParty
+            ${{ inputs.completion_marker }}
           key: ${{ inputs.cache_key }}
           restore-keys: ${{ inputs.restore_key }}
 
       - name: Prepare dependency stage
-        if: steps.dependencies.outputs.cache-hit != 'true'
         shell: cmd
+        timeout-minutes: ${{ inputs.stage_timeout_minutes }}
         run: |
-          if "${{ inputs.stages }}"=="" (
-            call tdesktop\Telegram\build\prepare\win.bat
-          ) else (
-            call tdesktop\Telegram\build\prepare\win.bat ${{ inputs.stages }}
+          if exist "${{ inputs.completion_marker }}" (
+            echo Dependency stage is already complete.
+            exit /b 0
           )
+          if "${{ inputs.stages }}"=="" (
+            call tdesktop\Telegram\build\prepare\win.bat silent
+          ) else (
+            call tdesktop\Telegram\build\prepare\win.bat silent ${{ inputs.stages }}
+          )
+          if %errorlevel% neq 0 exit /b %errorlevel%
+          type nul > "${{ inputs.completion_marker }}"
 
       - name: Save accumulated dependencies
-        if: steps.dependencies.outputs.cache-hit != 'true'
+        if: always()
         uses: actions/cache/save@v4
         with:
           path: |
             Libraries
             ThirdParty
+            ${{ inputs.completion_marker }}
           key: ${{ inputs.cache_key }}
