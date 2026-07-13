@@ -33,6 +33,10 @@ on:
         required: false
         default: "3"
         type: string
+      serialize_libvpx_msbuild:
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   prepare:
@@ -102,6 +106,21 @@ jobs:
             $jom.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
             Write-Host "Using jom from $($jom.DirectoryName)"
           }
+
+      - name: Serialize libvpx MSBuild projects
+        if: ${{ inputs.serialize_libvpx_msbuild }}
+        shell: pwsh
+        run: |
+          $path = "ThirdParty/patches/build_libvpx_win.sh"
+          if (-not (Test-Path $path)) { throw "Missing upstream libvpx build helper: $path" }
+          $content = [System.IO.File]::ReadAllText($path)
+          $needle = 'make -j$NUMBER_OF_PROCESSORS'
+          $injection = "sed -i 's/msbuild.exe vpx.sln -m /msbuild.exe vpx.sln -m:1 /' vpx.sln.mk`n`n"
+          $index = $content.IndexOf($needle, [System.StringComparison]::Ordinal)
+          if ($index -lt 0) { throw "Could not locate the libvpx make command in $path" }
+          $content = $content.Insert($index, $injection)
+          [System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))
+          Get-Content $path
 
       - name: Prepare dependency stage
         shell: cmd
