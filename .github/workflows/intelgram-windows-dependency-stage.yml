@@ -1,5 +1,7 @@
 name: IntelGram Windows Dependency Stage
 
+# Prepare the official pinned dependency set in cacheable platform slices.
+
 on:
   workflow_call:
     inputs:
