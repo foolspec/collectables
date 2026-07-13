@@ -192,6 +192,7 @@ jobs:
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
       completion_marker: windows-dependencies-stage-4.complete
       stage_timeout_minutes: 240
+      number_of_processors: "1"
 
   windows_dependencies_5:
     name: Windows dependencies 5 of 6
