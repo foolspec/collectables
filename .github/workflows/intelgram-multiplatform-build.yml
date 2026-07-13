@@ -152,9 +152,9 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-2-
         intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
-      stages: mozjpeg openssl3 opus rnnoise gas-preprocessor
+        intelgram-v6.7.8-windows2025-libraries-stage-2-
+      stages: jom mozjpeg openssl3 opus rnnoise gas-preprocessor
       completion_marker: windows-dependencies-stage-2.complete
       stage_timeout_minutes: 180
 
@@ -166,8 +166,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-3-
         intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-3-
       stages: dav1d openh264 libavif libde265 libwebp libheif
       completion_marker: windows-dependencies-stage-3.complete
       stage_timeout_minutes: 180
@@ -180,8 +180,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-4-
         intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-4-
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
       completion_marker: windows-dependencies-stage-4.complete
       stage_timeout_minutes: 240
@@ -194,8 +194,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-5-
         intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-5-
       stages: breakpad tg_angle tg_owt ada protobuf tde2e
       completion_marker: windows-dependencies-stage-5.complete
       stage_timeout_minutes: 300
@@ -208,8 +208,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-6-
         intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-6-
       completion_marker: windows-dependencies-stage-6.complete
       stage_timeout_minutes: 330
 
