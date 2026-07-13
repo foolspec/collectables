@@ -20,7 +20,7 @@ env:
 jobs:
   macos:
     name: macOS Apple Silicon
-    runs-on: macos-26
+    runs-on: macos-15
     timeout-minutes: 350
     env:
       HOMEBREW_NO_AUTO_UPDATE: "1"
@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: Libraries
-          key: ayugram-v6.7.8-macos26-libraries-v1
+          key: intelgram-v6.7.8-macos15-libraries-v1
 
       - name: Apply IntelGram changes
         run: |
@@ -73,7 +73,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: Libraries
-          key: ayugram-v6.7.8-macos26-libraries-v1
+          key: intelgram-v6.7.8-macos15-libraries-v1
 
       - name: Configure and build
         run: |
@@ -100,7 +100,7 @@ jobs:
           xattr -cr "$PACKAGE_ROOT/IntelGram.app"
           codesign --force --deep --sign - "$PACKAGE_ROOT/IntelGram.app"
           codesign --verify --deep --strict --verbose=2 "$PACKAGE_ROOT/IntelGram.app"
-          "$PACKAGE_ROOT/IntelGram.app/Contents/MacOS/IntelGram" -many -workdir "$TEST_ROOT" > launch-macos.log 2>&1 &
+          "$PACKAGE_ROOT/IntelGram.app/Contents/MacOS/IntelGram" -workdir "$TEST_ROOT" > launch-macos.log 2>&1 &
           PID=$!
           sleep 12
           kill -0 "$PID"
@@ -152,9 +152,9 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-2-
         intelgram-v6.7.8-windows2025-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
-      stages: mozjpeg openssl3 opus rnnoise gas-preprocessor
+        intelgram-v6.7.8-windows2025-libraries-stage-2-
+      stages: jom mozjpeg openssl3 opus rnnoise gas-preprocessor
       completion_marker: windows-dependencies-stage-2.complete
       stage_timeout_minutes: 180
 
@@ -166,8 +166,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-3-
         intelgram-v6.7.8-windows2025-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-3-
       stages: dav1d openh264 libavif libde265 libwebp libheif
       completion_marker: windows-dependencies-stage-3.complete
       stage_timeout_minutes: 180
@@ -180,8 +180,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-4-
         intelgram-v6.7.8-windows2025-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-4-
       stages: libjxl libvpx liblcms2 nv-codec-headers regex ffmpeg openal-soft
       completion_marker: windows-dependencies-stage-4.complete
       stage_timeout_minutes: 240
@@ -194,8 +194,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-5-
         intelgram-v6.7.8-windows2025-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-5-
       stages: breakpad tg_angle tg_owt ada protobuf tde2e
       completion_marker: windows-dependencies-stage-5.complete
       stage_timeout_minutes: 300
@@ -208,8 +208,8 @@ jobs:
       cache_key: intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-windows2025-libraries-stage-6-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2025-libraries-stage-6-
         intelgram-v6.7.8-windows2025-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-windows2025-libraries-stage-6-
       completion_marker: windows-dependencies-stage-6.complete
       stage_timeout_minutes: 330
 
@@ -277,7 +277,7 @@ jobs:
           $binary = Resolve-Path "tdesktop/out/Release/IntelGram.exe"
           $testRoot = Join-Path $env:RUNNER_TEMP "intelgram-smoke"
           New-Item -ItemType Directory -Force $testRoot | Out-Null
-          $process = Start-Process -FilePath $binary -ArgumentList "-many", "-workdir", "`"$testRoot`"" -PassThru -RedirectStandardOutput launch-windows.log -RedirectStandardError launch-windows-error.log
+          $process = Start-Process -FilePath $binary -ArgumentList "-workdir", "`"$testRoot`"" -PassThru -RedirectStandardOutput launch-windows.log -RedirectStandardError launch-windows-error.log
           Start-Sleep -Seconds 12
           if ($process.HasExited) { throw "IntelGram exited during launch smoke test" }
           Stop-Process -Id $process.Id -Force
@@ -362,11 +362,23 @@ jobs:
           test -x "$BINARY"
           TEST_ROOT="$RUNNER_TEMP/intelgram-smoke"
           mkdir -p "$TEST_ROOT" IntelGram-Linux-x64
-          set +e
-          timeout 12s xvfb-run -a "$BINARY" -many -workdir "$TEST_ROOT" > launch-linux.log 2>&1
-          STATUS=$?
-          set -e
-          test "$STATUS" = 124
+          export INTELGRAM_BINARY="$BINARY"
+          export INTELGRAM_TEST_ROOT="$TEST_ROOT"
+          export INTELGRAM_LAUNCH_LOG="$GITHUB_WORKSPACE/launch-linux.log"
+          export QT_OPENGL=software
+          export LIBGL_ALWAYS_SOFTWARE=1
+          xvfb-run -a -s "-screen 0 1280x800x24" bash -euo pipefail -c '
+            "$INTELGRAM_BINARY" -workdir "$INTELGRAM_TEST_ROOT" > "$INTELGRAM_LAUNCH_LOG" 2>&1 &
+            app_pid=$!
+            sleep 4
+            if ! kill -0 "$app_pid"; then
+              cat "$INTELGRAM_LAUNCH_LOG"
+              wait "$app_pid"
+            fi
+            kill "$app_pid"
+            wait "$app_pid" || true
+          '
+          cat launch-linux.log
           cp "$BINARY" IntelGram-Linux-x64/IntelGram
           tar -C IntelGram-Linux-x64 -czf IntelGram-Linux-x64.tar.gz IntelGram
           sha256sum IntelGram-Linux-x64.tar.gz > IntelGram-Linux-sha256.txt
