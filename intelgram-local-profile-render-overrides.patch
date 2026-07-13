@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..9a45138 100644
+index 7380587..499bc83 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7973,7 +7973,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -33,7 +33,7 @@ index 7380587..9a45138 100644
 +"ayu_LocalProfileUsername" = "Local username";
 +"ayu_LocalProfileUsernames" = "Other usernames";
 +"ayu_LocalProfileUsernameEditorTitle" = "Local username";
-+"ayu_LocalProfileOriginalUsername" = "**Original Telegram username:** {username}";
++"ayu_LocalProfileOriginalUsername" = "Original Telegram username: {username}";
 +"ayu_LocalProfileOriginalUsernameNone" = "None";
 +"ayu_LocalProfileUsernameEditorDescription" = "This changes only how your username appears in IntelGram. Your Telegram username and availability are not changed.";
 +"ayu_LocalProfilePhoneEnabled" = "Use local anonymous number";
@@ -644,10 +644,10 @@ index 929cf46..8bf7713 100644
  });
  
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-index c9d247a..8f39376 100644
+index c9d247a..86c1f7c 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-@@ -6,15 +6,772 @@
+@@ -6,15 +6,771 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/utils/ayu_profile_values.h"
  
@@ -1386,8 +1386,7 @@ index c9d247a..8f39376 100644
 +				tr::ayu_LocalProfileOriginalUsername(
 +					tr::now,
 +					lt_username,
-+					tr::bold(original),
-+					tr::rich),
++					original),
 +				st::boxDividerLabel),
 +			st::boxRowPadding);
 +		container->add(object_ptr<Ui::DividerLabel>(
@@ -1421,7 +1420,7 @@ index c9d247a..8f39376 100644
  
  	const auto &settings = AyuSettings::getInstance();
  	if (settings.showPeerId() == PeerIdDisplay::BotApi) {
-@@ -33,8 +790,12 @@ QString IDString(MsgId topicRootId) {
+@@ -33,8 +789,12 @@ QString IDString(MsgId topicRootId) {
  }
  
  rpl::producer<TextWithEntities> IDValue(not_null<PeerData*> peer) {
