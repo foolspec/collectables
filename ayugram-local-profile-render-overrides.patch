@@ -451,10 +451,10 @@ index 97a0439..ece9215 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf46..9678296 100644
+index 929cf46..90d505f 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-@@ -6,32 +6,48 @@
+@@ -6,32 +6,49 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/settings/settings_other.h"
  
@@ -501,6 +501,7 @@ index 929cf46..9678296 100644
 +#include "window/window_session_controller.h"
 +
 +#include "styles/style_boxes.h"
++#include "styles/style_layers.h"
 +#include "styles/style_menu_icons.h"
 +#include "styles/style_settings.h"
  
@@ -511,7 +512,7 @@ index 929cf46..9678296 100644
  #include <QSvgRenderer>
  
  namespace Settings {
-@@ -193,6 +209,852 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
+@@ -193,6 +210,854 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
  #endif
  }
  
@@ -692,6 +693,7 @@ index 929cf46..9678296 100644
 +		LocalGiftCollection collection) {
 +	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
 +		box->setWidth(st::boxWideWidth);
++		box->setNoContentMargin(true);
 +		box->setTitle(rpl::single(collection.title));
 +		const auto content = box->verticalLayout();
 +		const auto field = box->addRow(
@@ -841,6 +843,7 @@ index 929cf46..9678296 100644
 +	LocalGiftTarget target) {
 +	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
 +		box->setWidth(st::boxWideWidth);
++		box->setNoContentMargin(true);
 +		box->setTitle(tr::ayu_LocalProfileGiftPickerTitle());
 +		const auto content = box->verticalLayout();
 +		AddSubsectionTitle(
@@ -1364,7 +1367,7 @@ index 929cf46..9678296 100644
  void BuildOtherThings(SectionBuilder &builder) {
  	const auto controller = builder.controller();
  
-@@ -236,6 +1098,7 @@ const auto kMeta = BuildHelper({
+@@ -236,6 +1101,7 @@ const auto kMeta = BuildHelper({
  	builder.addSkip();
  	BuildDonations(builder);
  	BuildCrashReporting(builder, ayu);
@@ -2955,7 +2958,7 @@ index 594061d..d6028cf 100644
  		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
  		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..56e5264 100644
+index a410a35..a9e8a1c 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3010,21 +3013,23 @@ index a410a35..56e5264 100644
  			return;
  		}
  		_badgeTooltip = std::make_unique<BadgeTooltip>(
-@@ -1489,17 +1499,28 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
+@@ -1489,17 +1499,29 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
  
  void TopBar::setLocalEmojiStatusId(EmojiStatusId emojiStatusId) {
  	_localCollectible = emojiStatusId.collectible;
 -	_badgeContent = Badge::Content{ BadgeType::Premium, emojiStatusId };
+-	updateCollectibleStatus();
 +	if (emojiStatusId) {
 +		_badgeContent = Badge::Content{ BadgeType::Premium, emojiStatusId };
++		updateCollectibleStatus();
 +	} else {
 +		BadgeContentForPeer(
 +			_peer
 +		) | rpl::take(1) | rpl::on_next([=](Badge::Content content) {
 +			_badgeContent = std::move(content);
++			updateCollectibleStatus();
 +		}, lifetime());
 +	}
- 	updateCollectibleStatus();
  }
  
  std::optional<Data::ColorProfileSet> TopBar::effectiveColorProfile() const {
@@ -3046,7 +3051,7 @@ index a410a35..56e5264 100644
  }
  
  auto TopBar::effectiveCollectible() const
-@@ -1508,7 +1529,7 @@ auto TopBar::effectiveCollectible() const
+@@ -1508,7 +1530,7 @@ auto TopBar::effectiveCollectible() const
  		? _localCollectible
  		: _localColorProfileIndex
  		? nullptr
@@ -3055,7 +3060,7 @@ index a410a35..56e5264 100644
  }
  
  void TopBar::paintEdges(QPainter &p, const QBrush &brush) const {
-@@ -2360,14 +2381,55 @@ void TopBar::setupPinnedToTopGifts(
+@@ -2360,14 +2382,57 @@ void TopBar::setupPinnedToTopGifts(
  		updateCollectibleStatus();
  		setupNewGifts(controller, gifts);
  	});
@@ -3082,10 +3087,12 @@ index a410a35..56e5264 100644
 +					if (!gift || !gift->unique) {
 +						continue;
 +					}
-+					const auto duplicate = ranges::any_of(gifts, [&](const auto &entry) {
-+						return entry.info.unique
-+							&& entry.info.unique->id == gift->unique->id;
-+					});
++					const auto duplicate = ranges::any_of(
++						gifts,
++						[&](const auto &entry) {
++							return entry.info.unique
++								&& entry.info.unique->id == gift->unique->id;
++						});
 +					if (!duplicate) {
 +						gifts.insert(gifts.begin(), Data::SavedStarGift{
 +							.info = *gift,
@@ -3114,28 +3121,24 @@ index a410a35..56e5264 100644
  		: CollectibleId(0);
  	auto filteredGifts = std::vector<Data::SavedStarGift>();
  	const auto subtract = emojiStatusId ? 1 : 0;
-@@ -2440,9 +2502,18 @@ void TopBar::setupNewGifts(
- 		}());
+@@ -2441,7 +2506,16 @@ void TopBar::setupNewGifts(
  		entry.button->show();
  
--		entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
+ 		entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
 -			::Settings::ShowSavedStarGiftBox(controller, peer, giftData);
--		});
-+			entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
-+				if (!giftData.manageId && giftData.info.unique) {
-+					Core::ResolveAndShowUniqueGift(
-+						controller->uiShow(),
-+						giftData.info.unique->slug);
-+				} else {
-+					::Settings::ShowSavedStarGiftBox(
-+						controller,
-+						peer,
-+						giftData);
-+				}
-+			});
++			if (!giftData.manageId && giftData.info.unique) {
++				Core::ResolveAndShowUniqueGift(
++					controller->uiShow(),
++					giftData.info.unique->slug);
++			} else {
++				::Settings::ShowSavedStarGiftBox(
++					controller,
++					peer,
++					giftData);
++			}
+ 		});
  
  		_pinnedToTopGifts.push_back(std::move(entry));
- 	}
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 index 19c194b..0314ccc 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
