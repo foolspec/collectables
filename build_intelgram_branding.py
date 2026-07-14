@@ -28,7 +28,7 @@ def replace_all(path: str, old: str, new: str, expected: int) -> None:
 
 replace("CMakeLists.txt", [
 	('DESCRIPTION "AyuGram Desktop"', 'DESCRIPTION "IntelGram Desktop"'),
-	('HOMEPAGE_URL "https://ayugram.one"', 'HOMEPAGE_URL "https://github.com/foolspec/collectables"'),
+	('HOMEPAGE_URL "https://ayugram.one"', 'HOMEPAGE_URL "https://github.com/foolspec/IntelGram"'),
 ])
 
 replace("Telegram/CMakeLists.txt", [
@@ -84,15 +84,15 @@ replace("lib/xdg/com.ayugram.desktop.metainfo.xml", [
 	('<p>Telegram Desktop with Ghost Mode, Anti-Recall and cool design.</p>',
 	 '<p>IntelGram is based on AyuGram Desktop and adds client-render-only local profile controls.</p>'),
 	('<url type="homepage">https://ayugram.one/</url>',
-	 '<url type="homepage">https://github.com/foolspec/collectables</url>'),
+	 '<url type="homepage">https://github.com/foolspec/IntelGram</url>'),
 	('<url type="faq">https://t.me/AyuGramFAQ</url>',
-	 '<url type="faq">https://github.com/foolspec/collectables#using-intelgram</url>'),
+	 '<url type="faq">https://github.com/foolspec/IntelGram#using-intelgram</url>'),
 	('<url type="bugtracker">https://t.me/ayugramchat/1262</url>',
-	 '<url type="bugtracker">https://github.com/foolspec/collectables/issues</url>'),
+	 '<url type="bugtracker">https://github.com/foolspec/IntelGram/issues</url>'),
 	('<url type="vcs-browser">https://github.com/AyuGram/AyuGramDesktop</url>',
-	 '<url type="vcs-browser">https://github.com/foolspec/collectables</url>'),
+	 '<url type="vcs-browser">https://github.com/foolspec/IntelGram</url>'),
 	('<url type="contribute">https://github.com/AyuGram/AyuGramDesktop/blob/dev/.github/CONTRIBUTING.md</url>',
-	 '<url type="contribute">https://github.com/foolspec/collectables</url>'),
+	 '<url type="contribute">https://github.com/foolspec/IntelGram</url>'),
 	('<keyword>ayugram</keyword>', '<keyword>intelgram</keyword>'),
 	('<launchable type="desktop-id">com.ayugram.desktop.desktop</launchable>',
 	 '<launchable type="desktop-id">io.github.foolspec.intelgram.desktop</launchable>'),
