@@ -16,7 +16,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 2a6f81a0620d6f88e34b7840fcc89a4193083e6e4c375eaea757cdc003ff79fa
+  PATCH_SHA256: 8a2ec8976b38591e1dc3a20eb7cc68e21b793d82497331a8001ff28d3c9c0826
 
 jobs:
   macos:
@@ -311,7 +311,13 @@ jobs:
       - name: Verify, launch, and package
         shell: pwsh
         run: |
-          $binary = Resolve-Path "tdesktop/out/Release/IntelGram.exe"
+          $candidates = @(Get-ChildItem tdesktop/out -Filter IntelGram.exe -File -Recurse)
+          if ($candidates.Count -ne 1) {
+            Get-ChildItem tdesktop/out -Filter *.exe -File -Recurse | ForEach-Object FullName
+            throw "Expected one IntelGram.exe build output, found $($candidates.Count)"
+          }
+          $binary = $candidates[0].FullName
+          $binaryDirectory = $candidates[0].DirectoryName
           $testRoot = Join-Path $env:RUNNER_TEMP "intelgram-smoke"
           New-Item -ItemType Directory -Force $testRoot | Out-Null
           $process = Start-Process -FilePath $binary -ArgumentList "-workdir", "`"$testRoot`"" -PassThru -RedirectStandardOutput launch-windows.log -RedirectStandardError launch-windows-error.log
@@ -319,9 +325,10 @@ jobs:
           if ($process.HasExited) { throw "IntelGram exited during launch smoke test" }
           Stop-Process -Id $process.Id -Force
           $package = New-Item -ItemType Directory -Force IntelGram-Windows-x64
-          Copy-Item $binary $package
-          Get-ChildItem tdesktop/out/Release -Filter *.dll | Copy-Item -Destination $package
-          if (Test-Path tdesktop/out/Release/Updater.exe) { Copy-Item tdesktop/out/Release/Updater.exe $package }
+          Copy-Item $binary (Join-Path $package.FullName "IntelGram.exe")
+          Get-ChildItem $binaryDirectory -Filter *.dll -File | Copy-Item -Destination $package
+          $updater = Join-Path $binaryDirectory "Updater.exe"
+          if (Test-Path $updater) { Copy-Item $updater $package }
           Compress-Archive -Path IntelGram-Windows-x64 -DestinationPath IntelGram-Windows-x64.zip -CompressionLevel Optimal
           (Get-FileHash IntelGram-Windows-x64.zip -Algorithm SHA256).Hash.ToLower() + "  IntelGram-Windows-x64.zip" | Set-Content IntelGram-Windows-sha256.txt
           @(
@@ -467,5 +474,5 @@ jobs:
             --target "$GITHUB_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, and collectible gifts. The username editor shows the original Telegram username. No Telegram profile, username, UID, phone number, or NFT ownership mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, and collectible gifts. It includes a collection-first gift picker, native Collection #Number tooltip, and original-username reference. Local profile and collectible override features by fool. No Telegram profile, username, UID, phone number, or NFT ownership mutation is included." \
             release-assets/*
