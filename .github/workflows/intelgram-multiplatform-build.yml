@@ -1,6 +1,9 @@
 name: IntelGram Multiplatform Build
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -16,7 +19,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 8a2ec8976b38591e1dc3a20eb7cc68e21b793d82497331a8001ff28d3c9c0826
+  PATCH_SHA256: 3a72ad8e9210768a328608cee278c32cd550afb0b0151f0ad09551fd374c891a
 
 jobs:
   macos:
@@ -449,7 +452,6 @@ jobs:
 
   release:
     name: Publish IntelGram release
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     needs: [macos, windows, linux]
     steps:
@@ -464,16 +466,18 @@ jobs:
       - name: Publish permanent release
         env:
           GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euxo pipefail
           cp intelgram-local-profile-render-overrides.patch release-assets/
+          cp intelgram-local-profile-render-overrides.patch release-assets/ayugram-local-profile-render-overrides.patch
           cp build_intelgram_branding.py release-assets/
           find release-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
-          TAG="intelgram-v6.7.8-${GITHUB_RUN_NUMBER}"
+          TAG="intelgram-v6.7.8-local-profile-${GITHUB_RUN_ID}"
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
-            --target "$GITHUB_SHA" \
+            --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, and collectible gifts. It includes a collection-first gift picker, native Collection #Number tooltip, and original-username reference. Local profile and collectible override features by fool. No Telegram profile, username, UID, phone number, or NFT ownership mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, and collectible gifts. The in-app collectible browser uses Telegram's native animated gift renderer, loads numbered items as you scroll, accepts Getgems and TON links, and keeps the existing native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, emoji status, gift ownership, or NFT mutation is included." \
             release-assets/*
