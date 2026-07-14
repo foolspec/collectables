@@ -2,19 +2,25 @@
 
 IntelGram is a cross-platform AyuGram Desktop build focused on local-only profile customization.
 
-[![IntelGram builds](https://github.com/foolspec/collectables/actions/workflows/intelgram-multiplatform-build.yml/badge.svg?branch=codex%2Fintelgram-multiplatform-20260713)](https://github.com/foolspec/collectables/actions/workflows/intelgram-multiplatform-build.yml)
+[![IntelGram builds](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml/badge.svg?branch=main)](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml)
 
 ## Downloads
 
 | Platform | Package |
 | --- | --- |
-| macOS Apple Silicon | [IntelGram DMG](https://github.com/foolspec/collectables/releases/latest/download/IntelGram-macOS-Apple-Silicon.dmg) |
-| Windows x64 | [IntelGram ZIP](https://github.com/foolspec/collectables/releases/latest/download/IntelGram-Windows-x64.zip) |
-| Linux x64 | [IntelGram tar.gz](https://github.com/foolspec/collectables/releases/latest/download/IntelGram-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [IntelGram DMG](https://github.com/foolspec/IntelGram/releases/latest/download/IntelGram-macOS-Apple-Silicon.dmg) |
+| Windows x64 | [IntelGram ZIP](https://github.com/foolspec/IntelGram/releases/latest/download/IntelGram-Windows-x64.zip) |
+| Linux x64 | [IntelGram tar.gz](https://github.com/foolspec/IntelGram/releases/latest/download/IntelGram-Linux-x64.tar.gz) |
 
-[View the latest release, checksums, and validation logs](https://github.com/foolspec/collectables/releases/latest).
+[View the latest release, checksums, and validation logs](https://github.com/foolspec/IntelGram/releases/latest).
 
-## Local Profile
+## Install
+
+- macOS: open the DMG, drag `IntelGram.app` to Applications, then Control-click **Open** on first launch if Gatekeeper asks. The community build is ad-hoc signed, not Apple-notarized.
+- Windows: extract `IntelGram-Windows-x64.zip` and run `IntelGram.exe`. Keep the files from the ZIP together.
+- Linux: extract `IntelGram-Linux-x64.tar.gz` and run `IntelGram`.
+
+## Using IntelGram
 
 Open **IntelGram Settings -> Other -> Local profile** to configure:
 
@@ -43,7 +49,7 @@ All packages are built from the official AyuGram Desktop `v6.7.8` source at comm
 - Windows: x64 `IntelGram.exe`, launch tested, packaged as ZIP
 - Linux: x64 `IntelGram`, launch tested under Xvfb, packaged as tar.gz
 
-IntelGram uses its own visible application name, macOS bundle ID, and Windows application ID so it can coexist with a normal AyuGram installation.
+IntelGram uses its own visible application name, macOS bundle ID, Windows application ID, and Linux desktop ID so it can coexist with a normal AyuGram installation.
 
 ## Source And Verification
 
