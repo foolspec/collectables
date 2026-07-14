@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..499bc83 100644
+index 7380587..cc9bd23 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7973,7 +7973,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -20,7 +20,7 @@ index 7380587..499bc83 100644
  "ayu_KeepAliveServiceNote" = "We recommend migrating to **FCM** version.";
  "ayu_DisableAds" = "Disable Ads";
  "ayu_DisableStories" = "Disable Stories";
-@@ -8070,8 +8070,28 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8070,8 +8070,52 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SupportBoxReceiveBadgeInfo" = "After payment verification, you will receive a unique badge that will be displayed on your profile and visible to other users.";
  "ayu_CrashReporting" = "Crash Reporting";
  "ayu_CrashReportingDescription" = "When this option is enabled, you'll be prompted to send a report after the app crashes. You can decide whether to send it or not.";
@@ -43,14 +43,38 @@ index 7380587..499bc83 100644
 +"ayu_LocalProfileGift" = "Featured collectible gift";
 +"ayu_LocalProfileGifts" = "Pinned collectible gifts";
 +"ayu_LocalProfileGiftBrowse" = "Browse collectible gifts on Getgems";
-+"ayu_LocalProfileGiftDescription" = "Paste a Telegram gift slug, t.me/nft link, Getgems item URL, or TON NFT address. The featured gift sets your local profile backdrop; up to six pinned gifts appear around your avatar. Details are resolved read-only. No ownership or Telegram profile data is changed.";
++"ayu_LocalProfileGiftDescription" = "Choose a collection and number, or paste a Telegram gift slug, t.me/nft link, Getgems item URL, or TON NFT address. The featured gift sets your local profile backdrop; up to six pinned gifts appear around your avatar. Details are resolved read-only.";
++"ayu_LocalProfileGiftPickerPasteTitle" = "Paste collectible link";
++"ayu_LocalProfileGiftPickerNumber" = "Number or market link";
++"ayu_LocalProfileGiftPickerPasteAbout" = "Paste a t.me/nft link, Getgems item URL, TON NFT address, or Telegram gift slug.";
++"ayu_LocalProfileGiftPickerNumberAbout" = "Enter a collectible number from this collection, or paste a market link.";
++"ayu_LocalProfileGiftPickerInvalid" = "That collectible could not be found.";
++"ayu_LocalProfileGiftPickerResolving" = "Finding collectible...";
++"ayu_LocalProfileGiftPickerLimit" = "You can pin up to six collectible gifts.";
++"ayu_LocalProfileGiftPickerSaved" = "{gift} is now rendered locally.";
++"ayu_LocalProfileGiftPickerUseFeatured" = "Use as featured gift";
++"ayu_LocalProfileGiftPickerAddPinned" = "Add to pinned gifts";
++"ayu_LocalProfileGiftPickerTitle" = "Choose a collectible";
++"ayu_LocalProfileGiftPickerCollection" = "Choose a collection";
++"ayu_LocalProfileGiftPickerPaste" = "Paste a TON market link";
++"ayu_LocalProfileGiftPickerPickerAbout" = "Select a collection first, then enter its number. You can also paste any supported Telegram or TON market link.";
++"ayu_LocalProfileGiftPickerManagePinned" = "Manage pinned collectible gifts";
++"ayu_LocalProfileGiftPickerAdd" = "Add collectible";
++"ayu_LocalProfileGiftPickerPinnedEmpty" = "No pinned collectible gifts yet.";
++"ayu_LocalProfileGiftPickerCurrent" = "Current pinned gifts";
++"ayu_LocalProfileGiftPickerRemove" = "Remove {gift}";
++"ayu_LocalProfileGiftPickerClearPinned" = "Clear pinned gifts";
++"ayu_LocalProfileGiftPickerLocalOnly" = "These selections are displayed only in IntelGram. No gift ownership or Telegram profile data is changed.";
++"ayu_LocalProfileGiftPickerChooseFeatured" = "Choose featured collectible";
++"ayu_LocalProfileGiftPickerClearFeatured" = "Clear featured collectible";
++"ayu_LocalProfileCredit" = "IntelGram local profile tools by fool.";
  "ayu_ResetSettings" = "Reset Settings";
 -"ayu_ResetSettingsConfirmation" = "Are you sure you want to reset **all** AyuGram preferences to their defaults?";
 +"ayu_ResetSettingsConfirmation" = "Are you sure you want to reset **all** IntelGram preferences to their defaults?";
  "ayu_DisableColorfulCover" = "Disable adaptive color";
  "ayu_EnableColorfulCover" = "Enable adaptive color";
  "ayu_CustomizationHeader" = "Customization";
-@@ -8130,14 +8150,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8130,14 +8174,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SettingsBiggerWindow" = "Bigger Window";
  "ayu_SettingsIncreaseWebviewHeight" = "Increase Content Height";
  "ayu_SettingsIncreaseWebviewWidth" = "Increase Content Width";
@@ -67,7 +91,7 @@ index 7380587..499bc83 100644
  "ayu_ImportDataDescription" = "It will replace the current database.";
  "ayu_ImportDataConfirm" = "Yes, replace existing";
  "ayu_ImportDataCancel" = "No, close window";
-@@ -8204,7 +8224,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8204,7 +8248,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_FiltersClearPopupAltActionText" = "Clear unknown";
  "ayu_AppIconHeader" = "App Icon";
  "ayu_IconDefault" = "Default";
@@ -76,7 +100,7 @@ index 7380587..499bc83 100644
  "ayu_IconDiscord" = "Discord";
  "ayu_IconSpotify" = "Spotify";
  "ayu_IconExtera" = "extera";
-@@ -8214,8 +8234,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8214,8 +8258,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_IconAyuTyan" = "AyuTyan";
  "ayu_WALMode" = "Enable WAL mode";
  "ayu_PushNotificationCount" = "FCM notifications received";
@@ -87,7 +111,7 @@ index 7380587..499bc83 100644
  "ayu_TelegramCacheDatabase" = "Telegram Messages Database";
  "ayu_ConfirmationsTitle" = "Confirmations";
  "ayu_StickerConfirmation" = "For Stickers";
-@@ -8288,9 +8308,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8288,9 +8332,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SuggestGhostModeStoryText" = "Do you want to enable **Ghost Mode** before viewing the story?";
  "ayu_SuggestGhostModeStoryActionTextYes" = "Yes";
  "ayu_SuggestGhostModeStoryActionTextNo" = "No";
@@ -99,7 +123,7 @@ index 7380587..499bc83 100644
  "ayu_HideNextViewsDescriptionAyu" = "Hide my views forever, until Ghost Mode is disabled.";
  "ayu_EnableGhostModeStories" = "Enable Ghost Mode";
  "ayu_GhostModeIsActive" = "Ghost Mode is Active";
-@@ -8362,21 +8382,21 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8362,21 +8406,21 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_PluginVersion" = "Version";
  "ayu_PluginNoDescription" = "No description provided.";
  "ayu_PluginNoAuthor" = "Unknown Author";
@@ -356,16 +380,17 @@ index 97a0439..4ddabda 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf46..8bf7713 100644
+index 929cf46..c0d2745 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-@@ -12,11 +12,13 @@
+@@ -12,26 +12,33 @@
  #include "ayu/ui/settings/ayu_builder.h"
  #include "ayu/ui/settings/settings_ayu_utils.h"
  #include "ayu/ui/settings/settings_main.h"
 +#include "ayu/ui/utils/ayu_profile_values.h"
  #include "boxes/abstract_box.h"
  #include "core/application.h"
++#include "data/data_star_gift.h"
  #include "lang/lang_text_entity.h"
  #include "settings/settings_builder.h"
  #include "settings/settings_common.h"
@@ -373,7 +398,10 @@ index 929cf46..8bf7713 100644
  #include "styles/style_menu_icons.h"
  #include "styles/style_settings.h"
  #include "ui/integration.h"
-@@ -26,6 +28,7 @@
++#include "ui/layers/generic_box.h"
+ #include "ui/painter.h"
+ #include "ui/rect.h"
+ #include "ui/vertical_list.h"
  #include "ui/boxes/confirm_box.h"
  #include "ui/text/text_utilities.h"
  #include "ui/widgets/buttons.h"
@@ -381,11 +409,312 @@ index 929cf46..8bf7713 100644
  #include "ui/wrap/vertical_layout.h"
  #include "window/window_session_controller.h"
  #include "window/themes/window_theme.h"
-@@ -193,6 +196,253 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
+ 
+ #include <QDesktopServices>
+ #include <QGuiApplication>
++#include <QPointer>
++#include <QRegularExpression>
+ #include <QSvgRenderer>
+ 
+ namespace Settings {
+@@ -193,6 +200,518 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
  #endif
  }
  
++enum class LocalGiftTarget {
++	Featured,
++	Pinned,
++};
++
++struct LocalGiftCollection {
++	QString title;
++	QString slug;
++};
++
++[[nodiscard]] std::vector<LocalGiftCollection> LocalGiftCollections() {
++	return {
++		{ u"Scared Cat"_q, u"ScaredCat"_q },
++		{ u"Plush Pepe"_q, u"PlushPepe"_q },
++		{ u"Toy Bear"_q, u"ToyBear"_q },
++		{ u"Chill Flame"_q, u"ChillFlame"_q },
++		{ u"Precious Peach"_q, u"PreciousPeach"_q },
++		{ u"Heart Locket"_q, u"HeartLocket"_q },
++		{ u"Diamond Ring"_q, u"DiamondRing"_q },
++		{ u"Astral Shard"_q, u"AstralShard"_q },
++	};
++}
++
++[[nodiscard]] std::vector<QString> LocalPinnedGiftReferences() {
++	auto result = std::vector<QString>();
++	const auto normalized = Ayu::NormalizeLocalProfileGifts(
++		AyuSettings::getInstance().localProfileGifts());
++	for (const auto &part : normalized.split(',', Qt::SkipEmptyParts)) {
++		const auto reference = part.trimmed();
++		if (!reference.isEmpty()) {
++			result.push_back(reference);
++		}
++	}
++	return result;
++}
++
++[[nodiscard]] QString SerializeLocalGiftReferences(
++		const std::vector<QString> &references) {
++	auto result = QStringList();
++	result.reserve(references.size());
++	for (const auto &reference : references) {
++		result.push_back(reference);
++	}
++	return result.join(u", "_q);
++}
++
++[[nodiscard]] QString LocalGiftReferenceLabel(QString reference) {
++	reference = Ayu::NormalizeLocalProfileGift(std::move(reference));
++	static const auto Slug = QRegularExpression(u"^(.+)-([0-9]+)$"_q);
++	const auto match = Slug.match(reference);
++	if (match.hasMatch()) {
++		auto title = match.captured(1);
++		title.replace(
++			QRegularExpression(u"([a-z0-9])([A-Z])"_q),
++			u"\\1 \\2"_q);
++		return title + u" #"_q + match.captured(2);
++	}
++	return (reference.size() > 38)
++		? (reference.left(24) + u"..."_q + reference.right(8))
++		: reference;
++}
++
++void ShowLocalGiftCollectionPicker(
++	not_null<Window::SessionController*> controller,
++	LocalGiftTarget target);
++
++void ShowLocalGiftReferenceBox(
++		not_null<Window::SessionController*> controller,
++		LocalGiftTarget target,
++		LocalGiftCollection collection) {
++	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
++		box->setTitle(collection.title.isEmpty()
++			? tr::ayu_LocalProfileGiftPickerPasteTitle()
++			: rpl::single(collection.title));
++		const auto field = box->addRow(
++			object_ptr<Ui::InputField>(
++				box,
++				st::defaultInputField,
++				tr::ayu_LocalProfileGiftPickerNumber()),
++			st::boxRowPadding);
++		field->setMaxLength(Ayu::kMaxLocalProfileGiftReferenceLength);
++		box->setFocusCallback([=] {
++			field->setFocusFast();
++		});
++		AddDividerText(
++			box->verticalLayout(),
++			collection.slug.isEmpty()
++				? tr::ayu_LocalProfileGiftPickerPasteAbout()
++				: tr::ayu_LocalProfileGiftPickerNumberAbout());
++
++		const auto save = [=] {
++			auto reference = field->getLastText().trimmed();
++			while (reference.startsWith('#')) {
++				reference = reference.mid(1).trimmed();
++			}
++			auto onlyDigits = !reference.isEmpty();
++			for (const auto ch : reference) {
++				if (!ch.isDigit()) {
++					onlyDigits = false;
++					break;
++				}
++			}
++			if (onlyDigits && !collection.slug.isEmpty()) {
++				reference = collection.slug + '-' + reference;
++			}
++			reference = Ayu::NormalizeLocalProfileGift(std::move(reference));
++			if (reference.isEmpty()) {
++				controller->showToast(
++					tr::ayu_LocalProfileGiftPickerInvalid(tr::now));
++				return;
++			}
++
++			controller->showToast(
++				tr::ayu_LocalProfileGiftPickerResolving(tr::now));
++			const auto weak = QPointer<Ui::GenericBox>(box.get());
++			Ayu::ResolveLocalProfileGift(
++				&controller->session(),
++				std::move(reference),
++				[=](std::shared_ptr<Data::StarGift> gift) {
++					if (!weak) {
++						return;
++					}
++					if (!gift
++						|| !gift->unique
++						|| gift->unique->slug.isEmpty()) {
++						controller->showToast(
++							tr::ayu_LocalProfileGiftPickerInvalid(tr::now));
++						return;
++					}
++					auto &settings = AyuSettings::getInstance();
++					const auto slug = gift->unique->slug;
++					if (target == LocalGiftTarget::Featured) {
++						settings.setLocalProfileGift(slug);
++					} else {
++						auto references = LocalPinnedGiftReferences();
++						const auto duplicate = ranges::any_of(
++							references,
++							[&](const auto &entry) {
++								return entry.compare(
++									slug,
++									Qt::CaseInsensitive) == 0;
++							});
++						if (!duplicate && references.size() >= 6) {
++							controller->showToast(
++								tr::ayu_LocalProfileGiftPickerLimit(tr::now));
++							return;
++						}
++						if (!duplicate) {
++							references.push_back(slug);
++							settings.setLocalProfileGifts(
++								SerializeLocalGiftReferences(references));
++						}
++					}
++					settings.setLocalProfileGiftEnabled(true);
++					controller->showToast(tr::ayu_LocalProfileGiftPickerSaved(
++						tr::now,
++						lt_gift,
++						Data::UniqueGiftName(*gift->unique)));
++					weak->closeBox();
++				});
++		};
++		field->submits(
++		) | rpl::on_next(save, field->lifetime());
++		box->addButton(
++			target == LocalGiftTarget::Featured
++				? tr::ayu_LocalProfileGiftPickerUseFeatured()
++				: tr::ayu_LocalProfileGiftPickerAddPinned(),
++			save);
++		box->addButton(tr::lng_cancel(), [=] {
++			box->closeBox();
++		});
++	}));
++}
++
++void ShowLocalGiftCollectionPicker(
++		not_null<Window::SessionController*> controller,
++		LocalGiftTarget target) {
++	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
++		box->setTitle(tr::ayu_LocalProfileGiftPickerTitle());
++		const auto content = box->verticalLayout();
++		AddSubsectionTitle(
++			content,
++			tr::ayu_LocalProfileGiftPickerCollection());
++		for (const auto &collection : LocalGiftCollections()) {
++			const auto button = AddButtonWithIcon(
++				content,
++				rpl::single(collection.title),
++				st::settingsButton,
++				{ &st::menuIconGiftPremium });
++			button->setClickedCallback([=] {
++				ShowLocalGiftReferenceBox(controller, target, collection);
++				box->closeBox();
++			});
++		}
++		AddSkip(content);
++		AddDivider(content);
++		AddSkip(content);
++		const auto paste = AddButtonWithIcon(
++			content,
++			tr::ayu_LocalProfileGiftPickerPaste(),
++			st::settingsButtonActive,
++			{ &st::menuIconLink });
++		paste->setClickedCallback([=] {
++			ShowLocalGiftReferenceBox(controller, target, {});
++			box->closeBox();
++		});
++		AddDividerText(content, tr::ayu_LocalProfileGiftPickerPickerAbout());
++		box->addButton(tr::lng_cancel(), [=] {
++			box->closeBox();
++		});
++	}));
++}
++
++void ShowLocalPinnedGiftManager(
++		not_null<Window::SessionController*> controller) {
++	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
++		box->setTitle(tr::ayu_LocalProfileGiftPickerManagePinned());
++		const auto content = box->verticalLayout();
++		const auto add = AddButtonWithIcon(
++			content,
++			tr::ayu_LocalProfileGiftPickerAdd(),
++			st::settingsButtonActive,
++			{ &st::menuIconGiftPremium });
++		add->setClickedCallback([=] {
++			ShowLocalGiftCollectionPicker(controller, LocalGiftTarget::Pinned);
++			box->closeBox();
++		});
++
++		const auto references = LocalPinnedGiftReferences();
++		if (references.empty()) {
++			AddDividerText(
++				content,
++				tr::ayu_LocalProfileGiftPickerPinnedEmpty());
++		} else {
++			AddSkip(content);
++			AddSubsectionTitle(
++				content,
++				tr::ayu_LocalProfileGiftPickerCurrent());
++			for (const auto &reference : references) {
++				const auto name = std::make_shared<rpl::variable<QString>>(
++					LocalGiftReferenceLabel(reference));
++				const auto button = AddButtonWithIcon(
++					content,
++					name->value() | rpl::map([](QString value) {
++						return tr::ayu_LocalProfileGiftPickerRemove(
++							tr::now,
++							lt_gift,
++							std::move(value));
++					}),
++					st::settingsButton,
++					{ &st::menuIconDelete });
++				button->setClickedCallback([=] {
++					auto kept = std::vector<QString>();
++					for (const auto &entry : LocalPinnedGiftReferences()) {
++						if (entry.compare(
++								reference,
++								Qt::CaseInsensitive) != 0) {
++							kept.push_back(entry);
++						}
++					}
++					AyuSettings::getInstance().setLocalProfileGifts(
++						SerializeLocalGiftReferences(kept));
++					button->hide();
++				});
++				Ayu::ResolveLocalProfileGift(
++					&controller->session(),
++					reference,
++					[name](std::shared_ptr<Data::StarGift> gift) {
++						if (gift && gift->unique) {
++							*name = Data::UniqueGiftName(*gift->unique);
++						}
++					});
++			}
++			AddSkip(content);
++			const auto clear = AddButtonWithIcon(
++				content,
++				tr::ayu_LocalProfileGiftPickerClearPinned(),
++				st::settingsButton,
++				{ &st::menuIconDelete });
++			clear->setClickedCallback([=] {
++				AyuSettings::getInstance().setLocalProfileGifts(QString());
++				box->closeBox();
++			});
++		}
++		AddDividerText(content, tr::ayu_LocalProfileGiftPickerLocalOnly());
++		box->addButton(tr::lng_box_done(), [=] {
++			box->closeBox();
++		});
++	}));
++}
++
 +void BuildLocalProfile(SectionBuilder &builder, AyuSectionBuilder &ayu) {
++	const auto controller = builder.controller();
++
 +	builder.addSkip();
 +	builder.addSubsectionTitle(tr::ayu_LocalProfileHeader());
 +
@@ -565,61 +894,32 @@ index 929cf46..8bf7713 100644
 +		.setter = &AyuSettings::setLocalProfileGiftEnabled,
 +		.icon = { &st::menuIconGiftPremium },
 +	});
-+	builder.add([](const WidgetContext &wctx) {
-+		auto field = object_ptr<Ui::InputField>(
-+			wctx.container,
-+			st::settingsDeviceName,
-+			tr::ayu_LocalProfileGift(),
-+			AyuSettings::getInstance().localProfileGift());
-+		const auto raw = field.data();
-+		raw->setMaxLength(Ayu::kMaxLocalProfileGiftReferenceLength);
-+		raw->changes(
-+		) | rpl::on_next([=] {
-+			AyuSettings::getInstance().setLocalProfileGift(
-+				raw->getLastText());
-+		}, raw->lifetime());
-+		return SectionBuilder::WidgetToAdd{
-+			.widget = std::move(field),
-+			.margin = st::boxRowPadding - style::margins(
-+				st::settingsDeviceName.textMargins.left(),
-+				0,
-+				st::settingsDeviceName.textMargins.right(),
-+				0),
-+		};
-+	}, [] {
-+		return SearchEntry{
-+			.id = u"ayu/localProfileGift"_q,
-+			.title = tr::ayu_LocalProfileGift(tr::now),
-+			.icon = { &st::menuIconGiftPremium },
-+		};
++	builder.addButton({
++		.id = u"ayu/localProfileGift"_q,
++		.title = tr::ayu_LocalProfileGiftPickerChooseFeatured(),
++		.icon = { &st::menuIconGiftPremium },
++		.onClick = [=] {
++			ShowLocalGiftCollectionPicker(
++				controller,
++				LocalGiftTarget::Featured);
++		},
 +	});
-+	builder.add([](const WidgetContext &wctx) {
-+		auto field = object_ptr<Ui::InputField>(
-+			wctx.container,
-+			st::settingsDeviceName,
-+			tr::ayu_LocalProfileGifts(),
-+			AyuSettings::getInstance().localProfileGifts());
-+		const auto raw = field.data();
-+		raw->setMaxLength(Ayu::kMaxLocalProfileGiftsLength);
-+		raw->changes(
-+		) | rpl::on_next([=] {
-+			AyuSettings::getInstance().setLocalProfileGifts(
-+				raw->getLastText());
-+		}, raw->lifetime());
-+		return SectionBuilder::WidgetToAdd{
-+			.widget = std::move(field),
-+			.margin = st::boxRowPadding - style::margins(
-+				st::settingsDeviceName.textMargins.left(),
-+				0,
-+				st::settingsDeviceName.textMargins.right(),
-+				0),
-+		};
-+	}, [] {
-+		return SearchEntry{
-+			.id = u"ayu/localProfileGifts"_q,
-+			.title = tr::ayu_LocalProfileGifts(tr::now),
-+			.icon = { &st::menuIconGiftPremium },
-+		};
++	builder.addButton({
++		.id = u"ayu/localProfileGifts"_q,
++		.title = tr::ayu_LocalProfileGiftPickerManagePinned(),
++		.icon = { &st::menuIconGiftPremium },
++		.onClick = [=] {
++			ShowLocalPinnedGiftManager(controller);
++		},
++	});
++	builder.addButton({
++		.id = u"ayu/localProfileGiftClear"_q,
++		.title = tr::ayu_LocalProfileGiftPickerClearFeatured(),
++		.icon = { &st::menuIconDelete },
++		.onClick = [=] {
++			AyuSettings::getInstance().setLocalProfileGift(QString());
++			controller->showToast(tr::lng_box_done(tr::now));
++		},
 +	});
 +	builder.addButton({
 +		.id = u"ayu/localProfileGiftBrowse"_q,
@@ -630,12 +930,13 @@ index 929cf46..8bf7713 100644
 +		},
 +	});
 +	builder.addDividerText(tr::ayu_LocalProfileGiftDescription());
++	builder.addDividerText(tr::ayu_LocalProfileCredit());
 +}
 +
  void BuildOtherThings(SectionBuilder &builder) {
  	const auto controller = builder.controller();
  
-@@ -236,6 +486,7 @@ const auto kMeta = BuildHelper({
+@@ -236,6 +755,7 @@ const auto kMeta = BuildHelper({
  	builder.addSkip();
  	BuildDonations(builder);
  	BuildCrashReporting(builder, ayu);
@@ -1809,7 +2110,7 @@ index f51dd5f..1ead04f 100644
  		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
  		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..8d67f96 100644
+index a410a35..343ea99 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -1853,7 +2154,18 @@ index a410a35..8d67f96 100644
  		_peer->session().data().giftUpdates() | rpl::filter([=](
  				const Data::GiftUpdate &update) {
  			if (update.action == Data::GiftUpdate::Action::Pin) {
-@@ -1489,7 +1498,15 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
+@@ -1409,8 +1418,9 @@ void TopBar::setupUniqueBadgeTooltip() {
+ 		if (_badgeCollectibleId == id) {
+ 			return;
+ 		}
++		_badgeCollectibleId = id;
+ 		hideBadgeTooltip();
+-		if (!collectible || _localCollectible) {
++		if (!collectible) {
+ 			return;
+ 		}
+ 		_badgeTooltip = std::make_unique<BadgeTooltip>(
+@@ -1489,7 +1499,15 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
  
  void TopBar::setLocalEmojiStatusId(EmojiStatusId emojiStatusId) {
  	_localCollectible = emojiStatusId.collectible;
@@ -1870,7 +2182,7 @@ index a410a35..8d67f96 100644
  	updateCollectibleStatus();
  }
  
-@@ -2360,14 +2377,51 @@ void TopBar::setupPinnedToTopGifts(
+@@ -2360,14 +2378,51 @@ void TopBar::setupPinnedToTopGifts(
  		updateCollectibleStatus();
  		setupNewGifts(controller, gifts);
  	});
@@ -1925,7 +2237,7 @@ index a410a35..8d67f96 100644
  		: CollectibleId(0);
  	auto filteredGifts = std::vector<Data::SavedStarGift>();
  	const auto subtract = emojiStatusId ? 1 : 0;
-@@ -2440,9 +2494,18 @@ void TopBar::setupNewGifts(
+@@ -2440,9 +2495,18 @@ void TopBar::setupNewGifts(
  		}());
  		entry.button->show();
  
@@ -2052,7 +2364,7 @@ index 19c194b..ce4d8ee 100644
  
  TextWithEntities AboutWithEntities(
 diff --git a/Telegram/SourceFiles/settings/sections/settings_information.cpp b/Telegram/SourceFiles/settings/sections/settings_information.cpp
-index f5dea0f..db4692a 100644
+index f5dea0f..935a230 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_information.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_information.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2099,7 +2411,7 @@ index f5dea0f..db4692a 100644
  		parent,
  		rpl::duplicate(text),
 diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
-index 86ff926..f16d9a1 100644
+index 86ff926..ea9f4df 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
 @@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
