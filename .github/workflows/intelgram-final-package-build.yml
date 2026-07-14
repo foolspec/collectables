@@ -27,7 +27,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 350
     env:
-      CMAKE_BUILD_PARALLEL_LEVEL: "3"
+      CMAKE_BUILD_PARALLEL_LEVEL: "2"
     steps:
       - uses: actions/checkout@v4
 
@@ -84,8 +84,8 @@ jobs:
         shell: cmd
         working-directory: tdesktop\Telegram
         run: |
-          call configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
-          cmake --build ..\out --config Release --target Telegram --parallel 3
+          call configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 -D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
+          cmake --build ..\out --config Release --target Telegram --parallel 2
 
       - name: Verify, launch, and package
         shell: pwsh
