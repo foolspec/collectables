@@ -29,15 +29,19 @@ Open **IntelGram Settings -> Other -> Local profile** to configure:
 - Local primary username
 - Up to 20 local usernames
 - Local anonymous number
+- Local bio and profile photo
+- Local profile cloning by the UID of a user already opened in IntelGram
 - A featured collectible gift and up to six pinned collectible gifts
 
 Clicking your username in IntelGram's profile settings opens the local username editor. It displays your original Telegram username for reference before saving the IntelGram-only value.
 
-The collectible picker starts with a clean collection list, including Scared Cat, Plush Pepe, Toy Bear, and other popular collections. Choose a collection and enter its number, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+The collectible picker shows live native previews for Scared Cat, Plush Pepe, Toy Bear, and other collections. Choose a collection to browse real numbered models in a scrollable in-app grid, click one to select it, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+
+Choose a local image to replace your own profile photo throughout this IntelGram installation. Profile cloning accepts the UID of a user whose profile has already been opened and locally mirrors their visible name, UID, usernames, phone, bio, photo, profile colors, emoji status, and featured collectible. Stop cloning at any time to return to the individual local fields.
 
 ## Local Means Local
 
-These controls only change how your own profile is rendered inside this IntelGram installation. They do not change your Telegram display name, username, UID, phone number, collectible ownership, or profile data. Other Telegram users do not see the local overrides.
+These controls only change how your own profile is rendered inside this IntelGram installation. They do not change your Telegram display name, photo, bio, username, UID, phone number, emoji status, collectible ownership, or profile data. Other Telegram users do not see the local overrides.
 
 The implementation contains no Telegram account/profile mutation request. Normal Telegram account editing remains available whenever the corresponding IntelGram local override is disabled.
 
@@ -54,7 +58,7 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `8a2ec8976b38591e1dc3a20eb7cc68e21b793d82497331a8001ff28d3c9c0826`
+- Patch SHA-256: `3a72ad8e9210768a328608cee278c32cd550afb0b0151f0ad09551fd374c891a`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.
