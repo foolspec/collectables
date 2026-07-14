@@ -86,7 +86,7 @@ jobs:
           path: |
             Libraries
             ThirdParty
-            windows-dependencies-stage-*.complete
+            windows-dependencies-*.complete
           key: ${{ inputs.cache_key }}
           restore-keys: ${{ inputs.restore_key }}
 
@@ -184,5 +184,5 @@ jobs:
           path: |
             Libraries
             ThirdParty
-            windows-dependencies-stage-*.complete
+            windows-dependencies-*.complete
           key: ${{ inputs.cache_key }}
