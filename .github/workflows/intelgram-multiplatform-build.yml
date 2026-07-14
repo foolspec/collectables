@@ -19,7 +19,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 31c8ce20cc709dcdec2a4c2ee03dbcaf91da169c695deb79781910890eacc09c
+  PATCH_SHA256: f46289e4a23ee21278b5e1d6a065027a32d7c7e855e25d4d7885010f072f3f48
 
 jobs:
   macos:
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install documented tools
-        run: brew install automake wget pkg-config gnu-tar nasm meson
+        run: brew install automake wget pkg-config gnu-tar nasm meson coreutils
 
       - name: Clone official source
         run: |
@@ -48,7 +48,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: Libraries
-          key: ayugram-v6.7.8-macos26-libraries-v1
+          key: ayugram-v6.7.8-macos26-libraries-final-v2
+          restore-keys: |
+            ayugram-v6.7.8-macos26-libraries-stage-2-v2
+            ayugram-v6.7.8-macos26-libraries-stage-1-v2
 
       - name: Apply IntelGram changes
         run: |
@@ -66,18 +69,66 @@ jobs:
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
 
-      - name: Prepare dependencies
+      - name: Prepare core dependencies
+        if: steps.macos-dependencies.outputs.cache-hit != 'true'
+        env:
+          MATCHED_CACHE_KEY: ${{ steps.macos-dependencies.outputs.cache-matched-key }}
+        run: |
+          set -euxo pipefail
+          if [[ "$MATCHED_CACHE_KEY" == "ayugram-v6.7.8-macos26-libraries-stage-1-v2" \
+            || "$MATCHED_CACHE_KEY" == "ayugram-v6.7.8-macos26-libraries-stage-2-v2" ]]; then
+            exit 0
+          fi
+          cd tdesktop
+          ./Telegram/build/prepare/mac.sh \
+            patches xz zlib mozjpeg openssl3 opus rnnoise libiconv \
+            dav1d openh264 libavif libde265 libwebp libheif libjxl \
+            libvpx liblcms2 regex ffmpeg openal-soft
+
+      - name: Save core dependencies
+        if: steps.macos-dependencies.outputs.cache-hit != 'true' && steps.macos-dependencies.outputs.cache-matched-key == ''
+        uses: actions/cache/save@v4
+        with:
+          path: Libraries
+          key: ayugram-v6.7.8-macos26-libraries-stage-1-v2
+
+      - name: Prepare Breakpad with bounded retries
+        if: steps.macos-dependencies.outputs.cache-hit != 'true' && steps.macos-dependencies.outputs.cache-matched-key != 'ayugram-v6.7.8-macos26-libraries-stage-2-v2'
         run: |
           set -euxo pipefail
           cd tdesktop
-          ./Telegram/build/prepare/mac.sh
+          perl -0pi -e 's/xcodebuild -project Breakpad\.xcodeproj/xcodebuild -jobs 3 -project Breakpad.xcodeproj/g' Telegram/build/prepare/prepare.py
+          grep -n 'xcodebuild -jobs 3 -project Breakpad.xcodeproj' Telegram/build/prepare/prepare.py
+          success=0
+          for attempt in 1 2 3; do
+            if gtimeout --signal=TERM --kill-after=30s 15m ./Telegram/build/prepare/mac.sh breakpad; then
+              success=1
+              break
+            fi
+            echo "Breakpad attempt $attempt did not finish; retrying cleanly."
+          done
+          test "$success" = 1
 
-      - name: Save dependencies
+      - name: Save core and Breakpad dependencies
+        if: steps.macos-dependencies.outputs.cache-hit != 'true' && steps.macos-dependencies.outputs.cache-matched-key != 'ayugram-v6.7.8-macos26-libraries-stage-2-v2'
+        uses: actions/cache/save@v4
+        with:
+          path: Libraries
+          key: ayugram-v6.7.8-macos26-libraries-stage-2-v2
+
+      - name: Prepare final dependencies
+        if: steps.macos-dependencies.outputs.cache-hit != 'true'
+        run: |
+          set -euxo pipefail
+          cd tdesktop
+          ./Telegram/build/prepare/mac.sh crashpad qt_6.2.13 tg_owt ada tde2e
+
+      - name: Save final dependencies
         if: steps.macos-dependencies.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: Libraries
-          key: ayugram-v6.7.8-macos26-libraries-v1
+          key: ayugram-v6.7.8-macos26-libraries-final-v2
 
       - name: Configure and build
         run: |
@@ -137,7 +188,7 @@ jobs:
           compression-level: 0
 
   windows_dependencies_1:
-    name: Windows dependencies 1 of 6
+    name: Windows dependencies 1 of 9
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
@@ -149,7 +200,7 @@ jobs:
       stage_timeout_minutes: 100
 
   windows_dependencies_2:
-    name: Windows dependencies 2 of 6
+    name: Windows dependencies 2 of 9
     needs: windows_dependencies_1
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
@@ -165,7 +216,7 @@ jobs:
       stage_timeout_minutes: 180
 
   windows_dependencies_3:
-    name: Windows dependencies 3 of 6
+    name: Windows dependencies 3 of 9
     needs: windows_dependencies_2
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
@@ -181,7 +232,7 @@ jobs:
       stage_timeout_minutes: 180
 
   windows_dependencies_4:
-    name: Windows dependencies 4 of 6
+    name: Windows dependencies 4 of 9
     needs: windows_dependencies_3
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
@@ -198,40 +249,88 @@ jobs:
       number_of_processors: "1"
       serialize_libvpx_msbuild: true
 
-  windows_dependencies_5:
-    name: Windows dependencies 5 of 6
+  windows_dependencies_breakpad:
+    name: Windows dependencies 5 of 9 - Breakpad
     needs: windows_dependencies_4
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-breakpad-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-5-
+        intelgram-v6.7.8-windows2022-libraries-breakpad-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-breakpad-
         intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
       prerequisite_marker: windows-dependencies-stage-4.complete
-      stages: breakpad tg_angle tg_owt ada protobuf tde2e
-      completion_marker: windows-dependencies-stage-5.complete
-      stage_timeout_minutes: 300
+      stages: breakpad
+      completion_marker: windows-dependencies-breakpad.complete
+      stage_timeout_minutes: 150
 
-  windows_dependencies_6:
-    name: Windows dependencies 6 of 6
-    needs: windows_dependencies_5
+  windows_dependencies_angle:
+    name: Windows dependencies 6 of 9 - ANGLE
+    needs: windows_dependencies_breakpad
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
-      cache_key: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+      cache_key: intelgram-v6.7.8-windows2022-libraries-angle-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
-        intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-
-        intelgram-v6.7.8-windows2022-libraries-stage-6-
-        intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
-      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-stage-5-${{ github.run_id }}-${{ github.run_attempt }}
-      prerequisite_marker: windows-dependencies-stage-5.complete
-      completion_marker: windows-dependencies-stage-6.complete
+        intelgram-v6.7.8-windows2022-libraries-angle-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-angle-
+        intelgram-v6.7.8-windows2022-libraries-breakpad-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-breakpad-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_marker: windows-dependencies-breakpad.complete
+      stages: tg_angle
+      completion_marker: windows-dependencies-angle.complete
+      stage_timeout_minutes: 180
+
+  windows_dependencies_owt:
+    name: Windows dependencies 7 of 9 - WebRTC
+    needs: windows_dependencies_angle
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2022-libraries-owt-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2022-libraries-owt-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-owt-
+        intelgram-v6.7.8-windows2022-libraries-angle-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-angle-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_marker: windows-dependencies-angle.complete
+      stages: tg_owt
+      completion_marker: windows-dependencies-owt.complete
+      stage_timeout_minutes: 240
+
+  windows_dependencies_final_libraries:
+    name: Windows dependencies 8 of 9 - final libraries
+    needs: windows_dependencies_owt
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2022-libraries-final-libraries-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2022-libraries-final-libraries-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-final-libraries-
+        intelgram-v6.7.8-windows2022-libraries-owt-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-owt-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_marker: windows-dependencies-owt.complete
+      stages: ada protobuf tde2e
+      completion_marker: windows-dependencies-final-libraries.complete
+      stage_timeout_minutes: 180
+
+  windows_dependencies_complete:
+    name: Windows dependencies 9 of 9 - complete
+    needs: windows_dependencies_final_libraries
+    uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
+    with:
+      cache_key: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}
+      restore_key: |
+        intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-
+        intelgram-v6.7.8-windows2022-libraries-final-v2-
+        intelgram-v6.7.8-windows2022-libraries-final-libraries-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_cache_key: intelgram-v6.7.8-windows2022-libraries-final-libraries-${{ github.run_id }}-${{ github.run_attempt }}
+      prerequisite_marker: windows-dependencies-final-libraries.complete
+      completion_marker: windows-dependencies-final.complete
       stage_timeout_minutes: 330
 
   windows:
     name: Windows x64
-    needs: windows_dependencies_6
+    needs: windows_dependencies_complete
     runs-on: windows-2022
     timeout-minutes: 350
     env:
@@ -255,7 +354,7 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           $deadline = (Get-Date).AddMinutes(12)
           do {
@@ -276,13 +375,13 @@ jobs:
           path: |
             Libraries
             ThirdParty
-            windows-dependencies-stage-*.complete
-          key: intelgram-v6.7.8-windows2022-libraries-stage-6-${{ github.run_id }}-${{ github.run_attempt }}
+            windows-dependencies-*.complete
+          key: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Verify final Windows dependency cache
         shell: pwsh
         run: |
-          if (-not (Test-Path windows-dependencies-stage-6.complete)) { throw "Final Windows dependency marker was not restored" }
+          if (-not (Test-Path windows-dependencies-final.complete)) { throw "Final Windows dependency marker was not restored" }
 
       - name: Apply IntelGram changes
         shell: pwsh
