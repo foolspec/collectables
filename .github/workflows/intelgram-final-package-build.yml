@@ -1,0 +1,196 @@
+name: IntelGram Final Package Build
+
+on:
+  pull_request:
+    branches:
+      - codex/ayugram-local-collectibles-20260712
+  workflow_dispatch:
+
+concurrency:
+  group: intelgram-final-package-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: write
+
+env:
+  SOURCE_TAG: v6.7.8
+  SOURCE_COMMIT: b25513a06ff88be0b3f4c928252b56c3da39cec7
+  PATCH_SHA256: 8a2ec8976b38591e1dc3a20eb7cc68e21b793d82497331a8001ff28d3c9c0826
+  WINDOWS_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-stage-6-29292886006-1
+  CROSS_PLATFORM_RUN_ID: "29305700661"
+
+jobs:
+  windows:
+    name: Windows x64 from verified dependency cache
+    runs-on: windows-2022
+    timeout-minutes: 350
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: "3"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Visual Studio build environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Clone official source
+        shell: pwsh
+        run: |
+          git clone --recursive --branch $env:SOURCE_TAG --single-branch https://github.com/AyuGram/AyuGramDesktop.git tdesktop
+          if ((git -C tdesktop rev-parse HEAD) -ne $env:SOURCE_COMMIT) { throw "Unexpected source commit" }
+          git -C tdesktop submodule status --recursive
+
+      - name: Restore verified final Windows dependencies
+        id: windows-dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            Libraries
+            ThirdParty
+            windows-dependencies-stage-*.complete
+          key: ${{ env.WINDOWS_CACHE_KEY }}
+          fail-on-cache-miss: true
+
+      - name: Verify final dependency cache
+        shell: pwsh
+        run: |
+          if (-not (Test-Path windows-dependencies-stage-6.complete)) { throw "Final Windows dependency marker was not restored" }
+          if ('${{ steps.windows-dependencies.outputs.cache-hit }}' -ne 'true') { throw "Exact Windows dependency cache was not restored" }
+
+      - name: Apply IntelGram changes
+        shell: pwsh
+        run: |
+          $patchPath = Join-Path $env:GITHUB_WORKSPACE "intelgram-local-profile-render-overrides.patch"
+          $patch = [IO.File]::ReadAllText($patchPath).Replace("`r`n", "`n")
+          [IO.File]::WriteAllText($patchPath, $patch, [Text.UTF8Encoding]::new($false))
+          $actual = (Get-FileHash intelgram-local-profile-render-overrides.patch -Algorithm SHA256).Hash.ToLower()
+          if ($actual -ne $env:PATCH_SHA256) { throw "Patch hash mismatch" }
+          git -C tdesktop apply --check "$env:GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          git -C tdesktop apply "$env:GITHUB_WORKSPACE/intelgram-local-profile-render-overrides.patch"
+          Push-Location tdesktop
+          python "$env:GITHUB_WORKSPACE/build_intelgram_branding.py"
+          Pop-Location
+          git -C tdesktop diff --check
+          $diff = git -C tdesktop diff --no-ext-diff
+          if ($diff | Select-String -Pattern 'updateProfile|updateUsername|MTPaccount_|MTPusers_|account\.update|users\..*update') { throw "Unexpected Telegram profile mutation reference" }
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ShowLocalGiftCollectionPicker
+          Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp -Pattern setupUniqueBadgeTooltip
+          Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
+
+      - name: Configure and build
+        shell: cmd
+        working-directory: tdesktop\Telegram
+        run: |
+          configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+          cmake --build ..\out --config Release --target Telegram --parallel 3
+
+      - name: Verify, launch, and package
+        shell: pwsh
+        run: |
+          $candidates = @(Get-ChildItem tdesktop/out -Filter IntelGram.exe -File -Recurse)
+          if ($candidates.Count -ne 1) {
+            Get-ChildItem tdesktop/out -Filter *.exe -File -Recurse | ForEach-Object FullName
+            throw "Expected one IntelGram.exe build output, found $($candidates.Count)"
+          }
+          $binary = $candidates[0].FullName
+          $binaryDirectory = $candidates[0].DirectoryName
+          $testRoot = Join-Path $env:RUNNER_TEMP "intelgram-smoke"
+          New-Item -ItemType Directory -Force $testRoot | Out-Null
+          $process = Start-Process -FilePath $binary -ArgumentList "-workdir", "`"$testRoot`"" -PassThru -RedirectStandardOutput launch-windows.log -RedirectStandardError launch-windows-error.log
+          Start-Sleep -Seconds 12
+          if ($process.HasExited) { throw "IntelGram exited during launch smoke test" }
+          Stop-Process -Id $process.Id -Force
+          $package = New-Item -ItemType Directory -Force IntelGram-Windows-x64
+          Copy-Item $binary (Join-Path $package.FullName "IntelGram.exe")
+          Get-ChildItem $binaryDirectory -Filter *.dll -File | Copy-Item -Destination $package
+          $updater = Join-Path $binaryDirectory "Updater.exe"
+          if (Test-Path $updater) { Copy-Item $updater $package }
+          Compress-Archive -Path IntelGram-Windows-x64 -DestinationPath IntelGram-Windows-x64.zip -CompressionLevel Optimal
+          (Get-FileHash IntelGram-Windows-x64.zip -Algorithm SHA256).Hash.ToLower() + "  IntelGram-Windows-x64.zip" | Set-Content IntelGram-Windows-sha256.txt
+          @(
+            "Platform: Windows x64",
+            "Application: IntelGram.exe",
+            "Application ID: {7AF76B28-0DD4-4CCB-BFA8-53CC3079650D}",
+            "Source: $env:SOURCE_TAG ($env:SOURCE_COMMIT)",
+            "Patch: $env:PATCH_SHA256",
+            "Launch smoke test: PASS"
+          ) | Set-Content IntelGram-Windows-validation.txt
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntelGram-Windows-x64
+          path: |
+            IntelGram-Windows-x64.zip
+            IntelGram-Windows-sha256.txt
+            IntelGram-Windows-validation.txt
+            launch-windows.log
+            launch-windows-error.log
+          if-no-files-found: error
+          compression-level: 0
+
+  release:
+    name: Publish final IntelGram release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    needs: windows
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download this run's Windows package
+        uses: actions/download-artifact@v4
+        with:
+          name: IntelGram-Windows-x64
+          path: release-assets/IntelGram-Windows-x64
+
+      - name: Wait for matching macOS and Linux packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          for name in IntelGram-macOS-Apple-Silicon IntelGram-Linux-x64; do
+            found=0
+            for attempt in $(seq 1 360); do
+              rm -rf "release-assets/$name"
+              if gh run download "$CROSS_PLATFORM_RUN_ID" \
+                  --repo "$GITHUB_REPOSITORY" \
+                  --name "$name" \
+                  --dir "release-assets/$name"; then
+                found=1
+                break
+              fi
+              echo "Waiting for $name from run $CROSS_PLATFORM_RUN_ID (attempt $attempt of 360)"
+              sleep 30
+            done
+            test "$found" = 1
+          done
+
+      - name: Verify and publish permanent release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euxo pipefail
+          mkdir final-assets
+          find release-assets -type f -exec cp {} final-assets/ \;
+          cp intelgram-local-profile-render-overrides.patch final-assets/
+          cp build_intelgram_branding.py final-assets/
+          test -s final-assets/IntelGram-macOS-Apple-Silicon.dmg
+          test -s final-assets/IntelGram-macOS-Apple-Silicon.zip
+          test -s final-assets/IntelGram-Windows-x64.zip
+          test -s final-assets/IntelGram-Linux-x64.tar.gz
+          test -s final-assets/IntelGram-macOS-validation.txt
+          test -s final-assets/IntelGram-Windows-validation.txt
+          test -s final-assets/IntelGram-Linux-validation.txt
+          find final-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
+          tag="intelgram-v6.7.8-final-${GITHUB_RUN_ID}"
+          gh release create "$tag" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET_SHA" \
+            --latest \
+            --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
+            --notes "IntelGram is built from official AyuGram Desktop v6.7.8 with client-render-only local display name, UID, primary and other usernames, anonymous number, and collectible gifts. It includes the collection-first picker, native Collection #Number tooltip, original-username reference, and credits to fool. No Telegram profile, username, UID, phone number, gift ownership, or other account mutation is included." \
+            final-assets/*
