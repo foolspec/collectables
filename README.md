@@ -27,7 +27,7 @@ Open **IntelGram Settings -> Other -> Local profile** to configure:
 
 Clicking your username in IntelGram's profile settings opens the local username editor. It displays your original Telegram username for reference before saving the IntelGram-only value.
 
-Collectible gifts accept a Telegram gift slug, a `t.me/nft` link, a Getgems item URL, or a TON NFT address. IntelGram resolves gift metadata read-only and uses Telegram's native collectible detail view.
+The collectible picker starts with a clean collection list, including Scared Cat, Plush Pepe, Toy Bear, and other popular collections. Choose a collection and enter its number, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
 
 ## Local Means Local
 
@@ -48,7 +48,7 @@ IntelGram uses its own visible application name, macOS bundle ID, and Windows ap
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `2a6f81a0620d6f88e34b7840fcc89a4193083e6e4c375eaea757cdc003ff79fa`
+- Patch SHA-256: `8a2ec8976b38591e1dc3a20eb7cc68e21b793d82497331a8001ff28d3c9c0826`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.
@@ -58,3 +58,5 @@ IntelGram preserves AyuGram's internal settings keys and source namespaces for c
 ## Credits
 
 IntelGram is based on [AyuGram Desktop](https://github.com/AyuGram/AyuGramDesktop), which is based on [Telegram Desktop](https://github.com/telegramdesktop/tdesktop). Their upstream licenses and attribution remain in the source.
+
+Local profile and collectible override features by **fool**.
