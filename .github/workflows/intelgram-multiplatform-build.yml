@@ -1,9 +1,6 @@
 name: IntelGram Multiplatform Build
 
 on:
-  pull_request:
-    branches:
-      - codex/ayugram-local-collectibles-20260712
   workflow_dispatch:
 
 concurrency:
