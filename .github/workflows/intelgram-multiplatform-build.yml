@@ -1,6 +1,9 @@
 name: IntelGram Multiplatform Build
 
 on:
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -302,7 +305,7 @@ jobs:
         shell: cmd
         working-directory: tdesktop\Telegram
         run: |
-          call configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627
+          call configure.bat x64 -D TDESKTOP_API_ID=2040 -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 -D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT:STRING=
           cmake --build ..\out --config Release --target Telegram --parallel 3
 
       - name: Verify, launch, and package
@@ -446,6 +449,7 @@ jobs:
 
   release:
     name: Publish IntelGram release
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     needs: [macos, windows, linux]
     steps:
