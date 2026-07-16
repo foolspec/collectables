@@ -81,6 +81,7 @@ jobs:
 
       - name: Restore accumulated dependencies
         id: dependencies
+        continue-on-error: true
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -89,6 +90,52 @@ jobs:
             windows-dependencies-*.complete
           key: ${{ inputs.cache_key }}
           restore-keys: ${{ inputs.restore_key }}
+
+      - name: Detect incomplete prerequisite restore
+        if: ${{ inputs.prerequisite_cache_key != '' }}
+        shell: pwsh
+        env:
+          PREREQUISITE_MARKER: ${{ inputs.prerequisite_marker }}
+        run: |
+          if (-not (Test-Path $env:PREREQUISITE_MARKER)) {
+            Write-Warning "The accumulated cache did not restore completely; retrying the exact prerequisite cache."
+            "RESTORE_PREREQUISITE_CACHE=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            Start-Sleep -Seconds 30
+          }
+
+      - name: Restore prerequisite cache directly
+        if: ${{ env.RESTORE_PREREQUISITE_CACHE == '1' }}
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            Libraries
+            ThirdParty
+            windows-dependencies-*.complete
+          key: ${{ inputs.prerequisite_cache_key }}
+
+      - name: Detect prerequisite restore retry
+        if: ${{ env.RESTORE_PREREQUISITE_CACHE == '1' }}
+        shell: pwsh
+        env:
+          PREREQUISITE_MARKER: ${{ inputs.prerequisite_marker }}
+        run: |
+          if (-not (Test-Path $env:PREREQUISITE_MARKER)) {
+            Write-Warning "The direct prerequisite restore was incomplete; retrying once more."
+            "RESTORE_PREREQUISITE_CACHE_AGAIN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            Start-Sleep -Seconds 45
+          }
+
+      - name: Restore prerequisite cache directly again
+        if: ${{ env.RESTORE_PREREQUISITE_CACHE_AGAIN == '1' }}
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            Libraries
+            ThirdParty
+            windows-dependencies-*.complete
+          key: ${{ inputs.prerequisite_cache_key }}
 
       - name: Verify prerequisite cache contents
         shell: pwsh
