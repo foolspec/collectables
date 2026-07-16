@@ -4,6 +4,17 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 
 [![IntelGram builds](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml/badge.svg?branch=main)](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml)
 
+[All features](FEATURES.md) | [Feature guide](FEATURE_GUIDE.md) | [Changelog](CHANGELOG.md) | [Update log](UPDATE_LOG.md)
+
+## Main Features
+
+- Render a local display name, UID, primary username, up to 20 other usernames, anonymous number, bio, and profile photo for your own account.
+- Clone the visible profile presentation of a user already loaded in IntelGram by entering their UID.
+- Find an already-loaded user by UID or by a phone number that is visible to your account, directly from the normal chat-list search field.
+- Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
+- Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
+- Keep every override client-render-only, with no Telegram profile, ownership, contact, or account mutation.
+
 ## Downloads
 
 | Platform | Package |
@@ -33,9 +44,11 @@ Open **IntelGram Settings -> Other -> Local profile** to configure:
 - Local profile cloning by the UID of a user already opened in IntelGram
 - A featured collectible gift and up to six pinned collectible gifts
 
+In the main chat-list search field, paste a UID, `id: UID`, or a visible phone number. IntelGram checks only profiles already loaded in this client and shows the matching profile row under **Found by ID or phone**. Phone and UID lookup does not import contacts or send a profile lookup request.
+
 Clicking your username in IntelGram's profile settings opens the local username editor. It displays your original Telegram username for reference before saving the IntelGram-only value.
 
-The collectible picker shows live native previews for Scared Cat, Plush Pepe, Toy Bear, and other collections. Choose a collection to browse real numbered models in a scrollable in-app grid, click one to select it, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+The collectible picker loads every collection currently reported by Telegram's read-only gift catalog and shows its native preview art. Choose a collection to browse real numbered models in a scrollable in-app grid, click one to select it, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked. Eight established collections remain available as an offline fallback if the catalog cannot load.
 
 Choose a local image to replace your own profile photo throughout this IntelGram installation. Profile cloning accepts the UID of a user whose profile has already been opened and locally mirrors their visible name, UID, usernames, phone, bio, photo, profile colors, emoji status, and featured collectible. Stop cloning at any time to return to the individual local fields.
 
@@ -43,7 +56,7 @@ Choose a local image to replace your own profile photo throughout this IntelGram
 
 These controls only change how your own profile is rendered inside this IntelGram installation. They do not change your Telegram display name, photo, bio, username, UID, phone number, emoji status, collectible ownership, or profile data. Other Telegram users do not see the local overrides.
 
-The implementation contains no Telegram account/profile mutation request. Normal Telegram account editing remains available whenever the corresponding IntelGram local override is disabled.
+The implementation contains no Telegram account/profile mutation request and no contact import. Its collectible requests are read-only catalog/detail lookups. Normal Telegram account editing remains available whenever the corresponding IntelGram local override is disabled.
 
 ## Platform Builds
 
@@ -58,10 +71,13 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `94e21fcd317d6a52d4d385965461d4ba9e2010390a35b14f3e036eafd0f3b343`
+- Patch SHA-256: `5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.
+- [`FEATURES.md`](FEATURES.md) documents the complete custom feature surface and render coverage.
+- [`FEATURE_GUIDE.md`](FEATURE_GUIDE.md) is a conversational walkthrough of the common workflows.
+- [`CHANGELOG.md`](CHANGELOG.md) and [`UPDATE_LOG.md`](UPDATE_LOG.md) track product and build changes.
 
 IntelGram preserves AyuGram's internal settings keys and source namespaces for compatibility. Product-facing names and package identities are IntelGram.
 
