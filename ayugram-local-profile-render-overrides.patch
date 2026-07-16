@@ -1,10 +1,13 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..20ee408 100644
+index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..52c12a038035b3fe5f63f1d00fab2481221c8e66 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
-@@ -7973,7 +7973,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ // Keys finished
  
- // AyuGram keys generated
+ 
+-// AyuGram keys generated
++// IntelGram keys generated
  
 -"ayu_AyuPreferences" = "AyuGram Preferences";
 +"ayu_AyuPreferences" = "IntelGram Preferences";
@@ -58,7 +61,7 @@ index 7380587..20ee408 100644
 +"ayu_LocalProfileGift" = "Featured collectible gift";
 +"ayu_LocalProfileGifts" = "Pinned collectible gifts";
 +"ayu_LocalProfileGiftBrowse" = "Browse collectible gifts inside IntelGram";
-+"ayu_LocalProfileGiftDescription" = "Browse real collectible visuals inside IntelGram, choose a collection and number, or paste a Telegram gift slug, t.me/nft link, Getgems item URL, or TON NFT address. The featured gift sets your local profile backdrop; up to six pinned gifts appear around your avatar. Details are resolved read-only.";
++"ayu_LocalProfileGiftDescription" = "Browse every collection currently returned by Telegram's read-only gift catalog, choose a collection and number, or paste a Telegram gift slug, t.me/nft link, Getgems item URL, or TON NFT address. The featured gift sets your local profile backdrop; up to six pinned gifts appear around your avatar.";
 +"ayu_LocalProfileGiftPickerPasteTitle" = "Paste collectible link";
 +"ayu_LocalProfileGiftPickerNumber" = "Number or market link";
 +"ayu_LocalProfileGiftPickerPasteAbout" = "Paste a t.me/nft link, Getgems item URL, TON NFT address, or Telegram gift slug.";
@@ -73,7 +76,7 @@ index 7380587..20ee408 100644
 +"ayu_LocalProfileGiftPickerTitle" = "Choose a collectible";
 +"ayu_LocalProfileGiftPickerCollection" = "Choose a collection";
 +"ayu_LocalProfileGiftPickerPaste" = "Paste a TON market link";
-+"ayu_LocalProfileGiftPickerPickerAbout" = "Each tile is a live collection preview. Select one to browse its numbered collectibles without leaving IntelGram, or paste any supported Telegram or TON market link.";
++"ayu_LocalProfileGiftPickerPickerAbout" = "Each tile is a live catalog collection preview. Select one to browse its numbered collectibles without leaving IntelGram, or paste any supported Telegram, Getgems, or TON market link.";
 +"ayu_LocalProfileGiftPickerManagePinned" = "Manage pinned collectible gifts";
 +"ayu_LocalProfileGiftPickerAdd" = "Add collectible";
 +"ayu_LocalProfileGiftPickerPinnedEmpty" = "No pinned collectible gifts yet.";
@@ -139,7 +142,15 @@ index 7380587..20ee408 100644
  "ayu_HideNextViewsDescriptionAyu" = "Hide my views forever, until Ghost Mode is disabled.";
  "ayu_EnableGhostModeStories" = "Enable Ghost Mode";
  "ayu_GhostModeIsActive" = "Ghost Mode is Active";
-@@ -8362,21 +8422,21 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8355,28 +8415,28 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ "ayu_ContextCopyID" = "Copy ID";
+ "ayu_IDCopiedToast" = "ID copied to clipboard.";
+ "ayu_ContextHideMessage" = "Hide";
+-"ayu_SearchByIDResults" = "Found by ID";
++"ayu_SearchByIDResults" = "Found by ID or phone";
+ "ayu_ContextCopyCallbackData" = "Copy Callback Data";
+ "ayu_RepeatMessage" = "Repeat Message";
+ "ayu_RegisterURLScheme" = "Register URL Scheme";
  "ayu_PluginVersion" = "Version";
  "ayu_PluginNoDescription" = "No description provided.";
  "ayu_PluginNoAuthor" = "Unknown Author";
@@ -151,8 +162,8 @@ index 7380587..20ee408 100644
  "ayu_DeveloperPopup" = "**{item}** is a member of the **exteraGram** development team.";
 -"ayu_SupporterPopup" = "**{item}** supported the development of **exteraGram** or **AyuGram** and received an unique badge.";
 -"ayu_OfficialResourcePopup" = "**{item}** is the official resource of **exteraGram** or **AyuGram**.";
-+"ayu_SupporterPopup" = "**{item}** supported the upstream development of **exteraGram** or **AyuGram** and received a unique badge.";
-+"ayu_OfficialResourcePopup" = "**{item}** is an official upstream resource of **exteraGram** or **AyuGram**.";
++"ayu_SupporterPopup" = "**{item}** supported an upstream project and received a unique badge.";
++"ayu_OfficialResourcePopup" = "**{item}** is an official upstream resource.";
  "ayu_MutualContactInfo" = "This contact is mutual.";
  "ayu_SessionInfoOfficialApp" = "Official app";
 -"ayu_SettingsWatermark" = "AyuGram is developed and maintained by Radolyn Labs.";
@@ -168,7 +179,7 @@ index 7380587..20ee408 100644
 +"ayu_UpdateAyuGram" = "Update IntelGram";
  "ayu_UtilityRestartRequired" = "The app will close in 5 seconds.";
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.cpp b/Telegram/SourceFiles/ayu/ayu_settings.cpp
-index 2280020..0ed1815 100644
+index 2280020ce869c829600fe3bbacf4db26cbfe75a7..0ed18158d41d72ef2b90939164b8721716d6d670 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.cpp
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.cpp
 @@ -11,6 +11,7 @@
@@ -339,7 +350,7 @@ index 2280020..0ed1815 100644
  	s._showGroupReactions = j.value("showGroupReactions", defaults._showGroupReactions.current());
  	s._showPrivateChatReactions = j.value("showPrivateChatReactions", defaults._showPrivateChatReactions.current());
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.h b/Telegram/SourceFiles/ayu/ayu_settings.h
-index 97a0439..ece9215 100644
+index 97a0439215a0951bbe5e57ac52f0aeffe398c4dd..ece921506b5fa3cf595cffc0aa6f27b799dd5519 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.h
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.h
 @@ -291,6 +291,22 @@ public:
@@ -451,14 +462,15 @@ index 97a0439..ece9215 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf46..90d505f 100644
+index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..56c5561c3e1ebc6342975e993d98071dfb40af8c 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-@@ -6,32 +6,49 @@
+@@ -6,32 +6,50 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/settings/settings_other.h"
  
 -#include "lang_auto.h"
++#include "api/api_premium.h"
  #include "ayu/ayu_settings.h"
  #include "ayu/ui/boxes/donate_qr_box.h"
  #include "ayu/ui/settings/ayu_builder.h"
@@ -512,7 +524,7 @@ index 929cf46..90d505f 100644
  #include <QSvgRenderer>
  
  namespace Settings {
-@@ -193,6 +210,854 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
+@@ -193,6 +211,936 @@ void BuildCrashReporting(SectionBuilder &builder, AyuSectionBuilder &ayu) {
  #endif
  }
  
@@ -529,6 +541,9 @@ index 929cf46..90d505f 100644
 +struct LocalGiftBrowserState {
 +	rpl::variable<Ui::GiftsDescriptor> gifts;
 +	std::vector<Info::PeerGifts::GiftDescriptor> items;
++	std::vector<LocalGiftCollection> collections;
++	std::unique_ptr<Api::PremiumGiftCodeOptions> catalog;
++	rpl::lifetime catalogLifetime;
 +	int nextNumber = 1;
 +	bool loading = false;
 +	bool exhausted = false;
@@ -547,6 +562,16 @@ index 929cf46..90d505f 100644
 +		{ u"Diamond Ring"_q, u"DiamondRing"_q },
 +		{ u"Astral Shard"_q, u"AstralShard"_q },
 +	};
++}
++
++[[nodiscard]] LocalGiftCollection LocalGiftCollectionFromTitle(
++		QString title) {
++	title = title.trimmed();
++	auto slug = title;
++	slug.remove(QRegularExpression(u"[^A-Za-z0-9]"_q));
++	return slug.isEmpty()
++		? LocalGiftCollection()
++		: LocalGiftCollection{ std::move(title), std::move(slug) };
 +}
 +
 +[[nodiscard]] std::vector<QString> LocalPinnedGiftReferences() {
@@ -685,6 +710,88 @@ index 929cf46..90d505f 100644
 +			state->exhausted = (resolved == 0);
 +			state->gifts = Ui::GiftsDescriptor{ .list = state->items };
 +		});
++}
++
++void LoadLocalGiftCollectionFallback(
++		not_null<Window::SessionController*> controller,
++		QPointer<Ui::GenericBox> box,
++		not_null<LocalGiftBrowserState*> state) {
++	if (!box) {
++		return;
++	}
++	state->collections = LocalGiftCollections();
++	state->items.clear();
++	auto references = std::vector<QString>();
++	references.reserve(state->collections.size());
++	for (const auto &collection : state->collections) {
++		references.push_back(collection.slug + u"-1"_q);
++	}
++	Ayu::ResolveLocalProfileGifts(
++		&controller->session(),
++		std::move(references),
++		[=](std::vector<std::shared_ptr<Data::StarGift>> gifts) {
++			if (!box) {
++				return;
++			}
++			for (const auto &gift : gifts) {
++				if (gift && gift->unique) {
++					state->items.emplace_back(
++						Info::PeerGifts::GiftTypeStars{ .info = *gift });
++				}
++			}
++			state->gifts = Ui::GiftsDescriptor{ .list = state->items };
++		});
++}
++
++[[nodiscard]] bool ApplyLocalGiftCatalog(
++		QPointer<Ui::GenericBox> box,
++		not_null<LocalGiftBrowserState*> state) {
++	if (!box || !state->catalog) {
++		return false;
++	}
++	state->collections.clear();
++	state->items.clear();
++	for (const auto &gift : state->catalog->starGifts()) {
++		const auto collection = LocalGiftCollectionFromTitle(
++			gift.resellTitle);
++		if (collection.slug.isEmpty()) {
++			continue;
++		}
++		const auto duplicate = ranges::any_of(
++			state->collections,
++			[&](const auto &entry) {
++				return entry.slug.compare(
++					collection.slug,
++					Qt::CaseInsensitive) == 0;
++			});
++		if (duplicate) {
++			continue;
++		}
++		state->collections.push_back(collection);
++		state->items.emplace_back(
++			Info::PeerGifts::GiftTypeStars{ .info = gift });
++	}
++	if (state->items.empty()) {
++		return false;
++	}
++	state->gifts = Ui::GiftsDescriptor{ .list = state->items };
++	return true;
++}
++
++void LoadLocalGiftCollections(
++		not_null<Window::SessionController*> controller,
++		QPointer<Ui::GenericBox> box,
++		not_null<LocalGiftBrowserState*> state) {
++	state->catalog = std::make_unique<Api::PremiumGiftCodeOptions>(
++		controller->session().user());
++	state->catalogLifetime = state->catalog->requestStarGifts(
++	) | rpl::on_error_done([=](const QString &) {
++		LoadLocalGiftCollectionFallback(controller, box, state);
++	}, [=] {
++		if (!ApplyLocalGiftCatalog(box, state)) {
++			LoadLocalGiftCollectionFallback(controller, box, state);
++		}
++	});
 +}
 +
 +void ShowLocalGiftCollectionBrowser(
@@ -858,14 +965,19 @@ index 929cf46..90d505f 100644
 +			.handler = [=](Info::PeerGifts::GiftDescriptor descriptor) {
 +				const auto gift = std::get_if<
 +					Info::PeerGifts::GiftTypeStars>(&descriptor);
-+				if (!gift || !gift->info.unique) {
++				if (!gift) {
 +					return;
 +				}
-+				const auto &slug = gift->info.unique->slug;
-+				for (const auto &collection : LocalGiftCollections()) {
-+					if (slug.startsWith(
++				for (const auto &collection : state->collections) {
++					const auto titleMatches = !gift->info.resellTitle.isEmpty()
++						&& (gift->info.resellTitle.compare(
++							collection.title,
++							Qt::CaseInsensitive) == 0);
++					const auto slugMatches = gift->info.unique
++						&& gift->info.unique->slug.startsWith(
 +							collection.slug + '-',
-+							Qt::CaseInsensitive)) {
++							Qt::CaseInsensitive);
++					if (titleMatches || slugMatches) {
 +						ShowLocalGiftCollectionBrowser(
 +							controller,
 +							target,
@@ -895,25 +1007,7 @@ index 929cf46..90d505f 100644
 +			box->closeBox();
 +		});
 +
-+		auto references = std::vector<QString>();
-+		for (const auto &collection : LocalGiftCollections()) {
-+			references.push_back(collection.slug + u"-1"_q);
-+		}
-+		Ayu::ResolveLocalProfileGifts(
-+			&controller->session(),
-+			std::move(references),
-+			[=](std::vector<std::shared_ptr<Data::StarGift>> gifts) {
-+				if (!weak) {
-+					return;
-+				}
-+				for (const auto &gift : gifts) {
-+					if (gift && gift->unique) {
-+						state->items.emplace_back(
-+							Info::PeerGifts::GiftTypeStars{ .info = *gift });
-+					}
-+				}
-+				state->gifts = Ui::GiftsDescriptor{ .list = state->items };
-+			});
++		LoadLocalGiftCollections(controller, weak, state);
 +	}));
 +}
 +
@@ -1367,7 +1461,7 @@ index 929cf46..90d505f 100644
  void BuildOtherThings(SectionBuilder &builder) {
  	const auto controller = builder.controller();
  
-@@ -236,6 +1101,7 @@ const auto kMeta = BuildHelper({
+@@ -236,6 +1184,7 @@ const auto kMeta = BuildHelper({
  	builder.addSkip();
  	BuildDonations(builder);
  	BuildCrashReporting(builder, ayu);
@@ -1376,7 +1470,7 @@ index 929cf46..90d505f 100644
  });
  
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-index c9d247a..e0b3c29 100644
+index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e13b654f1 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 @@ -6,15 +6,1018 @@
@@ -2415,7 +2509,7 @@ index c9d247a..e0b3c29 100644
  			? TextWithEntities()
  			: tr::marked(IDString(peer));
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
-index 950f22d..07d9cf3 100644
+index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb1b4c4615 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
 @@ -6,8 +6,103 @@
@@ -2525,7 +2619,7 @@ index 950f22d..07d9cf3 100644
 \ No newline at end of file
 +rpl::producer<TextWithEntities> IDValue(MsgId topicRootId);
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
-index 6533de4..753fef5 100644
+index 6533de425088bb632d83ceed51bdd2a7132807f2..753fef54205636e8073a85d8a5dbf034728fbbb1 100644
 --- a/Telegram/SourceFiles/data/data_peer.cpp
 +++ b/Telegram/SourceFiles/data/data_peer.cpp
 @@ -57,6 +57,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2650,7 +2744,7 @@ index 6533de4..753fef5 100644
  }
  
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
-index 9e94048..09fa81e 100644
+index 9e940482f673bf8aa86a8947920e629c727154b4..09fa81eeaae84d4e932fcb84eedcc8d7d1fe8799 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2686,7 +2780,7 @@ index 9e94048..09fa81e 100644
  	_searchIn->apply({
  		{ ChatSearchTab::ThisTopic, topicIcon },
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_row.cpp b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
-index 3bcfab9..2fa76d8 100644
+index 3bcfab95352302c13815d854e6a6b119bf9bb153..2fa76d8557631d54afa021254a13e5836d385f4d 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 @@ -40,6 +40,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2720,8 +2814,222 @@ index 3bcfab9..2fa76d8 100644
  			Ui::NameTextOptions());
  	}
  	return _name;
+diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
+index 3061b9d6becb39b2e3da08a357b068a9de9f1273..9e3d0b7b9a5a7a38820d7e2aa91aa56c9fc69d3b 100644
+--- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
++++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
+@@ -168,6 +168,31 @@ struct IdSearchQuery {
+ 	return {};
+ }
+ 
++[[nodiscard]] QString ParsePhoneSearchQuery(const QString &query) {
++	const auto value = query.trimmed();
++	auto result = QString();
++	for (auto i = 0; i != value.size(); ++i) {
++		const auto ch = value[i];
++		if (ch.isDigit()) {
++			result.append(ch);
++			continue;
++		} else if (ch == u'+' && i == 0) {
++			continue;
++		}
++		const auto separator = (ch == u' ')
++			|| (ch == u'-')
++			|| (ch == u'(')
++			|| (ch == u')')
++			|| (ch == u'.');
++		if (!separator || (ch == u'-' && i == 0)) {
++			return {};
++		}
++	}
++	return (result.size() >= 5 && result.size() <= 15)
++		? result
++		: QString();
++}
++
+ base::options::toggle OptionForumHideChatsList({
+ 	.id = kOptionForumHideChatsList,
+ 	.name = "Hide chat list in forums",
+@@ -2683,6 +2708,15 @@ bool Widget::search(bool inCache, SearchRequestDelay delay) {
+ 		.start = true,
+ 		.peer = (inPeer != nullptr),
+ 	};
++	const auto isGlobalSearch = !inPeer;
++	const auto idQuery = ParseIdSearchQuery(query);
++	const auto phoneQuery = ParsePhoneSearchQuery(query);
++	const auto localPeerSearch = isGlobalSearch
++		&& peerSearchRequired()
++		&& !fromPeer
++		&& inTags.empty()
++		&& (tab == ChatSearchTab::MyMessages)
++		&& ((idQuery.type != IdSearchType::None) || !phoneQuery.isEmpty());
+ 	if (trimmed.isEmpty() && !fromPeer && inTags.empty()) {
+ 		cancelSearchRequest();
+ 
+@@ -2707,6 +2741,72 @@ bool Widget::search(bool inCache, SearchRequestDelay delay) {
+ 		_api.request(base::take(_topicSearchRequest)).cancel();
+ 		peerSearchReceived({});
+ 		return true;
++	} else if (localPeerSearch) {
++		const auto stateChanged = (_searchQuery != query)
++			|| (_searchQueryFrom != fromPeer)
++			|| (_searchQueryTags != inTags)
++			|| (_searchQueryTab != tab)
++			|| (_searchQueryFilter != filter);
++		if (stateChanged) {
++			const auto process = currentSearchProcess();
++			_searchQuery = query;
++			_searchQueryFrom = fromPeer;
++			_searchQueryTags = inTags;
++			_searchQueryTab = tab;
++			_searchQueryFilter = filter;
++			process->nextRate = 0;
++			process->full = true;
++			_migratedProcess.full = true;
++			cancelSearchRequest();
++			_peerSearch.clear();
++			peerSearchReceived({});
++			_api.request(base::take(_topicSearchRequest)).cancel();
++			_topicSearchQuery.clear();
++			_topicSearchFull = true;
++			_inner->searchRequested(true);
++		}
++
++		if (_idSearchQuery != query) {
++			_idSearchResults.clear();
++			_inner->idSearchReceived({});
++			_idSearchQuery = query;
++
++			appendLocalPeerSearchResult(
++				phoneQuery.isEmpty()
++					? nullptr
++					: session().data().userByPhone(phoneQuery));
++
++			const auto weak = base::make_weak(this);
++			const auto currentQuery = query;
++			const auto id = idQuery.id;
++			const auto searchType = idQuery.type;
++			if (searchType == IdSearchType::UserOnly
++				|| searchType == IdSearchType::Both) {
++				searchUserById(id, &session(), [=](
++						const QString &,
++						PeerData *peer) {
++					crl::on_main(weak, [=] {
++						if (_idSearchQuery == currentQuery) {
++							appendLocalPeerSearchResult(peer);
++						}
++					});
++				});
++			}
++			if (searchType == IdSearchType::ChatOnly
++				|| searchType == IdSearchType::Both) {
++				searchChatById(id, &session(), [=](
++						const QString &,
++						PeerData *peer) {
++					crl::on_main(weak, [=] {
++						if (_idSearchQuery == currentQuery) {
++							appendLocalPeerSearchResult(peer);
++						}
++					});
++				});
++			}
++		}
++		_inner->searchRequested(false);
++		return true;
+ 	} else if (inCache) {
+ 		const auto success = _singleMessageSearch.lookup(query, [=] {
+ 			searchRequested(delay);
+@@ -2838,53 +2938,10 @@ bool Widget::search(bool inCache, SearchRequestDelay delay) {
+ 		_topicSearchFull = true;
+ 	}
+ 
+-	const auto isGlobalSearch = !inPeer;
+-	const auto idQuery = ParseIdSearchQuery(query);
+-	const auto shouldIdSearch = isGlobalSearch && (idQuery.type != IdSearchType::None);
+-
+-	if (!isGlobalSearch || _idSearchQuery != query) {
+-		if (!_idSearchResults.empty() || !_idSearchQuery.isEmpty()) {
+-			_idSearchResults.clear();
+-			_idSearchQuery.clear();
+-			_inner->idSearchReceived({});
+-		}
+-	}
+-
+-	if (shouldIdSearch && !inCache && _idSearchQuery != query) {
+-		const auto weak = base::make_weak(this);
+-		const auto currentQuery = query;
+-		const auto id = idQuery.id;
+-		const auto searchType = idQuery.type;
+-
+-		_idSearchQuery = currentQuery;
+-
+-		if (searchType == IdSearchType::UserOnly || searchType == IdSearchType::Both) {
+-			searchUserById(id, &session(), [=](const QString &, PeerData *peer) {
+-				crl::on_main(weak, [=] {
+-					if (_idSearchQuery != currentQuery) {
+-						return;
+-					}
+-					if (peer && !ranges::contains(_idSearchResults, not_null{ peer })) {
+-						_idSearchResults.push_back(peer);
+-						_inner->idSearchReceived(_idSearchResults);
+-					}
+-				});
+-			});
+-		}
+-
+-		if (searchType == IdSearchType::ChatOnly || searchType == IdSearchType::Both) {
+-			searchChatById(id, &session(), [=](const QString &, PeerData *peer) {
+-				crl::on_main(weak, [=] {
+-					if (_idSearchQuery != currentQuery) {
+-						return;
+-					}
+-					if (peer && !ranges::contains(_idSearchResults, not_null{ peer })) {
+-						_idSearchResults.push_back(peer);
+-						_inner->idSearchReceived(_idSearchResults);
+-					}
+-				});
+-			});
+-		}
++	if (!_idSearchResults.empty() || !_idSearchQuery.isEmpty()) {
++		_idSearchResults.clear();
++		_idSearchQuery.clear();
++		_inner->idSearchReceived({});
+ 	}
+ 
+ 	return result;
+@@ -3334,6 +3391,18 @@ void Widget::peerSearchReceived(Api::PeerSearchResult result) {
+ 	update();
+ }
+ 
++void Widget::appendLocalPeerSearchResult(PeerData *peer) {
++	if (!peer) {
++		return;
++	}
++	const auto result = not_null{ peer };
++	if (ranges::contains(_idSearchResults, result)) {
++		return;
++	}
++	_idSearchResults.push_back(result);
++	_inner->idSearchReceived(_idSearchResults);
++}
++
+ void Widget::searchApplyEmpty(
+ 		SearchRequestType type,
+ 		not_null<SearchProcessState*> process) {
+diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.h b/Telegram/SourceFiles/dialogs/dialogs_widget.h
+index ef6b527aa44a80b858c2478e4599421f13007aaa..2fe836a410693a0d2d25b4577d7fbea1353aa672 100644
+--- a/Telegram/SourceFiles/dialogs/dialogs_widget.h
++++ b/Telegram/SourceFiles/dialogs/dialogs_widget.h
+@@ -195,6 +195,7 @@ private:
+ 		not_null<SearchProcessState*> process,
+ 		bool cacheResults = false);
+ 	void peerSearchReceived(Api::PeerSearchResult result);
++	void appendLocalPeerSearchResult(PeerData *peer);
+ 	void escape();
+ 	void submit();
+ 	void cancelSearchRequest();
 diff --git a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
-index bc28b73..a3a61e8 100644
+index bc28b73e4c0aa889383206c1b613ee6ef8fe36c0..a3a61e8c8f0ca5762314db37566e095c842409c9 100644
 --- a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 +++ b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2742,7 +3050,7 @@ index bc28b73..a3a61e8 100644
  	} else {
  		peer->paintUserpicLeft(p, view, x, y, outerWidth, size);
 diff --git a/Telegram/SourceFiles/history/view/history_view_about_view.cpp b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
-index c30fcf2..f2a647a 100644
+index c30fcf2597a07cef41534926d3f742f1da212417..f2a647a302fea2ab86b436d1481c2d5f25fb2d58 100644
 --- a/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2778,7 +3086,7 @@ index c30fcf2..f2a647a 100644
  		tr::bold(parentName),
  		tr::rich);
 diff --git a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
-index 2c52f4b..9dcd1e7 100644
+index 2c52f4b737bdce4efb3ecc7bae8fb4297970a596..9dcd1e7658509ca8fcde016a55124b27e9edbb42 100644
 --- a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2803,7 +3111,7 @@ index 2c52f4b..9dcd1e7 100644
  	});
  }
 diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegram/SourceFiles/history/view/history_view_message.cpp
-index 9d18199..4e8074c 100644
+index 9d181996bff8df8a62b0f228b9f9b0812a4890e9..4e8074c54c84fd896ce9e422625815347b23b312 100644
 --- a/Telegram/SourceFiles/history/view/history_view_message.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2842,7 +3150,7 @@ index 9d18199..4e8074c 100644
  	}
  	if (from->isPremium()
 diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
-index 841d239..2edac8b 100644
+index 841d23920001de13a0a564cdcbd22cdc5ca0f626..2edac8bc4e91544017e7755c7705bf71731f6daf 100644
 --- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2903,7 +3211,7 @@ index 841d239..2edac8b 100644
  	return (quote
  		? tr::lng_preview_reply_to_quote
 diff --git a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
-index 63b23a4..9c7dee6 100644
+index 63b23a43a0dc9557e7a6cb5948a4d9920dbb6202..9c7dee66ba9cd847ef4a4aae9ceafab73a0b0b12 100644
 --- a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 @@ -74,6 +74,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2936,7 +3244,7 @@ index 63b23a4..9c7dee6 100644
  			_title.setText(
  				st::msgNameStyle,
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
-index 594061d..d6028cf 100644
+index 594061dbb904f1cabdc1b063dc8fd7978b14b2fd..d6028cf988f2f114b0d2fb84d81536688e6c8943 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -2958,7 +3266,7 @@ index 594061d..d6028cf 100644
  		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
  		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..a9e8a1c 100644
+index a410a35caed194e55834be9ba2d298ee75fad33a..a9e8a1ced3232790522f8abf4c4089d23709a13b 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3140,7 +3448,7 @@ index a410a35..a9e8a1c 100644
  
  		_pinnedToTopGifts.push_back(std::move(entry));
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
-index 19c194b..0314ccc 100644
+index 19c194b8b98130a687d902de01c398db7d05cf01..313395178c6169c352d450c8044f8f1805ca3420 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3271,7 +3579,7 @@ index 19c194b..0314ccc 100644
  
  rpl::producer<QString> BirthdayLabelText(
 diff --git a/Telegram/SourceFiles/settings/sections/settings_information.cpp b/Telegram/SourceFiles/settings/sections/settings_information.cpp
-index 24f2034..db4692a 100644
+index 24f2034f9a14d8b029af84ffa462bc787d6a130b..db4692a46873b0bd4531fa2eabd6418312b307c6 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_information.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_information.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3318,7 +3626,7 @@ index 24f2034..db4692a 100644
  		parent,
  		rpl::duplicate(text),
 diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
-index fbe74c4..f16d9a1 100644
+index fbe74c4c04c3b9d72cd8bcf673f970a9832cf738..f16d9a16d9570bd982ed4b495145263f17e03a4c 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
 @@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3372,7 +3680,7 @@ index fbe74c4..f16d9a1 100644
  	});
  }
 diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
-index 40692d9..744bccc 100644
+index 40692d96ea0fad05748c5a1e14b2d23bcc3edb35..744bcccbb9dd514e04f860ceffda5f31392c2d1d 100644
 --- a/Telegram/SourceFiles/ui/controls/table_rows.cpp
 +++ b/Telegram/SourceFiles/ui/controls/table_rows.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3395,7 +3703,7 @@ index 40692d9..744bccc 100644
  
  	raw->widthValue() | rpl::on_next([=](int width) {
 diff --git a/Telegram/SourceFiles/window/window_main_menu.cpp b/Telegram/SourceFiles/window/window_main_menu.cpp
-index 61524ae..0567809 100644
+index 61524ae690d1e22c69b93da56aa23dc249ced6ef..056780995a397fc7ae74832569463c0b23b80aa7 100644
 --- a/Telegram/SourceFiles/window/window_main_menu.cpp
 +++ b/Telegram/SourceFiles/window/window_main_menu.cpp
 @@ -83,6 +83,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
