@@ -3264,7 +3264,7 @@ index 19c194b..0314ccc 100644
 +	return rpl::merge(
 +		peer->session().changes().peerFlagsValue(
 +			peer,
-+			Data::PeerUpdate::Flag::EmojiStatus),
++			Data::PeerUpdate::Flag::EmojiStatus) | rpl::to_empty,
 +		Ayu::LocalProfileCloneIdValue(peer) | rpl::to_empty
 +	) | rpl::map([=] { return Ayu::LocalProfileEmojiStatusId(peer); });
  }
