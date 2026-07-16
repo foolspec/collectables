@@ -19,7 +19,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 94e21fcd317d6a52d4d385965461d4ba9e2010390a35b14f3e036eafd0f3b343
+  PATCH_SHA256: 5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1
 
 jobs:
   macos:
@@ -67,6 +67,8 @@ jobs:
           fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'userByPhone(phoneQuery)' tdesktop/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
 
       - name: Prepare core dependencies
@@ -578,5 +580,5 @@ jobs:
             --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, and collectible gifts. The in-app collectible browser uses Telegram's native animated gift renderer, loads numbered items as you scroll, accepts Getgems and TON links, and keeps the existing native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, emoji status, gift ownership, or NFT mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, and cached-peer search by UID or visible phone. The in-app collectible browser loads Telegram's live read-only collection catalog, uses native animated gift rendering, loads exact numbered items as you scroll, accepts Getgems and TON links, and keeps the native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
             release-assets/*
