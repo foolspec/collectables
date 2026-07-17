@@ -9,6 +9,7 @@
 - Latest feature scope: local profile fields, photo, profile clone, UID/phone cached-peer search, dynamic collectible catalog, exact item browser, featured gift, and pinned gifts.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
+- Login and platform branding: the login footer, application menus, About and crash dialogs, tray labels, updater identity, and Windows shortcut metadata now consistently use IntelGram.
 - Windows reliability: the final Qt dependency stage is serialized to prevent the `qtimageformats` generated-directory race seen in the previous run.
 
 ## Validation Recorded For Each Release
