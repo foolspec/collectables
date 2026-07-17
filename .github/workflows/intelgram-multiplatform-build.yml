@@ -72,6 +72,7 @@ jobs:
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
           grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
+          grep -n 'QString("IntelGram Desktop v%1")' tdesktop/Telegram/SourceFiles/intro/intro_widget.cpp
 
       - name: Prepare core dependencies
         if: steps.macos-dependencies.outputs.cache-hit != 'true'
@@ -409,6 +410,7 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
           Select-String -Path tdesktop/Telegram/SourceFiles/window/main_window.cpp -Pattern 'u"IntelGram"_q'
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern 'IntelGram Desktop v'
+          Select-String -Path tdesktop/Telegram/SourceFiles/intro/intro_widget.cpp -Pattern 'IntelGram Desktop v%1'
 
       - name: Configure and build
         shell: cmd
@@ -496,6 +498,7 @@ jobs:
           grep -n 'AppFile = "IntelGram"' tdesktop/Telegram/SourceFiles/core/version.h
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
           grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
+          grep -n 'QString("IntelGram Desktop v%1")' tdesktop/Telegram/SourceFiles/intro/intro_widget.cpp
 
       - name: Build with the documented Linux container
         run: |
