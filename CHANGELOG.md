@@ -18,6 +18,7 @@ All notable IntelGram custom-feature changes are recorded here.
 - UID and phone queries now stay inside the local peer cache instead of entering normal remote message, topic, or username search.
 - Main README now leads with IntelGram's custom features and links to the full documentation.
 - Product-facing main-window, settings, version, and notification-preview titles now consistently use IntelGram.
+- Completed the visible branding pass across the login footer, platform menus, About and crash dialogs, tray labels, updater identity, and Windows shortcut and installer metadata.
 - The final Windows Qt dependency stage now runs serially to avoid a generated-directory race in `qtimageformats`.
 
 ### Privacy
