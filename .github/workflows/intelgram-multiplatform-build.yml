@@ -70,6 +70,8 @@ jobs:
           grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'userByPhone(phoneQuery)' tdesktop/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
+          grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
+          grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 
       - name: Prepare core dependencies
         if: steps.macos-dependencies.outputs.cache-hit != 'true'
@@ -329,6 +331,7 @@ jobs:
       prerequisite_marker: windows-dependencies-final-libraries.complete
       completion_marker: windows-dependencies-final.complete
       stage_timeout_minutes: 330
+      number_of_processors: "1"
 
   windows:
     name: Windows x64
@@ -404,6 +407,8 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
           Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
+          Select-String -Path tdesktop/Telegram/SourceFiles/window/main_window.cpp -Pattern 'u"IntelGram"_q'
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern 'IntelGram Desktop v'
 
       - name: Configure and build
         shell: cmd
@@ -489,6 +494,8 @@ jobs:
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
           grep -n 'AppFile = "IntelGram"' tdesktop/Telegram/SourceFiles/core/version.h
+          grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
+          grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 
       - name: Build with the documented Linux container
         run: |
