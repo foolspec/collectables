@@ -57,6 +57,28 @@ replace("Telegram/SourceFiles/core/version.h", [
 	 'constexpr auto AppFile = "IntelGram"_cs;'),
 ])
 
+replace("Telegram/SourceFiles/window/main_window.cpp", [
+	('setTitle((user.isEmpty() ? u"AyuGram"_q : user) + added);',
+	 'setTitle((user.isEmpty() ? u"IntelGram"_q : user) + added);'),
+])
+
+replace("Telegram/SourceFiles/ayu/ui/settings/settings_ayu.cpp", [
+	('.title = u"AyuGram"_q,', '.title = u"IntelGram"_q,'),
+	('return rpl::single(QString("AyuGram"));',
+	 'return rpl::single(QString("IntelGram"));'),
+])
+
+replace("Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp", [
+	('QString("AyuGram Desktop v")', 'QString("IntelGram Desktop v")'),
+	('.title = rpl::single(QString("AyuGram")),',
+	 '.title = rpl::single(QString("IntelGram")),'),
+])
+
+replace("Telegram/SourceFiles/settings/sections/settings_notifications.cpp", [
+	('u"AyuGram Desktop"_q, rectForName.width()',
+	 'u"IntelGram Desktop"_q, rectForName.width()'),
+])
+
 replace("lib/xdg/com.ayugram.desktop.desktop", [
 	('Name=AyuGram Desktop', 'Name=IntelGram Desktop'),
 	('Comment=Desktop version of AyuGram - ToS breaking Telegram client',
