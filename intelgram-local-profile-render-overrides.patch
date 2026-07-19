@@ -489,7 +489,7 @@ index 97a0439215a0951bbe5e57ac52f0aeffe398c4dd..ece921506b5fa3cf595cffc0aa6f27b7
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-index a4b1e7ad414afc3e214fd954027e2df337668af4..3b3410b6c62cd89607603d3ab53002f357f9bf9f 100644
+index a4b1e7ad414afc3e214fd954027e2df337668af4..b0bde67703dc416837022582839e1c503ac17fbe 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 @@ -6,31 +6,37 @@
@@ -510,6 +510,7 @@ index a4b1e7ad414afc3e214fd954027e2df337668af4..3b3410b6c62cd89607603d3ab53002f3
 +#include "ayu/ayu_settings.h"
 +#include "boxes/abstract_box.h"
  #include "core/version.h"
++#include "lang/lang_text_entity.h"
 +#include "settings/sections/settings_main.h"
  #include "settings/settings_builder.h"
  #include "settings/settings_common.h"
@@ -519,7 +520,6 @@ index a4b1e7ad414afc3e214fd954027e2df337668af4..3b3410b6c62cd89607603d3ab53002f3
 -#include "styles/style_settings.h"
 -#include "ui/painter.h"
 +#include "ui/layers/generic_box.h"
-+#include "ui/text/text_utilities.h"
  #include "ui/widgets/buttons.h"
  #include "ui/widgets/labels.h"
  #include "ui/wrap/vertical_layout.h"
