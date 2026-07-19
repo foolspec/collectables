@@ -2,7 +2,7 @@
 
 IntelGram is a cross-platform AyuGram Desktop build focused on local-only profile customization.
 
-[![IntelGram builds](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml/badge.svg?branch=main)](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-multiplatform-build.yml)
+[![IntelGram release validation](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-release-validation.yml/badge.svg?branch=main)](https://github.com/foolspec/IntelGram/actions/workflows/intelgram-release-validation.yml)
 
 [All features](FEATURES.md) | [Feature guide](FEATURE_GUIDE.md) | [Changelog](CHANGELOG.md) | [Update log](UPDATE_LOG.md)
 
