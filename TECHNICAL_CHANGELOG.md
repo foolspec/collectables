@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `81b000aa219f355ff7be66688fccd77e59c7bfde648dc9234df4611077d4c58a`.
-- Patch footprint: 28 source files, 2,921 insertions, and 382 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `8790874ca989a17ebdb455aaf5fed1d51312e5b41425c44e99193ac48e4c425c`.
+- Patch footprint: 28 source files, 2,922 insertions, and 382 deletions relative to the local baseline snapshot.
 
 ### Collectible Chooser Reliability
 
@@ -33,6 +33,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The bundled localized content is split into latest-update, main-feature, privacy-boundary, and credit sections using `Ui::AddSubsectionTitle` and `Ui::AddDividerText`.
 - The dialog requires no network access to display its update summary.
 - An explicit **View full changelog** action opens `CHANGELOG.md` on GitHub for the complete history.
+- Included `ui/text/text_utilities.h` so the update log's `tr::rich` formatter compiles on every supported platform.
 - The multiplatform workflow checks for `ShowIntelGramUpdateLog` after applying the source patch.
 
 ### Consent-Based Supporter Badge

@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..6918991 100644
+index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec0869b901 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -206,7 +206,7 @@ index 7380587..6918991 100644
 +"ayu_UpdateAyuGram" = "Update IntelGram";
  "ayu_UtilityRestartRequired" = "The app will close in 5 seconds.";
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.cpp b/Telegram/SourceFiles/ayu/ayu_settings.cpp
-index 2280020..0ed1815 100644
+index 2280020ce869c829600fe3bbacf4db26cbfe75a7..0ed18158d41d72ef2b90939164b8721716d6d670 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.cpp
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.cpp
 @@ -11,6 +11,7 @@
@@ -377,7 +377,7 @@ index 2280020..0ed1815 100644
  	s._showGroupReactions = j.value("showGroupReactions", defaults._showGroupReactions.current());
  	s._showPrivateChatReactions = j.value("showPrivateChatReactions", defaults._showPrivateChatReactions.current());
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.h b/Telegram/SourceFiles/ayu/ayu_settings.h
-index 97a0439..ece9215 100644
+index 97a0439215a0951bbe5e57ac52f0aeffe398c4dd..ece921506b5fa3cf595cffc0aa6f27b799dd5519 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.h
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.h
 @@ -291,6 +291,22 @@ public:
@@ -489,10 +489,10 @@ index 97a0439..ece9215 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-index a4b1e7a..31f0d6b 100644
+index a4b1e7ad414afc3e214fd954027e2df337668af4..3b3410b6c62cd89607603d3ab53002f357f9bf9f 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-@@ -6,31 +6,36 @@
+@@ -6,31 +6,37 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/settings/settings_main.h"
  
@@ -519,6 +519,7 @@ index a4b1e7a..31f0d6b 100644
 -#include "styles/style_settings.h"
 -#include "ui/painter.h"
 +#include "ui/layers/generic_box.h"
++#include "ui/text/text_utilities.h"
  #include "ui/widgets/buttons.h"
  #include "ui/widgets/labels.h"
  #include "ui/wrap/vertical_layout.h"
@@ -538,7 +539,7 @@ index a4b1e7a..31f0d6b 100644
  
  namespace Settings {
  
-@@ -132,57 +137,106 @@ void BuildCategories(SectionBuilder &builder) {
+@@ -132,57 +138,106 @@ void BuildCategories(SectionBuilder &builder) {
  	});
  }
  
@@ -670,7 +671,7 @@ index a4b1e7a..31f0d6b 100644
  	builder.addSkip();
  }
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf46..47e02cc 100644
+index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0a77d7c27 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 @@ -6,33 +6,44 @@
@@ -1840,7 +1841,7 @@ index 929cf46..47e02cc 100644
  });
  
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-index c9d247a..e0b3c29 100644
+index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e13b654f1 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 @@ -6,15 +6,1018 @@
@@ -2879,7 +2880,7 @@ index c9d247a..e0b3c29 100644
  			? TextWithEntities()
  			: tr::marked(IDString(peer));
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
-index 950f22d..07d9cf3 100644
+index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb1b4c4615 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
 @@ -6,8 +6,103 @@
@@ -2989,7 +2990,7 @@ index 950f22d..07d9cf3 100644
 \ No newline at end of file
 +rpl::producer<TextWithEntities> IDValue(MsgId topicRootId);
 diff --git a/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp b/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
-index d95ee87..723d28b 100644
+index d95ee873919e5483ab751699e0308ef93b7b2c87..723d28b88a6f3f414a1e8c6d0ece1b657c067c3f 100644
 --- a/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
 +++ b/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
 @@ -23,6 +23,7 @@
@@ -3144,7 +3145,7 @@ index d95ee87..723d28b 100644
  	const auto botId = isSupporter ? regDateBotId : regDateBotFallbackId;
  	const auto botUsername = isSupporter ? regDateBotUsername : regDateBotFallbackUsername;
 diff --git a/Telegram/SourceFiles/ayu/utils/telegram_helpers.h b/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
-index 021679a..8023b0a 100644
+index 021679a64047004ca7806b37c8edeb2346794b4d..8023b0aa04e80fedff0bede46ae172062ead843b 100644
 --- a/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
 +++ b/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
 @@ -62,6 +62,7 @@ ID getBareID(not_null<PeerData*> peer);
@@ -3156,7 +3157,7 @@ index 021679a..8023b0a 100644
  CustomBadge getCustomBadge(ID peerId);
  
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
-index 6533de4..753fef5 100644
+index 6533de425088bb632d83ceed51bdd2a7132807f2..753fef54205636e8073a85d8a5dbf034728fbbb1 100644
 --- a/Telegram/SourceFiles/data/data_peer.cpp
 +++ b/Telegram/SourceFiles/data/data_peer.cpp
 @@ -57,6 +57,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3281,7 +3282,7 @@ index 6533de4..753fef5 100644
  }
  
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
-index 9e94048..09fa81e 100644
+index 9e940482f673bf8aa86a8947920e629c727154b4..09fa81eeaae84d4e932fcb84eedcc8d7d1fe8799 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3317,7 +3318,7 @@ index 9e94048..09fa81e 100644
  	_searchIn->apply({
  		{ ChatSearchTab::ThisTopic, topicIcon },
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_row.cpp b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
-index 3bcfab9..2fa76d8 100644
+index 3bcfab95352302c13815d854e6a6b119bf9bb153..2fa76d8557631d54afa021254a13e5836d385f4d 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 @@ -40,6 +40,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3352,7 +3353,7 @@ index 3bcfab9..2fa76d8 100644
  	}
  	return _name;
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
-index 3061b9d..9e3d0b7 100644
+index 3061b9d6becb39b2e3da08a357b068a9de9f1273..9e3d0b7b9a5a7a38820d7e2aa91aa56c9fc69d3b 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
 @@ -168,6 +168,31 @@ struct IdSearchQuery {
@@ -3554,7 +3555,7 @@ index 3061b9d..9e3d0b7 100644
  		SearchRequestType type,
  		not_null<SearchProcessState*> process) {
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.h b/Telegram/SourceFiles/dialogs/dialogs_widget.h
-index ef6b527..2fe836a 100644
+index ef6b527aa44a80b858c2478e4599421f13007aaa..2fe836a410693a0d2d25b4577d7fbea1353aa672 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_widget.h
 +++ b/Telegram/SourceFiles/dialogs/dialogs_widget.h
 @@ -195,6 +195,7 @@ private:
@@ -3566,7 +3567,7 @@ index ef6b527..2fe836a 100644
  	void submit();
  	void cancelSearchRequest();
 diff --git a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
-index bc28b73..a3a61e8 100644
+index bc28b73e4c0aa889383206c1b613ee6ef8fe36c0..a3a61e8c8f0ca5762314db37566e095c842409c9 100644
 --- a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 +++ b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3587,7 +3588,7 @@ index bc28b73..a3a61e8 100644
  	} else {
  		peer->paintUserpicLeft(p, view, x, y, outerWidth, size);
 diff --git a/Telegram/SourceFiles/history/view/history_view_about_view.cpp b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
-index c30fcf2..f2a647a 100644
+index c30fcf2597a07cef41534926d3f742f1da212417..f2a647a302fea2ab86b436d1481c2d5f25fb2d58 100644
 --- a/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3623,7 +3624,7 @@ index c30fcf2..f2a647a 100644
  		tr::bold(parentName),
  		tr::rich);
 diff --git a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
-index 2c52f4b..9dcd1e7 100644
+index 2c52f4b737bdce4efb3ecc7bae8fb4297970a596..9dcd1e7658509ca8fcde016a55124b27e9edbb42 100644
 --- a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3648,7 +3649,7 @@ index 2c52f4b..9dcd1e7 100644
  	});
  }
 diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegram/SourceFiles/history/view/history_view_message.cpp
-index 9d18199..4e8074c 100644
+index 9d181996bff8df8a62b0f228b9f9b0812a4890e9..4e8074c54c84fd896ce9e422625815347b23b312 100644
 --- a/Telegram/SourceFiles/history/view/history_view_message.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3687,7 +3688,7 @@ index 9d18199..4e8074c 100644
  	}
  	if (from->isPremium()
 diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
-index 841d239..2edac8b 100644
+index 841d23920001de13a0a564cdcbd22cdc5ca0f626..2edac8bc4e91544017e7755c7705bf71731f6daf 100644
 --- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3748,7 +3749,7 @@ index 841d239..2edac8b 100644
  	return (quote
  		? tr::lng_preview_reply_to_quote
 diff --git a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
-index 63b23a4..9c7dee6 100644
+index 63b23a43a0dc9557e7a6cb5948a4d9920dbb6202..9c7dee66ba9cd847ef4a4aae9ceafab73a0b0b12 100644
 --- a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 @@ -74,6 +74,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3781,7 +3782,7 @@ index 63b23a4..9c7dee6 100644
  			_title.setText(
  				st::msgNameStyle,
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
-index 594061d..d6028cf 100644
+index 594061dbb904f1cabdc1b063dc8fd7978b14b2fd..d6028cf988f2f114b0d2fb84d81536688e6c8943 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3803,7 +3804,7 @@ index 594061d..d6028cf 100644
  		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
  		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..15d7716 100644
+index a410a35caed194e55834be9ba2d298ee75fad33a..15d7716ce39eb214794e2938ebc983d1dd80bb43 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3999,7 +4000,7 @@ index a410a35..15d7716 100644
  
  		_pinnedToTopGifts.push_back(std::move(entry));
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
-index 19c194b..3133951 100644
+index 19c194b8b98130a687d902de01c398db7d05cf01..313395178c6169c352d450c8044f8f1805ca3420 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4130,7 +4131,7 @@ index 19c194b..3133951 100644
  
  rpl::producer<QString> BirthdayLabelText(
 diff --git a/Telegram/SourceFiles/settings/sections/settings_information.cpp b/Telegram/SourceFiles/settings/sections/settings_information.cpp
-index 24f2034..db4692a 100644
+index 24f2034f9a14d8b029af84ffa462bc787d6a130b..db4692a46873b0bd4531fa2eabd6418312b307c6 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_information.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_information.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4177,7 +4178,7 @@ index 24f2034..db4692a 100644
  		parent,
  		rpl::duplicate(text),
 diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
-index fbe74c4..1902d29 100644
+index fbe74c4c04c3b9d72cd8bcf673f970a9832cf738..1902d2945c8563653c4c42adc151bc56d35296bc 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
 @@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4245,7 +4246,7 @@ index fbe74c4..1902d29 100644
  	});
  }
 diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
-index 40692d9..744bccc 100644
+index 40692d96ea0fad05748c5a1e14b2d23bcc3edb35..744bcccbb9dd514e04f860ceffda5f31392c2d1d 100644
 --- a/Telegram/SourceFiles/ui/controls/table_rows.cpp
 +++ b/Telegram/SourceFiles/ui/controls/table_rows.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4268,7 +4269,7 @@ index 40692d9..744bccc 100644
  
  	raw->widthValue() | rpl::on_next([=](int width) {
 diff --git a/Telegram/SourceFiles/ui/unread_badge.cpp b/Telegram/SourceFiles/ui/unread_badge.cpp
-index 297c37b..69a22b6 100644
+index 297c37bdd209f0668d12bccd58009f9bbf6cb7c0..69a22b6a537d4d472cc6802bcd5b49244d775db6 100644
 --- a/Telegram/SourceFiles/ui/unread_badge.cpp
 +++ b/Telegram/SourceFiles/ui/unread_badge.cpp
 @@ -189,7 +189,7 @@ int PeerBadge::drawGetWidth(Painter &p, Descriptor &&descriptor) {
@@ -4281,7 +4282,7 @@ index 297c37b..69a22b6 100644
  		&& !hidePremiumStatuses;
  	const auto paintExtera = paintExteraDev || paintExteraSupporter;
 diff --git a/Telegram/SourceFiles/window/window_main_menu.cpp b/Telegram/SourceFiles/window/window_main_menu.cpp
-index 61524ae..387ae7c 100644
+index 61524ae690d1e22c69b93da56aa23dc249ced6ef..387ae7c457900a96e241ba915d96677bd5d55034 100644
 --- a/Telegram/SourceFiles/window/window_main_menu.cpp
 +++ b/Telegram/SourceFiles/window/window_main_menu.cpp
 @@ -83,6 +83,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
