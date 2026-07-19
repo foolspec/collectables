@@ -62,6 +62,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 ### Validation
 
 - Manual workflow runs can target `linux`, `macos`, `windows`, or `all`; platform-scoped concurrency lets compile checks run without cancelling unrelated dependency preparation.
+- A Windows-only run can reuse the exact final dependency cache from a completed run ID and attempt, skipping all nine preparation jobs while preserving the final-cache marker check.
 - `git diff --check` passes.
 - Both patch filenames have identical SHA-256 digests.
 - Clean patch application and reverse-application checks pass against the pinned baseline snapshot.

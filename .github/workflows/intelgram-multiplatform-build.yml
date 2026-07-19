@@ -19,6 +19,16 @@ on:
           - macos
           - windows
           - linux
+      windows_dependency_run_id:
+        description: Optional completed run ID containing the final Windows dependency cache
+        required: false
+        default: ""
+        type: string
+      windows_dependency_run_attempt:
+        description: Run attempt for the reusable Windows dependency cache
+        required: false
+        default: "1"
+        type: string
 
 concurrency:
   group: intelgram-multiplatform-build-${{ github.event_name == 'workflow_dispatch' && inputs.platform || 'all' }}
@@ -214,7 +224,7 @@ jobs:
 
   windows_dependencies_1:
     name: Windows dependencies 1 of 9
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows' }}
+    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows') && inputs.windows_dependency_run_id == '' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
@@ -358,10 +368,13 @@ jobs:
   windows:
     name: Windows x64
     needs: windows_dependencies_complete
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows') && (inputs.windows_dependency_run_id != '' || needs.windows_dependencies_complete.result == 'success') }}
     runs-on: windows-2022
     timeout-minutes: 350
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: "3"
+      WINDOWS_DEPENDENCY_RUN_ID: ${{ inputs.windows_dependency_run_id || github.run_id }}
+      WINDOWS_DEPENDENCY_RUN_ATTEMPT: ${{ inputs.windows_dependency_run_id != '' && inputs.windows_dependency_run_attempt || github.run_attempt }}
     steps:
       - uses: actions/checkout@v4
 
@@ -381,7 +394,7 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          PREREQUISITE_CACHE_KEY: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ env.WINDOWS_DEPENDENCY_RUN_ID }}-${{ env.WINDOWS_DEPENDENCY_RUN_ATTEMPT }}
         run: |
           $deadline = (Get-Date).AddMinutes(12)
           do {
@@ -403,7 +416,7 @@ jobs:
             Libraries
             ThirdParty
             windows-dependencies-*.complete
-          key: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          key: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ env.WINDOWS_DEPENDENCY_RUN_ID }}-${{ env.WINDOWS_DEPENDENCY_RUN_ATTEMPT }}
 
       - name: Verify final Windows dependency cache
         shell: pwsh
