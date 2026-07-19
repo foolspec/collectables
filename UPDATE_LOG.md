@@ -18,8 +18,8 @@
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
 - Current source patch SHA-256: `049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3`.
-- Current release: `intelgram-v6.7.8-local-profile-20260718-2`, published from the corrected macOS, Windows, and Linux build artifacts.
-- Release validation: all package checksums, GitHub digests, patch hashes, platform reports, and launch smoke tests passed in run `29667061031`.
+- Current release: `intelgram-v6.7.8-local-profile-20260719`, assembled from final macOS run `29687992660`, Windows run `29675428988`, and Linux run `29675433095`.
+- Release validation: publication requires the package checksums, patch hash, platform reports, and launch smoke tests from those exact successful runs; the release event then verifies every published GitHub digest automatically.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
 - Login and platform branding: the login footer, application menus, About and crash dialogs, tray labels, updater identity, and Windows shortcut metadata now consistently use IntelGram.
@@ -44,4 +44,4 @@
 - `IntelGram-Windows-x64.zip`
 - `IntelGram-Linux-x64.tar.gz`
 
-The latest completed result and exact checksums are attached to [`intelgram-v6.7.8-local-profile-20260718-2`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260718-2).
+The latest completed result and exact checksums are attached to [`intelgram-v6.7.8-local-profile-20260719`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260719).
