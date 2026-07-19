@@ -67,6 +67,7 @@ jobs:
           cp intelgram-local-profile-render-overrides.patch release-assets/
           cp intelgram-local-profile-render-overrides.patch release-assets/ayugram-local-profile-render-overrides.patch
           cp build_intelgram_branding.py release-assets/
+          python3 -m zipfile -c release-assets/IntelGram-branding-assets.zip branding/icons generate_intelgram_character_icons.py
           for log in launch-macos.log launch-windows.log launch-windows-error.log launch-linux.log; do
             if [[ -f "release-assets/$log" && ! -s "release-assets/$log" ]]; then
               printf 'IntelGram produced no console output and remained running for the launch smoke-test window.\n' > "release-assets/$log"
@@ -95,7 +96,9 @@ jobs:
           - Client-render-only display name, UID, primary and other usernames, anonymous number, bio, and profile photo for your own account.
           - Local profile cloning from an already-loaded peer by UID, plus cached-peer search by UID or a phone number already visible to your account.
           - A native in-app collectible browser with Telegram's read-only live catalog, exact numbered gifts, native previews and details, and Telegram, Getgems, and TON link input.
+          - A visual collection gallery and scrollable exact-item gallery that selects collectibles without leaving IntelGram.
           - A featured local collectible backdrop and up to six pinned local collectibles around your avatar.
+          - Grouped local profile settings, a name-color preview that follows the local display name, and fourteen platform-native app icon choices.
           - A bundled in-app update log plus IntelGram Telegram, GitHub, product changelog, and technical changelog links.
           - An optional supporter badge after you explicitly join `@intelgrams` through Telegram's normal channel page.
 

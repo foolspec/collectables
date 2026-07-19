@@ -2,7 +2,7 @@
 
 ## Where do I change my local profile?
 
-Open **IntelGram Settings -> Other -> Local profile**. Each field has its own switch or action, so you can use only the pieces you want.
+Open **IntelGram Settings -> Other -> Local profile**. The controls are grouped into **Identity**, **Usernames, bio and contact**, **Profile photo**, and **Collectibles**. Each field has its own switch or action, so you can use only the pieces you want.
 
 ## How do I change my local username?
 
@@ -26,11 +26,19 @@ Use the normal search field above the chat list. Paste a UID, `id: UID`, or a ph
 
 ## How do I browse collectible gifts?
 
-Choose **Featured collectible gift** or **Manage pinned collectible gifts**, then open the collection picker. The first screen always shows the available collection names, with live native preview art underneath when it loads. Select a collection and scroll through its numbered gifts; more load as you reach the end. Click a tile to apply it locally.
+Choose **Choose featured collectible** or **Manage pinned collectible gifts**. The first screen is a native gallery of collection artwork. Click a collection, scroll through its numbered collectibles, and click the exact artwork you want; more items load as you reach the end. The entire selection flow stays inside IntelGram.
 
 ## Can I paste a Getgems or TON link?
 
-Yes. Use **Paste a TON market link** and paste a supported Getgems item URL, `t.me/nft` URL, Telegram gift slug, or TON NFT address. IntelGram resolves the exact Telegram collectible when the metadata maps to one.
+Yes. Use **Open by collectible link** and paste a supported Getgems item URL, `t.me/nft` URL, Telegram gift slug, or TON NFT address. IntelGram resolves the exact Telegram collectible when the metadata maps to one.
+
+## How do I change the IntelGram app icon?
+
+Open **Settings -> Appearance -> App Icon**. Choose the pink primary artwork, the pink profile-art alternate, or one of twelve color variants. IntelGram stores the choice locally and uses the matching platform-native icon resource.
+
+## Why does the name-color preview show a different name?
+
+The preview follows the name IntelGram currently renders for your own profile. Change the enabled local display name and the sample updates to that value instead of showing a fixed name.
 
 ## What happens when I click a rendered collectible?
 

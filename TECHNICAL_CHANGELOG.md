@@ -9,16 +9,29 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855`.
-- Patch footprint: 28 source files, 2,922 insertions, and 382 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819`.
+- Patch footprint: 29 source files, 2,913 insertions, and 387 deletions relative to the local baseline snapshot.
 
-### Collectible Chooser Reliability
+### Native Collectible Galleries
 
-- `ShowLocalGiftCollectionPicker` now creates stable collection rows immediately from `LocalGiftCollections()` before starting any catalog request.
-- The stable rows use the existing settings button and premium-gift icon styles, so the chooser remains navigable when catalog requests fail or return no resell titles.
-- `LoadLocalGiftCollections` still requests Telegram's read-only star-gift catalog and feeds native `Ui::MakeGiftsList` tiles below the stable choices.
-- `ShowLocalGiftCollectionBrowser` resolves exact numbered slugs in pages of 12 and appends them to the native gift grid for scrolling.
+- `ShowLocalGiftCollectionPicker` uses `Ui::MakeGiftsList` as the primary collection surface instead of generating text-only settings rows.
+- `LoadLocalGiftCollections` requests Telegram's read-only star-gift catalog and maps each resell title to a clickable native collection tile.
+- `LoadLocalGiftCollectionFallback` resolves one read-only sample from each established collection when the catalog does not provide usable collection tiles.
+- `ShowLocalGiftCollectionBrowser` resolves exact numbered slugs in pages of 12, appends them to a scrollable native gift grid, and stores the clicked gift reference locally.
 - Exact gift resolution remains `MTPpayments_GetUniqueStarGift`; raw TON NFT addresses may use a read-only TonAPI metadata GET before resolving the Telegram slug.
+
+### Settings And Preview Organization
+
+- `BuildLocalProfile` now separates clone controls, identity, usernames/bio/contact, profile photo, and collectibles with native subsection headings and dividers.
+- Removed the duplicate collectible-browser action; featured and pinned flows both enter the same native collection gallery.
+- `SetupPeerColorSample` now consumes `Ayu::LocalProfileNameValue(peer)`, so the name-color preview reacts to the local display-name setting and clone state.
+
+### Cross-Platform Icon Assets
+
+- `build_intelgram_branding.py` installs a pink primary icon, a pink profile-art alternate, and twelve color variants into the existing runtime icon picker.
+- The icon generator produces 1024px masters, seven-size Windows `.ico` files, macOS `.icns` and `.icon` resources, and Linux hicolor assets from 16px through 1024px.
+- The primary application icon, installer resources, alternate macOS icon list, Qt resources, and picker constants are generated together from `branding/icons`.
+- Stored use of the retired duplicate `chibi2` picker slot migrates to the new primary icon.
 
 ### Settings And Project Links
 

@@ -34,12 +34,12 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 
 ## Collectible Browser
 
-- Always shows a stable collection list immediately, even if the live catalog cannot load.
+- Opens directly into a native visual gallery of collection thumbnails inside IntelGram.
 - Loads all collection types currently returned by Telegram's read-only star-gift catalog.
-- Shows native live collection preview art beneath the stable choices in an in-app gift grid.
-- Falls back to Scared Cat, Plush Pepe, Toy Bear, Chill Flame, Precious Peach, Heart Locket, Diamond Ring, and Astral Shard if the live catalog is unavailable.
+- Falls back to read-only sample lookups for Scared Cat, Plush Pepe, Toy Bear, Chill Flame, Precious Peach, Heart Locket, Diamond Ring, and Astral Shard when the catalog omits collection tiles.
 - Opens a scrollable native item grid for the selected collection.
 - Loads exact numbered collectibles in pages as the user scrolls.
+- Selects a collectible by clicking its artwork, without opening Getgems or leaving IntelGram.
 - Accepts a collection number, Telegram gift slug, `t.me/nft` link, Getgems item URL, friendly or raw TON NFT address.
 - Resolves exact model, pattern, backdrop, number, and native artwork read-only.
 - Uses Telegram's native unique-gift detail surface when a rendered collectible is clicked.
@@ -62,6 +62,9 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - In-app links to `@intelgrams`, the IntelGram GitHub repository, and both changelogs.
 - Bundled native update log covering the latest changes, main features, privacy boundary, and project credit.
 - Optional local supporter badge after the user explicitly joins `@intelgrams` through Telegram's channel page.
+- Grouped local-profile controls for identity, contact details, profile photo, and collectibles.
+- A reactive name-color sample that follows the locally rendered display name.
+- New pink IntelGram primary and profile-art icons plus twelve color variants, with platform-native macOS, Windows, and Linux resources.
 - Separate macOS bundle identifier, Windows application identifier, and Linux desktop identifiers.
 - Packages for macOS Apple Silicon, Windows x64, and Linux x64.
 - Coexists with a normal AyuGram installation without overwriting it.

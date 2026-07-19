@@ -13,6 +13,9 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 - Find an already-loaded user by UID or by a phone number that is visible to your account, directly from the normal chat-list search field.
 - Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
 - Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
+- Work through grouped **Identity**, **Usernames, bio and contact**, **Profile photo**, and **Collectibles** settings instead of one long control list.
+- Keep the name-color preview synchronized with the locally rendered display name.
+- Choose the pink IntelGram icon, its profile-art variant, or any of twelve supplied color variants from the in-app icon picker.
 - Read the latest changes and main feature summary from a bundled update log inside IntelGram.
 - Open the IntelGram community and project links directly from settings, with an optional local supporter badge after you join `@intelgrams` yourself.
 - Keep every override client-render-only, with no Telegram profile, ownership, contact, or account mutation.
@@ -50,7 +53,9 @@ In the main chat-list search field, paste a UID, `id: UID`, or a visible phone n
 
 Clicking your username in IntelGram's profile settings opens the local username editor. It displays your original Telegram username for reference before saving the IntelGram-only value.
 
-The collectible picker always opens with a visible list of established collections. Live native preview art loads beneath it when Telegram's read-only catalog is available. Choose a collection to browse real numbered models in a scrollable in-app grid, click one to select it, or paste any supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the exact collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+The collectible picker opens as a native visual collection gallery. Choose a collection card to open a scrollable grid of its exact numbered collectibles, click any artwork to select it without leaving IntelGram, or paste a supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+
+The local-profile page is split into focused identity, contact, photo, and collectible groups. **Settings -> Appearance -> App Icon** includes the new pink IntelGram artwork, a profile-art alternate, and twelve coordinated color variants. The name-color editor uses your currently rendered local display name in its preview.
 
 Choose a local image to replace your own profile photo throughout this IntelGram installation. Profile cloning accepts the UID of a user whose profile has already been opened and locally mirrors their visible name, UID, usernames, phone, bio, photo, profile colors, emoji status, and featured collectible. Stop cloning at any time to return to the individual local fields.
 
@@ -77,8 +82,9 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855`
+- Patch SHA-256: `df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
+- [`branding/icons`](branding/icons) contains the pink character artwork and twelve color masters with generated macOS, Windows, and Linux resources; [`generate_intelgram_character_icons.py`](generate_intelgram_character_icons.py) reproduces them.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.
 - [`FEATURES.md`](FEATURES.md) documents the complete custom feature surface and render coverage.

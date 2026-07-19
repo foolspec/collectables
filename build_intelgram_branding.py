@@ -1,9 +1,27 @@
 #!/usr/bin/env python3
 
+import json
+import shutil
 from pathlib import Path
 
 
 ROOT = Path.cwd()
+BRANDING = Path(__file__).resolve().parent / "branding/icons"
+
+COLOR_ICONS = (
+	("alt", "Alt", "intelgram-square-01-midnight-purple"),
+	("discord", "Discord", "intelgram-square-02-telegram-blue"),
+	("spotify", "Spotify", "intelgram-square-03-deep-navy"),
+	("extera", "Extera", "intelgram-square-04-cyan-teal"),
+	("nothing", "Nothing", "intelgram-square-05-indigo"),
+	("bard", "Bard", "intelgram-square-06-black-green"),
+	("yaplus", "Yaplus", "intelgram-square-07-crimson"),
+	("win95", "Win95", "intelgram-square-08-coral"),
+	("extera2", "Extera2", "intelgram-square-09-slate-blue"),
+	("lilac", "Lilac", "intelgram-square-10-lilac"),
+	("whiteBlue", "WhiteBlue", "intelgram-square-11-white-blue"),
+	("graphite", "Graphite", "intelgram-square-12-graphite"),
+)
 
 
 def replace(path: str, replacements: list[tuple[str, str]]) -> None:
@@ -24,6 +42,45 @@ def replace_all(path: str, old: str, new: str, expected: int) -> None:
 	if count != expected:
 		raise RuntimeError(f"{path}: expected {expected} occurrences of {old!r}, found {count}")
 	file.write_text(content.replace(old, new), encoding="utf-8")
+
+
+def copy_asset(source: Path, target: str) -> None:
+	destination = ROOT / target
+	destination.parent.mkdir(parents=True, exist_ok=True)
+	shutil.copy2(source, destination)
+
+
+def write_mac_icon(name: str, source: Path) -> None:
+	directory = ROOT / "Telegram/Telegram" / f"AppIcon-{name}.icon"
+	assets = directory / "Assets"
+	assets.mkdir(parents=True, exist_ok=True)
+	shutil.copy2(source, assets / "app.png")
+	(directory / "icon.json").write_text(json.dumps({
+		"fill-specializations": [
+			{"value": "system-light"},
+			{
+				"appearance": "dark",
+				"value": {"solid": "extended-gray:0.75000,1.00000"},
+			},
+		],
+		"groups": [{
+			"layers": [{
+				"blend-mode": "normal",
+				"fill": "automatic",
+				"glass": False,
+				"image-name": "app.png",
+				"name": "app",
+				"opacity": 1,
+				"position": {
+					"scale": 0.75,
+					"translation-in-points": [0, 0],
+				},
+			}],
+			"shadow": {"kind": "neutral", "opacity": 0.5},
+			"translucency": {"enabled": True, "value": 0.5},
+		}],
+		"supported-platforms": {"squares": ["macOS"]},
+	}, indent=2) + "\n", encoding="utf-8")
 
 
 replace("CMakeLists.txt", [
@@ -321,3 +378,144 @@ for old, new in (
 ):
 	source = ROOT / "lib/xdg" / old
 	(ROOT / "lib/xdg" / new).write_bytes(source.read_bytes())
+
+replace("Telegram/SourceFiles/ayu/ui/ayu_logo.h", [
+	('ICON(EXTERA2, "extera2");', '''ICON(EXTERA2, "extera2");
+ICON(LILAC, "lilac");
+ICON(WHITEBLUE, "whiteBlue");
+ICON(GRAPHITE, "graphite");'''),
+])
+
+replace("Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp", [
+	('''const QVector<QString> icons{
+	AyuAssets::DEFAULT_ICON,
+	AyuAssets::ALT_ICON,
+	AyuAssets::DISCORD_ICON,
+	AyuAssets::SPOTIFY_ICON,
+	AyuAssets::EXTERA_ICON,
+	AyuAssets::NOTHING_ICON,
+	AyuAssets::BARD_ICON,
+	AyuAssets::YAPLUS_ICON,
+	AyuAssets::WIN95_ICON,
+	AyuAssets::CHIBI_ICON,
+	AyuAssets::CHIBI2_ICON,
+	AyuAssets::EXTERA2_ICON,
+};''', '''const QVector<QString> icons{
+	AyuAssets::DEFAULT_ICON,
+	AyuAssets::CHIBI_ICON,
+	AyuAssets::ALT_ICON,
+	AyuAssets::DISCORD_ICON,
+	AyuAssets::SPOTIFY_ICON,
+	AyuAssets::EXTERA_ICON,
+	AyuAssets::NOTHING_ICON,
+	AyuAssets::BARD_ICON,
+	AyuAssets::YAPLUS_ICON,
+	AyuAssets::WIN95_ICON,
+	AyuAssets::EXTERA2_ICON,
+	AyuAssets::LILAC_ICON,
+	AyuAssets::WHITEBLUE_ICON,
+	AyuAssets::GRAPHITE_ICON,
+};'''),
+])
+
+replace("Telegram/SourceFiles/ayu/ayu_settings.cpp", [
+	('s._appIcon = j.value("appIcon", defaults._appIcon.current());', '''const auto appIcon = j.value("appIcon", defaults._appIcon.current());
+		s._appIcon = (appIcon == AyuAssets::CHIBI2_ICON)
+			? AyuAssets::DEFAULT_ICON
+			: appIcon;'''),
+])
+
+replace("Telegram/CMakeLists.txt", [
+	('''            Chibi2
+            Extera2
+        )''', '''            Chibi2
+            Extera2
+            Lilac
+            WhiteBlue
+            Graphite
+        )'''),
+	('XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES AppIcon-Alt AppIcon-Discord AppIcon-Spotify AppIcon-Extera AppIcon-Nothing AppIcon-Bard AppIcon-Yaplus AppIcon-Win95 AppIcon-Chibi AppIcon-Chibi2 AppIcon-Extera2',
+	 'XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES AppIcon-Alt AppIcon-Discord AppIcon-Spotify AppIcon-Extera AppIcon-Nothing AppIcon-Bard AppIcon-Yaplus AppIcon-Win95 AppIcon-Chibi AppIcon-Chibi2 AppIcon-Extera2 AppIcon-Lilac AppIcon-WhiteBlue AppIcon-Graphite'),
+])
+
+qrc = "Telegram/Resources/qrc/ayu/ayu.qrc"
+replace(qrc, [
+	('<file alias="art/ayu/default/app.svg">../../art/ayu/default/app.svg</file>',
+	 '<file alias="art/ayu/default/app.png">../../art/ayu/default/app.png</file>'),
+	('''        <file alias="art/ayu/extera2/app_icon.ico">../../art/ayu/extera2/app_icon.ico</file>''', '''        <file alias="art/ayu/extera2/app_icon.ico">../../art/ayu/extera2/app_icon.ico</file>
+        <file alias="art/ayu/lilac/app.png">../../art/ayu/lilac/app.png</file>
+        <file alias="art/ayu/lilac/app_icon.ico">../../art/ayu/lilac/app_icon.ico</file>
+        <file alias="art/ayu/whiteBlue/app.png">../../art/ayu/whiteBlue/app.png</file>
+        <file alias="art/ayu/whiteBlue/app_icon.ico">../../art/ayu/whiteBlue/app_icon.ico</file>
+        <file alias="art/ayu/graphite/app.png">../../art/ayu/graphite/app.png</file>
+        <file alias="art/ayu/graphite/app_icon.ico">../../art/ayu/graphite/app_icon.ico</file>'''),
+])
+
+legacy_extensions = {
+	"alt": "svg",
+	"discord": "svg",
+	"spotify": "svg",
+	"extera": "svg",
+	"nothing": "svg",
+	"bard": "svg",
+	"yaplus": "svg",
+	"win95": "png",
+	"extera2": "svg",
+}
+for name, _, _ in COLOR_ICONS:
+	if name not in legacy_extensions:
+		continue
+	extension = legacy_extensions[name]
+	old = f'<file alias="art/ayu/{name}/app.{extension}">../../art/ayu/{name}/app.{extension}</file>'
+	new = f'<file alias="art/ayu/{name}/app.png">../../art/ayu/{name}/app.png</file>'
+	if old != new:
+		replace(qrc, [(old, new)])
+
+front = BRANDING / "character/masters/intelgram-pink-front.png"
+profile = BRANDING / "character/masters/intelgram-pink-profile.png"
+front_ico = BRANDING / "character/Windows/intelgram-pink-front.ico"
+profile_ico = BRANDING / "character/Windows/intelgram-pink-profile.ico"
+
+for name, image, ico in (
+	("default", front, front_ico),
+	("chibi", profile, profile_ico),
+	("chibi2", front, front_ico),
+):
+	copy_asset(image, f"Telegram/Resources/art/ayu/{name}/app.png")
+	copy_asset(ico, f"Telegram/Resources/art/ayu/{name}/app_icon.ico")
+
+write_mac_icon("Default", front)
+write_mac_icon("Chibi", profile)
+write_mac_icon("Chibi2", front)
+
+for name, mac_name, filename in COLOR_ICONS:
+	image = BRANDING / "color/masters" / f"{filename}.png"
+	ico = BRANDING / "color/Windows" / f"{filename}.ico"
+	copy_asset(image, f"Telegram/Resources/art/ayu/{name}/app.png")
+	copy_asset(ico, f"Telegram/Resources/art/ayu/{name}/app_icon.ico")
+	write_mac_icon(mac_name, image)
+
+primary_sizes = {
+	"icon16.png": 16,
+	"icon16@2x.png": 32,
+	"icon32.png": 32,
+	"icon32@2x.png": 64,
+	"icon48.png": 48,
+	"icon48@2x.png": 96,
+	"icon64.png": 64,
+	"icon64@2x.png": 128,
+	"icon128.png": 128,
+	"icon128@2x.png": 256,
+	"icon256.png": 256,
+	"icon256@2x.png": 512,
+	"icon512.png": 512,
+	"icon512@2x.png": 1024,
+	"icon_round512@2x.png": 1024,
+	"logo_256.png": 256,
+	"logo_256_no_margin.png": 256,
+}
+for filename, size in primary_sizes.items():
+	source = BRANDING / "character/Linux/hicolor" / f"{size}x{size}/apps/intelgram-pink-front.png"
+	copy_asset(source, f"Telegram/Resources/art/{filename}")
+
+copy_asset(front_ico, "Telegram/Resources/art/icon256.ico")

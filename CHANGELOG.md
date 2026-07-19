@@ -6,8 +6,10 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Added
 
+- A native visual collection gallery that replaces the text-only collectible collection list.
+- A scrollable in-app gallery of exact numbered collectibles; clicking artwork selects it locally without opening Getgems.
+- Pink IntelGram primary and profile-art icons plus twelve coordinated color variants for macOS, Windows, and Linux.
 - A native in-app update log with the latest changes, main feature summary, privacy boundary, project credit, and full-changelog action.
-- A guaranteed visible collection list at the top of the collectible chooser, independent of live catalog availability.
 - IntelGram Telegram, GitHub, changelog, and technical changelog links inside the app.
 - A local supporter badge derived from membership in `@intelgrams` after the user joins through Telegram's normal channel page.
 - A detailed technical changelog covering source hooks, persistence, network boundaries, and validation.
@@ -20,8 +22,11 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Changed
 
+- Reorganized the local-profile page into identity, contact, photo, and collectible sections.
+- The name-color preview now follows the active locally rendered display name instead of the real-profile short name.
+- Rebuilt every Windows icon as a seven-size `.ico` and added matching native macOS and Linux assets.
 - Removed the inherited Boosty and cryptocurrency donation block from **Settings -> Other**.
-- Live collectible tiles now appear beneath the stable collection choices instead of leaving an empty chooser when catalog loading is unavailable.
+- Collection thumbnails now come from Telegram's read-only catalog, with read-only sample resolution as a fallback for established collections.
 - UID and phone queries now stay inside the local peer cache instead of entering normal remote message, topic, or username search.
 - Main README now leads with IntelGram's custom features and links to the full documentation.
 - Product-facing main-window, settings, version, and notification-preview titles now consistently use IntelGram.

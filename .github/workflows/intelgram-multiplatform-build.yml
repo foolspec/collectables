@@ -40,7 +40,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855
+  PATCH_SHA256: df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819
 
 jobs:
   macos:
@@ -94,7 +94,9 @@ jobs:
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
           grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-          grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'LocalProfileNameValue(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
+          grep -n 'AyuAssets::GRAPHITE_ICON' tdesktop/Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp
           grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
           grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'ShowIntelGramUpdateLog' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
@@ -442,7 +444,9 @@ jobs:
           if ($diff | Select-String -Pattern 'MTPchannels_JoinChannel|channels\.joinChannel|JoinChannel') { throw "Unexpected Telegram channel join reference" }
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
-          Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_LocalProfileGiftPickerLive
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -SimpleMatch LoadLocalGiftCollectionFallback
+          Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp -SimpleMatch 'LocalProfileNameValue(peer)'
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp -SimpleMatch 'AyuAssets::GRAPHITE_ICON'
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp -Pattern isIntelGramChannelMember
           Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_IntelGramLinksTechnicalChangelog
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern ShowIntelGramUpdateLog
@@ -539,7 +543,9 @@ jobs:
           fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-          grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'LocalProfileNameValue(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
+          grep -n 'AyuAssets::GRAPHITE_ICON' tdesktop/Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp
           grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
           grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'ShowIntelGramUpdateLog' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
@@ -632,6 +638,7 @@ jobs:
           cp intelgram-local-profile-render-overrides.patch release-assets/
           cp intelgram-local-profile-render-overrides.patch release-assets/ayugram-local-profile-render-overrides.patch
           cp build_intelgram_branding.py release-assets/
+          python3 -m zipfile -c release-assets/IntelGram-branding-assets.zip branding/icons generate_intelgram_character_icons.py
           find release-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
           mapfile -d '' RELEASE_ASSETS < <(find release-assets -maxdepth 1 -type f ! -empty -print0)
           test "${#RELEASE_ASSETS[@]}" -gt 0
@@ -641,5 +648,5 @@ jobs:
             --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, cached-peer search by UID or visible phone, and a bundled in-app update log. The in-app collectible browser loads Telegram's live read-only collection catalog, uses native animated gift rendering, loads exact numbered items as you scroll, accepts Getgems and TON links, and keeps the native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with grouped client-render-only profile controls, UID profile cloning, cached-peer search by UID or visible phone, a bundled update log, and fourteen platform-native app icon choices. Its native collectible gallery shows collection artwork, pages through exact numbered items inside IntelGram, accepts Getgems and TON links, and keeps Telegram's native collectible details. The name-color sample follows the local display name. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
             "${RELEASE_ASSETS[@]}"

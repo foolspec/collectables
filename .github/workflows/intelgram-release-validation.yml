@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 env:
-  SOURCE_PATCH_SHA256: 7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855
-  RELEASE_PATCH_SHA256: 7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855
+  SOURCE_PATCH_SHA256: df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819
+  RELEASE_PATCH_SHA256: df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819
 
 jobs:
   verify-release:
@@ -60,6 +60,7 @@ jobs:
             intelgram-local-profile-render-overrides.patch
             ayugram-local-profile-render-overrides.patch
             build_intelgram_branding.py
+            IntelGram-branding-assets.zip
           )
           for asset in "${required_assets[@]}"; do
             jq -e --arg name "$asset" '.assets[] | select(.name == $name)' <<<"$release" >/dev/null

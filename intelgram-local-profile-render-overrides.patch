@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec0869b901 100644
+index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27d71fc7cd 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,7 +37,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Collectibles and community**\n- The collection chooser always shows its collection list.\n- Live native collectible previews load underneath when available.\n- Settings now provide IntelGram community, source, and changelog links.\n- Joining @intelgrams through Telegram's normal channel page unlocks the local supporter badge.";
++"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile controls and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
 +"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
@@ -47,11 +47,15 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_CategoriesHeader" = "Categories";
  "ayu_SupportHeader" = "Support";
  "ayu_SupportDescription1" = "Support Development";
-@@ -8070,8 +8087,69 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8070,8 +8087,74 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SupportBoxReceiveBadgeInfo" = "After payment verification, you will receive a unique badge that will be displayed on your profile and visible to other users.";
  "ayu_CrashReporting" = "Crash Reporting";
  "ayu_CrashReportingDescription" = "When this option is enabled, you'll be prompted to send a report after the app crashes. You can decide whether to send it or not.";
 +"ayu_LocalProfileHeader" = "Local profile";
++"ayu_LocalProfileIdentityHeader" = "Identity";
++"ayu_LocalProfileContactHeader" = "Usernames, bio and contact";
++"ayu_LocalProfilePhotoHeader" = "Profile photo";
++"ayu_LocalProfileCollectiblesHeader" = "Collectibles";
 +"ayu_LocalProfileNameEnabled" = "Use local profile name";
 +"ayu_LocalProfileName" = "Local profile name";
 +"ayu_LocalProfileIdEnabled" = "Use local UID";
@@ -85,12 +89,13 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
 +"ayu_LocalProfileGift" = "Featured collectible gift";
 +"ayu_LocalProfileGifts" = "Pinned collectible gifts";
 +"ayu_LocalProfileGiftBrowse" = "Browse collectible gifts inside IntelGram";
-+"ayu_LocalProfileGiftDescription" = "Browse every collection currently returned by Telegram's read-only gift catalog, choose a collection and number, or paste a Telegram gift slug, t.me/nft link, Getgems item URL, or TON NFT address. The featured gift sets your local profile backdrop; up to six pinned gifts appear around your avatar.";
++"ayu_LocalProfileGiftDescription" = "The featured collectible sets your local profile backdrop. Up to six pinned collectibles appear around your avatar. These choices stay local to IntelGram.";
 +"ayu_LocalProfileGiftPickerPasteTitle" = "Paste collectible link";
-+"ayu_LocalProfileGiftPickerNumber" = "Number or market link";
++"ayu_LocalProfileGiftPickerNumber" = "Number or collectible link";
 +"ayu_LocalProfileGiftPickerPasteAbout" = "Paste a t.me/nft link, Getgems item URL, TON NFT address, or Telegram gift slug.";
 +"ayu_LocalProfileGiftPickerNumberAbout" = "Enter a collectible number from this collection, or paste a market link.";
 +"ayu_LocalProfileGiftPickerBrowserAbout" = "Scroll through real collectible models from this collection, click one to use it, or enter a number or market link above.";
++"ayu_LocalProfileGiftPickerItems" = "Collectibles";
 +"ayu_LocalProfileGiftPickerInvalid" = "That collectible could not be found.";
 +"ayu_LocalProfileGiftPickerResolving" = "Finding collectible...";
 +"ayu_LocalProfileGiftPickerLimit" = "You can pin up to six collectible gifts.";
@@ -98,9 +103,9 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
 +"ayu_LocalProfileGiftPickerUseFeatured" = "Use as featured gift";
 +"ayu_LocalProfileGiftPickerAddPinned" = "Add to pinned gifts";
 +"ayu_LocalProfileGiftPickerTitle" = "Choose a collectible";
-+"ayu_LocalProfileGiftPickerCollection" = "Choose a collection";
++"ayu_LocalProfileGiftPickerCollection" = "Collections";
 +"ayu_LocalProfileGiftPickerLive" = "Live collection previews";
-+"ayu_LocalProfileGiftPickerPaste" = "Paste a TON market link";
++"ayu_LocalProfileGiftPickerPaste" = "Open by collectible link";
 +"ayu_LocalProfileGiftPickerPickerAbout" = "The collection list stays available even when Telegram cannot load the live catalog. Native previews appear below when available; you can also paste any supported Telegram, Getgems, or TON market link.";
 +"ayu_LocalProfileGiftPickerManagePinned" = "Manage pinned collectible gifts";
 +"ayu_LocalProfileGiftPickerAdd" = "Add collectible";
@@ -118,7 +123,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_DisableColorfulCover" = "Disable adaptive color";
  "ayu_EnableColorfulCover" = "Enable adaptive color";
  "ayu_CustomizationHeader" = "Customization";
-@@ -8130,14 +8208,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8130,14 +8213,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SettingsBiggerWindow" = "Bigger Window";
  "ayu_SettingsIncreaseWebviewHeight" = "Increase Content Height";
  "ayu_SettingsIncreaseWebviewWidth" = "Increase Content Width";
@@ -135,7 +140,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_ImportDataDescription" = "It will replace the current database.";
  "ayu_ImportDataConfirm" = "Yes, replace existing";
  "ayu_ImportDataCancel" = "No, close window";
-@@ -8204,7 +8282,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8204,7 +8287,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_FiltersClearPopupAltActionText" = "Clear unknown";
  "ayu_AppIconHeader" = "App Icon";
  "ayu_IconDefault" = "Default";
@@ -144,7 +149,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_IconDiscord" = "Discord";
  "ayu_IconSpotify" = "Spotify";
  "ayu_IconExtera" = "extera";
-@@ -8214,8 +8292,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8214,8 +8297,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_IconAyuTyan" = "AyuTyan";
  "ayu_WALMode" = "Enable WAL mode";
  "ayu_PushNotificationCount" = "FCM notifications received";
@@ -155,7 +160,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_TelegramCacheDatabase" = "Telegram Messages Database";
  "ayu_ConfirmationsTitle" = "Confirmations";
  "ayu_StickerConfirmation" = "For Stickers";
-@@ -8288,9 +8366,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8288,9 +8371,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SuggestGhostModeStoryText" = "Do you want to enable **Ghost Mode** before viewing the story?";
  "ayu_SuggestGhostModeStoryActionTextYes" = "Yes";
  "ayu_SuggestGhostModeStoryActionTextNo" = "No";
@@ -167,7 +172,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..691899157481d60104290d06e99180ec
  "ayu_HideNextViewsDescriptionAyu" = "Hide my views forever, until Ghost Mode is disabled.";
  "ayu_EnableGhostModeStories" = "Enable Ghost Mode";
  "ayu_GhostModeIsActive" = "Ghost Mode is Active";
-@@ -8355,28 +8433,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8355,28 +8438,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_ContextCopyID" = "Copy ID";
  "ayu_IDCopiedToast" = "ID copied to clipboard.";
  "ayu_ContextHideMessage" = "Hide";
@@ -671,7 +676,7 @@ index a4b1e7ad414afc3e214fd954027e2df337668af4..b0bde67703dc416837022582839e1c50
  	builder.addSkip();
  }
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0a77d7c27 100644
+index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3da442e122 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 @@ -6,33 +6,44 @@
@@ -731,7 +736,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
  
  namespace Settings {
  
-@@ -41,156 +52,971 @@ using namespace AyuBuilder;
+@@ -41,156 +52,954 @@ using namespace AyuBuilder;
  
  namespace {
  
@@ -764,8 +769,13 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +struct LocalGiftCollection {
 +	QString title;
 +	QString slug;
-+};
-+
+ };
+ 
+-Asset getAsset(const QString &name) {
+-	const auto isNightMode = Window::Theme::IsNightMode();
+-	const auto normalized = name.toLower();
+-	QString icon = QString(":/gui/icons/ayu/donates/%1.svg").arg(normalized);
+-	QColor background = isNightMode ? QColor(0xEEEEEE) : QColor(0x242B2C);
 +struct LocalGiftBrowserState {
 +	rpl::variable<Ui::GiftsDescriptor> gifts;
 +	std::vector<Info::PeerGifts::GiftDescriptor> items;
@@ -775,13 +785,8 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +	int nextNumber = 1;
 +	bool loading = false;
 +	bool exhausted = false;
- };
- 
--Asset getAsset(const QString &name) {
--	const auto isNightMode = Window::Theme::IsNightMode();
--	const auto normalized = name.toLower();
--	QString icon = QString(":/gui/icons/ayu/donates/%1.svg").arg(normalized);
--	QColor background = isNightMode ? QColor(0xEEEEEE) : QColor(0x242B2C);
++};
++
 +constexpr auto kLocalGiftBrowserPageSize = 12;
 +
 +[[nodiscard]] std::vector<LocalGiftCollection> LocalGiftCollections() {
@@ -839,10 +844,11 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		if (!reference.isEmpty()) {
 +			result.push_back(reference);
 +		}
-+	}
+ 	}
 +	return result;
 +}
-+
+ 
+-	return image;
 +[[nodiscard]] QString SerializeLocalGiftReferences(
 +		const std::vector<QString> &references) {
 +	auto result = QStringList();
@@ -851,8 +857,40 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		result.push_back(reference);
 +	}
 +	return result.join(u", "_q);
-+}
-+
+ }
+ 
+-[[nodiscard]] not_null<Ui::SettingsButton*> AddDonate(
+-		not_null<Ui::SettingsButton*> button,
+-		const QString &name) {
+-	const auto btnContainer = Ui::CreateChild<Ui::RpWidget>(button);
+-	const auto &buttonSt = button->st();
+-	const auto fullHeight = buttonSt.height
+-		+ rect::m::sum::v(buttonSt.padding);
+-
+-	const auto iconWidget = Ui::CreateChild<Ui::RpWidget>(button.get());
+-
+-	auto icon = getImage(name);
+-	iconWidget->resize(icon.size() / style::DevicePixelRatio());
+-	iconWidget->paintRequest(
+-	) | rpl::on_next([=] {
+-		auto p = QPainter(iconWidget);
+-		p.drawImage(0, 0, icon);
+-	}, iconWidget->lifetime());
+-
+-	button->sizeValue(
+-	) | rpl::on_next([=](const QSize &s) {
+-		iconWidget->moveToLeft(
+-			button->st().iconLeft
+-				+ (st::menuIconShop.width() - iconWidget->width()) / 2,
+-			(s.height() - iconWidget->height()) / 2);
+-		btnContainer->moveToLeft(
+-			iconWidget->x() - (fullHeight - iconWidget->height()) / 2,
+-			0);
+-	}, iconWidget->lifetime());
+-
+-	btnContainer->resize(fullHeight, fullHeight);
+-
+-	return button;
 +[[nodiscard]] QString LocalGiftReferenceLabel(QString reference) {
 +	reference = Ayu::NormalizeLocalProfileGift(std::move(reference));
 +	static const auto Slug = QRegularExpression(u"^(.+)-([0-9]+)$"_q);
@@ -867,8 +905,25 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +	return (reference.size() > 38)
 +		? (reference.left(24) + u"..."_q + reference.right(8))
 +		: reference;
-+}
-+
+ }
+ 
+-void AddCryptoDonate(
+-		const QString &name,
+-		const QString &address,
+-		not_null<Ui::VerticalLayout*> container) {
+-	const auto button = AddDonate(
+-		AddButtonWithIcon(
+-			container,
+-			rpl::single(name),
+-			st::settingsButton),
+-		name);
+-	button->setClickedCallback([=] {
+-		auto box = Box(
+-			Ui::FillDonateQrBox,
+-			address,
+-			getAsset(name).icon);
+-		Ui::show(std::move(box));
+-	});
 +void ShowLocalGiftCollectionPicker(
 +	not_null<Window::SessionController*> controller,
 +	LocalGiftTarget target);
@@ -946,7 +1001,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +	for (auto i = 0; i != kLocalGiftBrowserPageSize; ++i) {
 +		references.push_back(
 +			collection.slug + '-' + QString::number(state->nextNumber++));
- 	}
++	}
 +	Ayu::ResolveLocalProfileGifts(
 +		&controller->session(),
 +		std::move(references),
@@ -967,13 +1022,12 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			state->gifts = Ui::GiftsDescriptor{ .list = state->items };
 +		});
 +}
- 
--	return image;
++
 +void LoadLocalGiftCollectionFallback(
 +		not_null<Window::SessionController*> controller,
 +		QPointer<Ui::GenericBox> box,
 +		not_null<LocalGiftBrowserState*> state) {
-+	if (!box) {
++	if (!box || !state->items.empty()) {
 +		return;
 +	}
 +	state->collections = LocalGiftCollections();
@@ -987,7 +1041,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		&controller->session(),
 +		std::move(references),
 +		[=](std::vector<std::shared_ptr<Data::StarGift>> gifts) {
-+			if (!box) {
++			if (!box || !state->items.empty()) {
 +				return;
 +			}
 +			for (const auto &gift : gifts) {
@@ -1000,38 +1054,20 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		});
  }
  
--[[nodiscard]] not_null<Ui::SettingsButton*> AddDonate(
--		not_null<Ui::SettingsButton*> button,
--		const QString &name) {
--	const auto btnContainer = Ui::CreateChild<Ui::RpWidget>(button);
--	const auto &buttonSt = button->st();
--	const auto fullHeight = buttonSt.height
--		+ rect::m::sum::v(buttonSt.padding);
+-void BuildDonations(SectionBuilder &builder) {
+-	builder.add([](const BuildContext &ctx) {
+-		v::match(ctx, [&](const WidgetContext &wctx) {
+-			const auto container = wctx.container;
 -
--	const auto iconWidget = Ui::CreateChild<Ui::RpWidget>(button.get());
--
--	auto icon = getImage(name);
--	iconWidget->resize(icon.size() / style::DevicePixelRatio());
--	iconWidget->paintRequest(
--	) | rpl::on_next([=] {
--		auto p = QPainter(iconWidget);
--		p.drawImage(0, 0, icon);
--	}, iconWidget->lifetime());
--
--	button->sizeValue(
--	) | rpl::on_next([=](const QSize &s) {
--		iconWidget->moveToLeft(
--			button->st().iconLeft
--				+ (st::menuIconShop.width() - iconWidget->width()) / 2,
--			(s.height() - iconWidget->height()) / 2);
--		btnContainer->moveToLeft(
--			iconWidget->x() - (fullHeight - iconWidget->height()) / 2,
--			0);
--	}, iconWidget->lifetime());
--
--	btnContainer->resize(fullHeight, fullHeight);
--
--	return button;
+-			AddSubsectionTitle(container, tr::ayu_SupportHeader());
+-			AddDonate(
+-				AddButtonWithIcon(
+-					container,
+-					rpl::single(QString("Boosty")),
+-					st::settingsButton),
+-				"boosty"
+-			)->setClickedCallback([=] {
+-				QDesktopServices::openUrl(QString("https://boosty.to/alexeyzavar"));
 +[[nodiscard]] bool ApplyLocalGiftCatalog(
 +		QPointer<Ui::GenericBox> box,
 +		not_null<LocalGiftBrowserState*> state) {
@@ -1052,7 +1088,26 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +				return entry.slug.compare(
 +					collection.slug,
 +					Qt::CaseInsensitive) == 0;
-+			});
+ 			});
+-			AddCryptoDonate("TON", QString("UQA4i8U8vP3mYUZSV3KqDQEHPwmhninEqCkkKc7BITQ652de"), container);
+-			AddCryptoDonate("Bitcoin", QString("bc1qdk6qq4mzq5yap3fpy0qau3246w3m3uwac9f0xd"), container);
+-			AddCryptoDonate("Ethereum", QString("0x405589857C8DFAb45B2027c68ad1e58877FDa347"), container);
+-			AddCryptoDonate("Solana", QString("8ZHQpPxpsdRjsWoBcF1dmvRM5dB6zEhJ3jMBFZjYfyHs"), container);
+-			AddCryptoDonate("Tron", QString("TRpbajq38qU8joThgAfKJLyEPbNjzsdPJ1"), container);
+-			AddSkip(container);
+-
+-			AddDividerText(container,
+-				tr::ayu_SupportDescription2(
+-					lt_item,
+-					rpl::single(
+-						Ui::Text::Link(tr::ayu_SupportDescription1(tr::now), QString("tg://support"))
+-					),
+-					tr::marked));
+-		}, [&](const SearchContext &sctx) {
+-			sctx.entries->push_back({
+-				.id = u"ayu/donate"_q,
+-				.title = tr::ayu_SupportHeader(tr::now),
+-				.section = sctx.sectionId,
 +		if (duplicate) {
 +			continue;
 +		}
@@ -1065,24 +1120,8 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +	}
 +	state->gifts = Ui::GiftsDescriptor{ .list = state->items };
 +	return true;
- }
- 
--void AddCryptoDonate(
--		const QString &name,
--		const QString &address,
--		not_null<Ui::VerticalLayout*> container) {
--	const auto button = AddDonate(
--		AddButtonWithIcon(
--			container,
--			rpl::single(name),
--			st::settingsButton),
--		name);
--	button->setClickedCallback([=] {
--		auto box = Box(
--			Ui::FillDonateQrBox,
--			address,
--			getAsset(name).icon);
--		Ui::show(std::move(box));
++}
++
 +void LoadLocalGiftCollections(
 +		not_null<Window::SessionController*> controller,
 +		QPointer<Ui::GenericBox> box,
@@ -1096,23 +1135,9 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		if (!ApplyLocalGiftCatalog(box, state)) {
 +			LoadLocalGiftCollectionFallback(controller, box, state);
 +		}
- 	});
- }
- 
--void BuildDonations(SectionBuilder &builder) {
--	builder.add([](const BuildContext &ctx) {
--		v::match(ctx, [&](const WidgetContext &wctx) {
--			const auto container = wctx.container;
--
--			AddSubsectionTitle(container, tr::ayu_SupportHeader());
--			AddDonate(
--				AddButtonWithIcon(
--					container,
--					rpl::single(QString("Boosty")),
--					st::settingsButton),
--				"boosty"
--			)->setClickedCallback([=] {
--				QDesktopServices::openUrl(QString("https://boosty.to/alexeyzavar"));
++	});
++}
++
 +void ShowLocalGiftCollectionBrowser(
 +		not_null<Window::SessionController*> controller,
 +		LocalGiftTarget target,
@@ -1129,9 +1154,9 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +				tr::ayu_LocalProfileGiftPickerNumber()),
 +			st::boxRowPadding);
 +		field->setMaxLength(Ayu::kMaxLocalProfileGiftReferenceLength);
-+		AddDividerText(
++		AddSubsectionTitle(
 +			content,
-+			tr::ayu_LocalProfileGiftPickerBrowserAbout());
++			tr::ayu_LocalProfileGiftPickerItems());
 +
 +		const auto state = box->lifetime().make_state<LocalGiftBrowserState>();
 +		const auto weak = QPointer<Ui::GenericBox>(box.get());
@@ -1277,44 +1302,6 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			tr::ayu_LocalProfileGiftPickerCollection());
 +		const auto state = box->lifetime().make_state<LocalGiftBrowserState>();
 +		const auto weak = QPointer<Ui::GenericBox>(box.get());
-+		state->collections = LocalGiftCollections();
-+		for (const auto &collection : state->collections) {
-+			const auto choice = collection;
-+			const auto button = AddButtonWithIcon(
-+				content,
-+				rpl::single(choice.title),
-+				st::settingsButton,
-+				{ &st::menuIconGiftPremium });
-+			button->setClickedCallback([=] {
-+				ShowLocalGiftCollectionBrowser(controller, target, choice);
-+				if (weak) {
-+					weak->closeBox();
-+				}
- 			});
--			AddCryptoDonate("TON", QString("UQA4i8U8vP3mYUZSV3KqDQEHPwmhninEqCkkKc7BITQ652de"), container);
--			AddCryptoDonate("Bitcoin", QString("bc1qdk6qq4mzq5yap3fpy0qau3246w3m3uwac9f0xd"), container);
--			AddCryptoDonate("Ethereum", QString("0x405589857C8DFAb45B2027c68ad1e58877FDa347"), container);
--			AddCryptoDonate("Solana", QString("8ZHQpPxpsdRjsWoBcF1dmvRM5dB6zEhJ3jMBFZjYfyHs"), container);
--			AddCryptoDonate("Tron", QString("TRpbajq38qU8joThgAfKJLyEPbNjzsdPJ1"), container);
--			AddSkip(container);
--
--			AddDividerText(container,
--				tr::ayu_SupportDescription2(
--					lt_item,
--					rpl::single(
--						Ui::Text::Link(tr::ayu_SupportDescription1(tr::now), QString("tg://support"))
--					),
--					tr::marked));
--		}, [&](const SearchContext &sctx) {
--			sctx.entries->push_back({
--				.id = u"ayu/donate"_q,
--				.title = tr::ayu_SupportHeader(tr::now),
--				.section = sctx.sectionId,
-+		}
-+		AddSkip(content);
-+		AddSubsectionTitle(
-+			content,
-+			tr::ayu_LocalProfileGiftPickerLive());
 +		content->add(Ui::MakeGiftsList({
 +			.window = controller,
 +			.peer = controller->session().user(),
@@ -1359,11 +1346,11 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			ShowLocalGiftReferenceBox(controller, target, {});
 +			box->closeBox();
 +		});
-+		AddDividerText(content, tr::ayu_LocalProfileGiftPickerPickerAbout());
 +		box->addButton(tr::lng_cancel(), [=] {
 +			box->closeBox();
 +		});
 +
++		LoadLocalGiftCollectionFallback(controller, weak, state);
 +		LoadLocalGiftCollections(controller, weak, state);
 +	}));
 +}
@@ -1548,6 +1535,8 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		},
 +	});
 +	builder.addDividerText(tr::ayu_LocalProfileCloneLocalOnly());
++	builder.addSkip();
++	builder.addSubsectionTitle(tr::ayu_LocalProfileIdentityHeader());
  
  	ayu.addSettingToggle({
 -		.id = u"ayu/crashReporting"_q,
@@ -1561,10 +1550,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		.getter = &AyuSettings::localProfileNameEnabled,
 +		.setter = &AyuSettings::setLocalProfileNameEnabled,
 +		.icon = { &st::menuIconProfile },
- 	});
--	builder.addSkip();
--	builder.addDividerText(tr::ayu_CrashReportingDescription());
--#endif
++	});
 +	builder.add([](const WidgetContext &wctx) {
 +		auto field = object_ptr<Ui::InputField>(
 +			wctx.container,
@@ -1627,7 +1613,13 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			.title = tr::ayu_LocalProfileId(tr::now),
 +			.icon = { &st::menuIconInfo },
 +		};
-+	});
+ 	});
+ 	builder.addSkip();
+-	builder.addDividerText(tr::ayu_CrashReportingDescription());
+-#endif
++	builder.addDivider();
++	builder.addSkip();
++	builder.addSubsectionTitle(tr::ayu_LocalProfileContactHeader());
 +	ayu.addSettingToggle({
 +		.id = u"ayu/localProfileUsernameEnabled"_q,
 +		.title = tr::ayu_LocalProfileUsernameEnabled(),
@@ -1761,6 +1753,10 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			.icon = { &st::menuIconInfo },
 +		};
 +	});
++	builder.addSkip();
++	builder.addDivider();
++	builder.addSkip();
++	builder.addSubsectionTitle(tr::ayu_LocalProfilePhotoHeader());
 +	builder.addButton({
 +		.id = u"ayu/localProfilePhoto"_q,
 +		.title = tr::ayu_LocalProfilePhotoChoose(),
@@ -1780,6 +1776,8 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +		},
 +	});
 +	builder.addDividerText(tr::ayu_LocalProfileDescription());
++	builder.addSkip();
++	builder.addSubsectionTitle(tr::ayu_LocalProfileCollectiblesHeader());
 +	ayu.addSettingToggle({
 +		.id = u"ayu/localProfileGiftEnabled"_q,
 +		.title = tr::ayu_LocalProfileGiftEnabled(),
@@ -1814,22 +1812,12 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..47e02cc7d062f1ec6ffc8ffb2dbef3d0
 +			controller->showToast(tr::lng_box_done(tr::now));
 +		},
 +	});
-+	builder.addButton({
-+		.id = u"ayu/localProfileGiftBrowse"_q,
-+		.title = tr::ayu_LocalProfileGiftBrowse(),
-+		.icon = { &st::menuIconGiftPremium },
-+		.onClick = [=] {
-+			ShowLocalGiftCollectionPicker(
-+				controller,
-+				LocalGiftTarget::Featured);
-+		},
-+	});
 +	builder.addDividerText(tr::ayu_LocalProfileGiftDescription());
 +	builder.addDividerText(tr::ayu_LocalProfileCredit());
  }
  
  void BuildOtherThings(SectionBuilder &builder) {
-@@ -233,9 +1059,8 @@ const auto kMeta = BuildHelper({
+@@ -233,9 +1042,8 @@ const auto kMeta = BuildHelper({
  }, [](SectionBuilder &builder) {
  	auto ayu = AyuSectionBuilder(builder);
  
@@ -3155,6 +3143,34 @@ index 021679a64047004ca7806b37c8edeb2346794b4d..8023b0aa04e80fedff0bede46ae17206
 +bool isSupporterPeer(not_null<PeerData*> peer);
  bool isCustomBadgePeer(ID peerId);
  CustomBadge getCustomBadge(ID peerId);
+ 
+diff --git a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp b/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
+index 5f813d2b796d2578e569e9b24b7004cc055cc551..107a3e7f9e48d5af6d0ec8beedcb0ed69ffbf5f3 100644
+--- a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
++++ b/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
+@@ -7,9 +7,10 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "boxes/peers/edit_peer_color_box.h"
+ 
+-#include "apiwrap.h"
+ #include "api/api_peer_colors.h"
+ #include "api/api_peer_photo.h"
++#include "apiwrap.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "base/unixtime.h"
+ #include "boxes/peers/replace_boost_box.h"
+ #include "boxes/background_box.h"
+@@ -2558,10 +2559,7 @@ void SetupPeerColorSample(
+ 	) | rpl::map([=] {
+ 		return peer->emojiStatusId();
+ 	});
+-	auto name = peer->session().changes().peerFlagsValue(
+-		peer,
+-		Data::PeerUpdate::Flag::Name
+-	) | rpl::map([=] { return peer->shortName(); });
++	auto name = Ayu::LocalProfileNameValue(peer);
+ 
+ 	const auto sampleSize = st::settingsColorSampleSize;
  
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
 index 6533de425088bb632d83ceed51bdd2a7132807f2..753fef54205636e8073a85d8a5dbf034728fbbb1 100644
