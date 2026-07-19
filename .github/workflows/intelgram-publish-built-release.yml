@@ -67,6 +67,11 @@ jobs:
           cp intelgram-local-profile-render-overrides.patch release-assets/
           cp intelgram-local-profile-render-overrides.patch release-assets/ayugram-local-profile-render-overrides.patch
           cp build_intelgram_branding.py release-assets/
+          for log in launch-macos.log launch-windows.log launch-windows-error.log launch-linux.log; do
+            if [[ -f "release-assets/$log" && ! -s "release-assets/$log" ]]; then
+              printf 'IntelGram produced no console output and remained running for the launch smoke-test window.\n' > "release-assets/$log"
+            fi
+          done
           find release-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
           for required in \
             IntelGram-macOS-Apple-Silicon.dmg \

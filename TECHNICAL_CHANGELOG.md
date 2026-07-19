@@ -75,6 +75,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The current source patch and the latest published package patch are tracked with separate hashes in `intelgram-release-validation.yml`.
 - This prevents the release badge from claiming that an unreleased source revision is already inside the downloadable packages.
 - The manual release publisher accepts separate successful macOS, Windows, and Linux run IDs, verifies each required package and validation report, and combines them into one permanent release.
+- A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
 - The latest published packages remain the previously validated release from build run `29615304415`; this unreleased entry describes the source revision that follows it.
 
 ## Initial IntelGram Local Profile Implementation
