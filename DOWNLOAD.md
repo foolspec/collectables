@@ -17,7 +17,8 @@ Verified package SHA-256 digests:
 - Windows x64 ZIP: `0b6ff68018ca5e207f34d05835db41e60a0e5e4d52665e525484080697cee49c`
 - Linux x64 tar.gz: `30e99ac393d041d349dc78ecced50472540ca3189537417e013738341b5128ee`
 
-Release: [`intelgram-v6.7.8-local-profile-20260718-2`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260718-2)  
+Release: [`intelgram-v6.7.8-local-profile-20260718-2`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260718-2)
+
 Validation: [passed package verification](https://github.com/foolspec/IntelGram/actions/runs/29667061031)
 
 The application is named `IntelGram`. Its distinct bundle and application IDs let it coexist with a normal AyuGram installation. The macOS package is ad-hoc signed, so macOS may require Control-click, then **Open**, on first launch.
