@@ -71,6 +71,7 @@ jobs:
 
           (
             cd "$download"
+            sed -i 's/\r$//' IntelGram-*-sha256.txt IntelGram-*-validation.txt
             sha256sum -c IntelGram-macOS-sha256.txt
             sha256sum -c IntelGram-Windows-sha256.txt
             sha256sum -c IntelGram-Linux-sha256.txt

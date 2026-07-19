@@ -73,6 +73,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 ### Release State
 
 - Release validation compares the current source and release patch hashes, downloads every package, runs each published checksum file, and checks GitHub's package digests against those checksums.
+- Temporary validation copies normalize platform-native checksum and report line endings before GNU checksum verification.
 - Every platform validation report must record the current patch hash and a passed launch smoke test; all launch logs and packaging inputs must also be present.
 - The manual release publisher accepts separate successful macOS, Windows, and Linux run IDs, verifies each required package and validation report, and combines them into one permanent release.
 - Release notes enumerate the main local-only features, supported packages, explicit supporter-join behavior, privacy boundary, credit, and links to both changelogs.
