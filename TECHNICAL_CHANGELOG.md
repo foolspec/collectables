@@ -72,8 +72,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 
 ### Release State
 
-- The current source patch and the latest published package patch are tracked with separate hashes in `intelgram-release-validation.yml`.
-- This prevents the release badge from claiming that an unreleased source revision is already inside the downloadable packages.
+- Release validation compares the current source and release patch hashes, downloads every package, runs each published checksum file, and checks GitHub's package digests against those checksums.
+- Every platform validation report must record the current patch hash and a passed launch smoke test; all launch logs and packaging inputs must also be present.
 - The manual release publisher accepts separate successful macOS, Windows, and Linux run IDs, verifies each required package and validation report, and combines them into one permanent release.
 - A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
 - The latest published packages remain the previously validated release from build run `29615304415`; this unreleased entry describes the source revision that follows it.

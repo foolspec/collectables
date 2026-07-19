@@ -14,13 +14,13 @@ permissions:
 
 env:
   SOURCE_PATCH_SHA256: 7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855
-  RELEASE_PATCH_SHA256: 5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1
+  RELEASE_PATCH_SHA256: 7a24591be241d6abbe9c78469145f8356d5b1784babea5789efa751cb391d855
 
 jobs:
   verify-release:
     name: Verify published packages
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -37,35 +37,66 @@ jobs:
         run: |
           set -euo pipefail
           release="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest")"
+          tag="$(jq -r '.tag_name' <<<"$release")"
           test "$(jq -r '.draft' <<<"$release")" = "false"
           test "$(jq -r '.prerelease' <<<"$release")" = "false"
           test "$(jq -r '.name' <<<"$release")" = "IntelGram v6.7.8 - macOS, Windows, Linux"
 
-          verify_asset() {
+          required_assets=(
+            IntelGram-macOS-Apple-Silicon.dmg
+            IntelGram-macOS-Apple-Silicon.zip
+            IntelGram-Windows-x64.zip
+            IntelGram-Linux-x64.tar.gz
+            IntelGram-macOS-sha256.txt
+            IntelGram-Windows-sha256.txt
+            IntelGram-Linux-sha256.txt
+            IntelGram-macOS-validation.txt
+            IntelGram-Windows-validation.txt
+            IntelGram-Linux-validation.txt
+            launch-macos.log
+            launch-windows.log
+            launch-windows-error.log
+            launch-linux.log
+            intelgram-local-profile-render-overrides.patch
+            ayugram-local-profile-render-overrides.patch
+            build_intelgram_branding.py
+          )
+          for asset in "${required_assets[@]}"; do
+            jq -e --arg name "$asset" '.assets[] | select(.name == $name)' <<<"$release" >/dev/null
+          done
+
+          download="$(mktemp -d)"
+          trap 'rm -rf "$download"' EXIT
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --dir "$download"
+
+          (
+            cd "$download"
+            sha256sum -c IntelGram-macOS-sha256.txt
+            sha256sum -c IntelGram-Windows-sha256.txt
+            sha256sum -c IntelGram-Linux-sha256.txt
+            test "$(sha256sum intelgram-local-profile-render-overrides.patch | awk '{print $1}')" = "$RELEASE_PATCH_SHA256"
+            test "$(sha256sum ayugram-local-profile-render-overrides.patch | awk '{print $1}')" = "$RELEASE_PATCH_SHA256"
+            cmp intelgram-local-profile-render-overrides.patch ayugram-local-profile-render-overrides.patch
+            for validation in IntelGram-*-validation.txt; do
+              grep -F "Patch: $SOURCE_PATCH_SHA256" "$validation"
+              grep -F "Launch smoke test: PASS" "$validation"
+            done
+          )
+
+          verify_package_digest() {
             local name="$1"
-            local expected="$2"
+            local checksum="$2"
+            local expected
             local actual
+            expected="$(awk -v name="$name" '$2 == name { print $1 }' "$download/$checksum")"
+            test -n "$expected"
             actual="$(jq -r --arg name "$name" '.assets[] | select(.name == $name) | .digest' <<<"$release")"
             test "$actual" = "sha256:$expected"
           }
 
-          verify_asset "IntelGram-macOS-Apple-Silicon.dmg" "3ce2fa367ad163377b09ac4efb5148190e04e3cb89f54dafa6ff777a32dd0b0d"
-          verify_asset "IntelGram-macOS-Apple-Silicon.zip" "2a822877392f6d207671f1dad01faf1dc1f7bf502843c5183347c5ce21126a36"
-          verify_asset "IntelGram-Windows-x64.zip" "7431e9ee35c089856638f75aa26184a08041d404322118e313330b9fbad2bee6"
-          verify_asset "IntelGram-Linux-x64.tar.gz" "f940160541dc268dec285d7ff2f7041d2c6fe00c0469e1dbb173c8fe5d2cd6ea"
-          verify_asset "intelgram-local-profile-render-overrides.patch" "$RELEASE_PATCH_SHA256"
-          verify_asset "ayugram-local-profile-render-overrides.patch" "$RELEASE_PATCH_SHA256"
+          verify_package_digest IntelGram-macOS-Apple-Silicon.dmg IntelGram-macOS-sha256.txt
+          verify_package_digest IntelGram-macOS-Apple-Silicon.zip IntelGram-macOS-sha256.txt
+          verify_package_digest IntelGram-Windows-x64.zip IntelGram-Windows-sha256.txt
+          verify_package_digest IntelGram-Linux-x64.tar.gz IntelGram-Linux-sha256.txt
 
-          for asset in \
-            IntelGram-macOS-sha256.txt \
-            IntelGram-macOS-validation.txt \
-            IntelGram-Windows-sha256.txt \
-            IntelGram-Windows-validation.txt \
-            IntelGram-Linux-sha256.txt \
-            IntelGram-Linux-validation.txt \
-            launch-macos.log \
-            launch-linux.log; do
-            jq -e --arg name "$asset" '.assets[] | select(.name == $name)' <<<"$release" >/dev/null
-          done
-
-          echo "Verified release $(jq -r '.tag_name' <<<"$release") with all required IntelGram packages."
+          echo "Verified release $tag with all required IntelGram packages."
