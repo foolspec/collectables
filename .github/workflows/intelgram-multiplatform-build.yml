@@ -8,9 +8,20 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to build
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - macos
+          - windows
+          - linux
 
 concurrency:
-  group: intelgram-multiplatform-build
+  group: intelgram-multiplatform-build-${{ github.event_name == 'workflow_dispatch' && inputs.platform || 'all' }}
   cancel-in-progress: true
 
 permissions:
@@ -24,6 +35,7 @@ env:
 jobs:
   macos:
     name: macOS Apple Silicon
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'macos' }}
     runs-on: macos-26
     timeout-minutes: 350
     env:
@@ -202,6 +214,7 @@ jobs:
 
   windows_dependencies_1:
     name: Windows dependencies 1 of 9
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
@@ -479,6 +492,7 @@ jobs:
 
   linux:
     name: Linux x64
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'linux' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     steps:
@@ -584,6 +598,7 @@ jobs:
 
   release:
     name: Publish IntelGram release
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.platform == 'all' }}
     runs-on: ubuntu-24.04
     needs: [macos, windows, linux]
     steps:
