@@ -60,6 +60,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 
 - Visible IntelGram product name.
 - In-app links to `@intelgrams`, the IntelGram GitHub repository, and both changelogs.
+- Bundled native update log covering the latest changes, main features, privacy boundary, and project credit.
 - Optional local supporter badge after the user explicitly joins `@intelgrams` through Telegram's channel page.
 - Separate macOS bundle identifier, Windows application identifier, and Linux desktop identifiers.
 - Packages for macOS Apple Silicon, Windows x64, and Linux x64.

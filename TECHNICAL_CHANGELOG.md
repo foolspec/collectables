@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `5039d065566b88f94918fd1972fd0dda7a6817ddb15aeece06ffc0c9ff16e764`.
-- Patch footprint: 28 source files, 2,848 insertions, and 373 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `81b000aa219f355ff7be66688fccd77e59c7bfde648dc9234df4611077d4c58a`.
+- Patch footprint: 28 source files, 2,921 insertions, and 382 deletions relative to the local baseline snapshot.
 
 ### Collectible Chooser Reliability
 
@@ -23,9 +23,17 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 ### Settings And Project Links
 
 - Removed `BuildDonations` and its Boosty, TON, Bitcoin, Ethereum, Solana, and Tron rows from **Settings -> Other**.
-- Added first-party rows for `@intelgrams`, `foolspec/IntelGram`, `CHANGELOG.md`, and `TECHNICAL_CHANGELOG.md`.
+- Added first-party rows for `@intelgrams`, the bundled update log, `foolspec/IntelGram`, `CHANGELOG.md`, and `TECHNICAL_CHANGELOG.md`.
 - The Telegram row calls `Window::SessionController::showPeerByLink` and leaves joining to Telegram's normal channel UI.
 - External documentation rows use `QDesktopServices::openUrl` with explicit GitHub URLs.
+
+### In-App Update Log
+
+- `ShowIntelGramUpdateLog` opens an existing `Ui::GenericBox` from the IntelGram settings page.
+- The bundled localized content is split into latest-update, main-feature, privacy-boundary, and credit sections using `Ui::AddSubsectionTitle` and `Ui::AddDividerText`.
+- The dialog requires no network access to display its update summary.
+- An explicit **View full changelog** action opens `CHANGELOG.md` on GitHub for the complete history.
+- The multiplatform workflow checks for `ShowIntelGramUpdateLog` after applying the source patch.
 
 ### Consent-Based Supporter Badge
 

@@ -19,7 +19,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 5039d065566b88f94918fd1972fd0dda7a6817ddb15aeece06ffc0c9ff16e764
+  PATCH_SHA256: 81b000aa219f355ff7be66688fccd77e59c7bfde648dc9234df4611077d4c58a
 
 jobs:
   macos:
@@ -75,6 +75,7 @@ jobs:
           grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
           grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'ShowIntelGramUpdateLog' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
           grep -n 'userByPhone(phoneQuery)' tdesktop/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
@@ -418,6 +419,7 @@ jobs:
           Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_LocalProfileGiftPickerLive
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp -Pattern isIntelGramChannelMember
           Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_IntelGramLinksTechnicalChangelog
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern ShowIntelGramUpdateLog
           Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
           Select-String -Path tdesktop/Telegram/SourceFiles/window/main_window.cpp -Pattern 'u"IntelGram"_q'
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern 'IntelGram Desktop v'
@@ -513,6 +515,7 @@ jobs:
           grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
           grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'ShowIntelGramUpdateLog' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
           grep -n 'AppFile = "IntelGram"' tdesktop/Telegram/SourceFiles/core/version.h
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
           grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
@@ -610,5 +613,5 @@ jobs:
             --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, and cached-peer search by UID or visible phone. The in-app collectible browser loads Telegram's live read-only collection catalog, uses native animated gift rendering, loads exact numbered items as you scroll, accepts Getgems and TON links, and keeps the native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, cached-peer search by UID or visible phone, and a bundled in-app update log. The in-app collectible browser loads Telegram's live read-only collection catalog, uses native animated gift rendering, loads exact numbered items as you scroll, accepts Getgems and TON links, and keeps the native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
             "${RELEASE_ASSETS[@]}"

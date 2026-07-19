@@ -13,6 +13,7 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 - Find an already-loaded user by UID or by a phone number that is visible to your account, directly from the normal chat-list search field.
 - Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
 - Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
+- Read the latest changes and main feature summary from a bundled update log inside IntelGram.
 - Open the IntelGram community and project links directly from settings, with an optional local supporter badge after you join `@intelgrams` yourself.
 - Keep every override client-render-only, with no Telegram profile, ownership, contact, or account mutation.
 
@@ -55,6 +56,8 @@ Choose a local image to replace your own profile photo throughout this IntelGram
 
 The IntelGram settings page links to [`@intelgrams`](https://t.me/intelgrams), this GitHub repository, and both changelogs. Joining the channel is an explicit Telegram action: open the channel and press Telegram's normal **Join** button. IntelGram then derives the supporter badge from the locally known membership state; it never joins a channel in the background.
 
+Open **IntelGram Settings -> IntelGram -> Update log** to read the latest update, main IntelGram features, and local-only privacy boundary without leaving the app. The dialog also provides an optional link to the complete GitHub changelog.
+
 ## Local Means Local
 
 These controls only change how your own profile is rendered inside this IntelGram installation. They do not change your Telegram display name, photo, bio, username, UID, phone number, emoji status, collectible ownership, or profile data. Other Telegram users do not see the local overrides.
@@ -74,7 +77,7 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `5039d065566b88f94918fd1972fd0dda7a6817ddb15aeece06ffc0c9ff16e764`
+- Patch SHA-256: `81b000aa219f355ff7be66688fccd77e59c7bfde648dc9234df4611077d4c58a`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.
 - Every release includes SHA-256 checksums, platform validation notes, and launch logs.

@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..1581389 100644
+index 7380587..6918991 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -23,20 +23,31 @@ index 7380587..1581389 100644
  "ayu_KeepAliveServiceNote" = "We recommend migrating to **FCM** version.";
  "ayu_DisableAds" = "Disable Ads";
  "ayu_DisableStories" = "Disable Stories";
-@@ -8056,6 +8056,12 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8056,6 +8056,23 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_LinksChats" = "Chats";
  "ayu_LinksTranslate" = "Translate";
  "ayu_LinksDocumentation" = "Documentation";
 +"ayu_IntelGramLinksHeader" = "IntelGram";
 +"ayu_IntelGramLinksTelegram" = "Telegram";
 +"ayu_IntelGramLinksGitHub" = "GitHub";
++"ayu_IntelGramLinksUpdateLog" = "Update log";
 +"ayu_IntelGramLinksChangelog" = "Changelog";
 +"ayu_IntelGramLinksTechnicalChangelog" = "Technical changelog";
 +"ayu_IntelGramLinksDescription" = "Join @intelgrams from its channel page to unlock the local IntelGram supporter badge.";
++"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
++"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
++"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
++"ayu_IntelGramUpdateLogCurrent" = "**Collectibles and community**\n- The collection chooser always shows its collection list.\n- Live native collectible previews load underneath when available.\n- Settings now provide IntelGram community, source, and changelog links.\n- Joining @intelgrams through Telegram's normal channel page unlocks the local supporter badge.";
++"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
++"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
++"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
++"ayu_IntelGramUpdateLogPrivacy" = "These features change only what this IntelGram installation renders for your own profile. They do not update your Telegram profile, import contacts, change collectible ownership, or join a channel automatically.";
++"ayu_IntelGramUpdateLogCredit" = "IntelGram local profile tools by fool.";
++"ayu_IntelGramUpdateLogFull" = "View full changelog";
  "ayu_CategoriesHeader" = "Categories";
  "ayu_SupportHeader" = "Support";
  "ayu_SupportDescription1" = "Support Development";
-@@ -8070,8 +8076,69 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8070,8 +8087,69 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SupportBoxReceiveBadgeInfo" = "After payment verification, you will receive a unique badge that will be displayed on your profile and visible to other users.";
  "ayu_CrashReporting" = "Crash Reporting";
  "ayu_CrashReportingDescription" = "When this option is enabled, you'll be prompted to send a report after the app crashes. You can decide whether to send it or not.";
@@ -107,7 +118,7 @@ index 7380587..1581389 100644
  "ayu_DisableColorfulCover" = "Disable adaptive color";
  "ayu_EnableColorfulCover" = "Enable adaptive color";
  "ayu_CustomizationHeader" = "Customization";
-@@ -8130,14 +8197,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8130,14 +8208,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SettingsBiggerWindow" = "Bigger Window";
  "ayu_SettingsIncreaseWebviewHeight" = "Increase Content Height";
  "ayu_SettingsIncreaseWebviewWidth" = "Increase Content Width";
@@ -124,7 +135,7 @@ index 7380587..1581389 100644
  "ayu_ImportDataDescription" = "It will replace the current database.";
  "ayu_ImportDataConfirm" = "Yes, replace existing";
  "ayu_ImportDataCancel" = "No, close window";
-@@ -8204,7 +8271,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8204,7 +8282,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_FiltersClearPopupAltActionText" = "Clear unknown";
  "ayu_AppIconHeader" = "App Icon";
  "ayu_IconDefault" = "Default";
@@ -133,7 +144,7 @@ index 7380587..1581389 100644
  "ayu_IconDiscord" = "Discord";
  "ayu_IconSpotify" = "Spotify";
  "ayu_IconExtera" = "extera";
-@@ -8214,8 +8281,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8214,8 +8292,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_IconAyuTyan" = "AyuTyan";
  "ayu_WALMode" = "Enable WAL mode";
  "ayu_PushNotificationCount" = "FCM notifications received";
@@ -144,7 +155,7 @@ index 7380587..1581389 100644
  "ayu_TelegramCacheDatabase" = "Telegram Messages Database";
  "ayu_ConfirmationsTitle" = "Confirmations";
  "ayu_StickerConfirmation" = "For Stickers";
-@@ -8288,9 +8355,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8288,9 +8366,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SuggestGhostModeStoryText" = "Do you want to enable **Ghost Mode** before viewing the story?";
  "ayu_SuggestGhostModeStoryActionTextYes" = "Yes";
  "ayu_SuggestGhostModeStoryActionTextNo" = "No";
@@ -156,7 +167,7 @@ index 7380587..1581389 100644
  "ayu_HideNextViewsDescriptionAyu" = "Hide my views forever, until Ghost Mode is disabled.";
  "ayu_EnableGhostModeStories" = "Enable Ghost Mode";
  "ayu_GhostModeIsActive" = "Ghost Mode is Active";
-@@ -8355,28 +8422,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8355,28 +8433,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_ContextCopyID" = "Copy ID";
  "ayu_IDCopiedToast" = "ID copied to clipboard.";
  "ayu_ContextHideMessage" = "Hide";
@@ -478,18 +489,101 @@ index 97a0439..ece9215 100644
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-index a4b1e7a..3de2071 100644
+index a4b1e7a..31f0d6b 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-@@ -31,6 +31,7 @@
+@@ -6,31 +6,36 @@
+ // Copyright @Radolyn, 2026
+ #include "ayu/ui/settings/settings_main.h"
+ 
+-#include "settings/sections/settings_main.h"
+-#include "lang_auto.h"
+-#include "ayu/ayu_settings.h"
+-#include "ayu/ui/ayu_logo.h"
+ #include "ayu/ui/settings/settings_appearance.h"
+ #include "ayu/ui/settings/settings_ayu.h"
+ #include "ayu/ui/settings/settings_chats.h"
+ #include "ayu/ui/settings/settings_filters.h"
+ #include "ayu/ui/settings/settings_general.h"
+ #include "ayu/ui/settings/settings_other.h"
++#include "ayu/ui/ayu_logo.h"
++#include "ayu/ayu_settings.h"
++#include "boxes/abstract_box.h"
+ #include "core/version.h"
++#include "settings/sections/settings_main.h"
+ #include "settings/settings_builder.h"
+ #include "settings/settings_common.h"
+-#include "styles/style_ayu_settings.h"
+-#include "styles/style_layers.h"
+-#include "styles/style_menu_icons.h"
+-#include "styles/style_settings.h"
+-#include "ui/painter.h"
++#include "ui/layers/generic_box.h"
+ #include "ui/widgets/buttons.h"
+ #include "ui/widgets/labels.h"
+ #include "ui/wrap/vertical_layout.h"
++#include "ui/painter.h"
++#include "ui/vertical_list.h"
+ #include "window/window_session_controller.h"
  #include "window/window_session_controller_link_info.h"
++#include "lang_auto.h"
++
++#include "styles/style_ayu_settings.h"
++#include "styles/style_layers.h"
++#include "styles/style_menu_icons.h"
++#include "styles/style_settings.h"
  
  #include <QDesktopServices>
 +#include <QUrl>
  
  namespace Settings {
  
-@@ -137,52 +138,52 @@ void BuildLinks(SectionBuilder &builder) {
+@@ -132,57 +137,106 @@ void BuildCategories(SectionBuilder &builder) {
+ 	});
+ }
+ 
++void ShowIntelGramUpdateLog(
++		not_null<Window::SessionController*> controller) {
++	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
++		box->setWidth(st::boxWideWidth);
++		box->setNoContentMargin(true);
++		box->setTitle(tr::ayu_IntelGramUpdateLogTitle());
++		const auto content = box->verticalLayout();
++
++		Ui::AddSubsectionTitle(
++			content,
++			tr::ayu_IntelGramUpdateLogCurrentTitle());
++		Ui::AddDividerText(
++			content,
++			tr::ayu_IntelGramUpdateLogCurrent(tr::rich));
++		Ui::AddSubsectionTitle(
++			content,
++			tr::ayu_IntelGramUpdateLogFeaturesTitle());
++		Ui::AddDividerText(
++			content,
++			tr::ayu_IntelGramUpdateLogFeatures(tr::rich));
++		Ui::AddSubsectionTitle(
++			content,
++			tr::ayu_IntelGramUpdateLogPrivacyTitle());
++		Ui::AddDividerText(
++			content,
++			tr::ayu_IntelGramUpdateLogPrivacy(tr::rich));
++		Ui::AddDividerText(
++			content,
++			tr::ayu_IntelGramUpdateLogCredit());
++
++		box->addButton(tr::ayu_IntelGramUpdateLogFull(), [=] {
++			QDesktopServices::openUrl(QUrl(
++				u"https://github.com/foolspec/IntelGram/blob/main/CHANGELOG.md"_q));
++		});
++		box->addButton(tr::lng_box_done(), [=] {
++			box->closeBox();
++		});
++	}));
++}
++
+ void BuildLinks(SectionBuilder &builder) {
+ 	builder.addSkip();
  	builder.addDivider();
  	builder.addSkip();
  
@@ -518,16 +612,15 @@ index a4b1e7a..3de2071 100644
 -		.title = tr::ayu_LinksChats(),
 -		.icon = { &st::menuIconChats },
 -		.label = rpl::single(QString("@ayugramchat")),
-+		.id = u"intelgram/github"_q,
-+		.title = tr::ayu_IntelGramLinksGitHub(),
-+		.icon = { &st::menuIconIpAddress },
-+		.label = rpl::single(u"foolspec/IntelGram"_q),
++		.id = u"intelgram/updateLog"_q,
++		.title = tr::ayu_IntelGramLinksUpdateLog(),
++		.icon = { &st::menuIconInfo },
++		.label = tr::ayu_IntelGramUpdateLogLabel(),
  		.onClick = [=] {
 -			controller->showPeerByLink(Window::PeerByLinkInfo{
 -				.usernameOrId = QString("ayugramchat"),
 -			});
-+			QDesktopServices::openUrl(QUrl(
-+				u"https://github.com/foolspec/IntelGram"_q));
++			ShowIntelGramUpdateLog(controller);
  		},
  	});
  	builder.addButton({
@@ -535,15 +628,15 @@ index a4b1e7a..3de2071 100644
 -		.title = tr::ayu_LinksTranslate(),
 -		.icon = { &st::menuIconTranslate },
 -		.label = rpl::single(QString("Crowdin")),
-+		.id = u"intelgram/changelog"_q,
-+		.title = tr::ayu_IntelGramLinksChangelog(),
-+		.icon = { &st::menuIconShowAll },
-+		.label = rpl::single(u"CHANGELOG.md"_q),
++		.id = u"intelgram/github"_q,
++		.title = tr::ayu_IntelGramLinksGitHub(),
++		.icon = { &st::menuIconIpAddress },
++		.label = rpl::single(u"foolspec/IntelGram"_q),
  		.onClick = [=] {
 -			QDesktopServices::openUrl(
 -				QString("https://translate.ayugram.one"));
 +			QDesktopServices::openUrl(QUrl(
-+				u"https://github.com/foolspec/IntelGram/blob/main/CHANGELOG.md"_q));
++				u"https://github.com/foolspec/IntelGram"_q));
  		},
  	});
  	builder.addButton({
@@ -551,6 +644,16 @@ index a4b1e7a..3de2071 100644
 -		.title = tr::ayu_LinksDocumentation(),
 -		.icon = { &st::menuIconIpAddress },
 -		.label = rpl::single(QString("docs.ayugram.one")),
++		.id = u"intelgram/changelog"_q,
++		.title = tr::ayu_IntelGramLinksChangelog(),
++		.icon = { &st::menuIconShowAll },
++		.label = rpl::single(u"CHANGELOG.md"_q),
++		.onClick = [=] {
++			QDesktopServices::openUrl(QUrl(
++				u"https://github.com/foolspec/IntelGram/blob/main/CHANGELOG.md"_q));
++		},
++	});
++	builder.addButton({
 +		.id = u"intelgram/technicalChangelog"_q,
 +		.title = tr::ayu_IntelGramLinksTechnicalChangelog(),
 +		.icon = { &st::menuIconChats },

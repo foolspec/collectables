@@ -43,3 +43,7 @@ No. They are visible only in this IntelGram installation. Screenshots will natur
 ## How do I get the IntelGram supporter badge?
 
 Open **IntelGram Settings -> IntelGram -> Telegram**, then press Telegram's normal **Join** button on `@intelgrams`. IntelGram reads that locally known membership state and displays the badge on your own profile. It does not join the channel automatically, and leaving the channel removes the local membership-derived badge after Telegram updates the channel state.
+
+## Where can I read the update log?
+
+Open **IntelGram Settings -> IntelGram -> Update log**. The bundled dialog summarizes the latest update, main IntelGram features, and the local-only privacy boundary. **View full changelog** opens the longer GitHub history when you need it.

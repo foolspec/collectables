@@ -6,6 +6,7 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Added
 
+- A native in-app update log with the latest changes, main feature summary, privacy boundary, project credit, and full-changelog action.
 - A guaranteed visible collection list at the top of the collectible chooser, independent of live catalog availability.
 - IntelGram Telegram, GitHub, changelog, and technical changelog links inside the app.
 - A local supporter badge derived from membership in `@intelgrams` after the user joins through Telegram's normal channel page.
