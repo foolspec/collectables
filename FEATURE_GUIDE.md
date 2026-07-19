@@ -42,7 +42,7 @@ The preview follows the name IntelGram currently renders for your own profile. C
 
 ## What happens when I click a rendered collectible?
 
-IntelGram opens Telegram's native unique-gift detail surface for that exact model and number. The local selection does not claim ownership or create a transaction.
+IntelGram opens Telegram's native unique-gift detail surface for that exact model and number. For a locally selected or cloned collectible, **Gifted to** uses the display name IntelGram currently renders for you, and clicking that recipient opens your own profile. The local presentation does not claim ownership, rewrite the real sender or date, or create a transaction.
 
 ## Can anybody else see these changes?
 

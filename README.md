@@ -13,6 +13,7 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 - Find an already-loaded user by UID or by a phone number that is visible to your account, directly from the normal chat-list search field.
 - Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
 - Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
+- Open locally featured and cloned gift details with your currently rendered display name as the recipient and a recipient link back to your own profile.
 - Work through grouped **Identity**, **Usernames, bio and contact**, **Profile photo**, and **Collectibles** settings instead of one long control list.
 - Keep the name-color preview synchronized with the locally rendered display name.
 - Choose the pink IntelGram icon, its profile-art variant, or any of twelve supplied color variants from the in-app icon picker.
@@ -53,7 +54,7 @@ In the main chat-list search field, paste a UID, `id: UID`, or a visible phone n
 
 Clicking your username in IntelGram's profile settings opens the local username editor. The familiar inline Telegram-style status validates local syntax and shows the local value as available without sending a username check or save request to Telegram.
 
-The collectible picker opens as a native visual collection gallery. Choose a collection card to open a scrollable grid of its exact numbered collectibles, click any artwork to select it without leaving IntelGram, or paste a supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
+The collectible picker opens as a native visual collection gallery. Choose a collection card to open a scrollable grid of its exact numbered collectibles, click any artwork to select it without leaving IntelGram, or paste a supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked. For a locally selected or cloned gift, the detail view presents the recipient as your real or enabled local display name and links that recipient to your own profile; the gift's actual ownership, sender, date, and transaction data are not changed.
 
 The local-profile page is split into focused identity, contact, photo, and collectible groups. **Settings -> Appearance -> App Icon** includes the new pink IntelGram artwork, a profile-art alternate, and twelve coordinated color variants. The name-color editor uses your currently rendered local display name in its preview.
 
@@ -82,7 +83,7 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895`
+- Patch SHA-256: `e609844f99eb7bfe87d8d0ac25ab6fee59006133119ed74857d610f2ba66b228`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`branding/icons`](branding/icons) contains the pink character artwork and twelve color masters with generated macOS, Windows, and Linux resources; [`generate_intelgram_character_icons.py`](generate_intelgram_character_icons.py) reproduces them.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.

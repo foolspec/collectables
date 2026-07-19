@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..fe37ffe 100644
+index 7380587..9c6a0b9 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,7 +37,7 @@ index 7380587..fe37ffe 100644
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
++"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Locally featured and cloned gift details now show your rendered display name as the recipient and link back to your own profile.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
 +"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram, including badges, emoji status, and personal channel.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
@@ -3211,6 +3211,56 @@ index 021679a..8023b0a 100644
  bool isCustomBadgePeer(ID peerId);
  CustomBadge getCustomBadge(ID peerId);
  
+diff --git a/Telegram/SourceFiles/boxes/gift_premium_box.cpp b/Telegram/SourceFiles/boxes/gift_premium_box.cpp
+index 88d437a..860f39e 100644
+--- a/Telegram/SourceFiles/boxes/gift_premium_box.cpp
++++ b/Telegram/SourceFiles/boxes/gift_premium_box.cpp
+@@ -49,6 +49,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "ui/basic_click_handlers.h" // UrlClickHandler::Open.
+ #include "ui/boxes/boost_box.h" // StartFireworks.
+ #include "ui/boxes/confirm_box.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "ui/controls/userpic_button.h"
+ #include "ui/controls/table_rows.h"
+ #include "ui/effects/credits_graphics.h"
+@@ -1734,17 +1735,17 @@ void AddStarGiftTable(
+ 				? (original.message.empty()
+ 					? tr::lng_gift_unique_info_sender(
+ 						lt_from,
+-						rpl::single(tr::link(from->name(), 2)),
++						rpl::single(tr::link(Ayu::LocalProfileName(from), 2)),
+ 						lt_recipient,
+-						rpl::single(tr::link(to->name(), 1)),
++						rpl::single(tr::link(Ayu::LocalProfileName(to), 1)),
+ 						lt_date,
+ 						rpl::single(dateText),
+ 						tr::marked)
+ 					: tr::lng_gift_unique_info_sender_comment(
+ 						lt_from,
+-						rpl::single(tr::link(from->name(), 2)),
++						rpl::single(tr::link(Ayu::LocalProfileName(from), 2)),
+ 						lt_recipient,
+-						rpl::single(tr::link(to->name(), 1)),
++						rpl::single(tr::link(Ayu::LocalProfileName(to), 1)),
+ 						lt_date,
+ 						rpl::single(dateText),
+ 						lt_text,
+@@ -1753,13 +1754,13 @@ void AddStarGiftTable(
+ 				: (original.message.empty()
+ 					? tr::lng_gift_unique_info_reciever(
+ 						lt_recipient,
+-						rpl::single(tr::link(to->name(), 1)),
++						rpl::single(tr::link(Ayu::LocalProfileName(to), 1)),
+ 						lt_date,
+ 						rpl::single(dateText),
+ 						tr::marked)
+ 					: tr::lng_gift_unique_info_reciever_comment(
+ 						lt_recipient,
+-						rpl::single(tr::link(to->name(), 1)),
++						rpl::single(tr::link(Ayu::LocalProfileName(to), 1)),
+ 						lt_date,
+ 						rpl::single(dateText),
+ 						lt_text,
 diff --git a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp b/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
 index 5f813d2..107a3e7 100644
 --- a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
@@ -3238,6 +3288,161 @@ index 5f813d2..107a3e7 100644
 +	auto name = Ayu::LocalProfileNameValue(peer);
  
  	const auto sampleSize = st::settingsColorSampleSize;
+ 
+diff --git a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+index e2d4aa8..b4a9735 100644
+--- a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
++++ b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+@@ -29,6 +29,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "ui/text/format_values.h"
+ #include "ui/widgets/menu/menu_add_action_callback.h"
+ #include "window/window_session_controller.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "styles/style_info.h"
+ #include "styles/style_menu_icons.h"
+ 
+@@ -224,7 +225,7 @@ void ProcessFullPhoto(
+ 			: QString();
+ 		const auto hasChannel = !channelUsername.isEmpty();
+ 		return PeerShortInfoFields{
+-			.name = peer->name(),
++			.name = Ayu::LocalProfileName(peer),
+ 			.channelName = hasChannel ? channel->name() : QString(),
+ 			.channelLink = (hasChannel
+ 				? channel->session().createInternalLinkFull(channelUsername)
+diff --git a/Telegram/SourceFiles/core/local_url_handlers.cpp b/Telegram/SourceFiles/core/local_url_handlers.cpp
+index 7595146..2307c1a 100644
+--- a/Telegram/SourceFiles/core/local_url_handlers.cpp
++++ b/Telegram/SourceFiles/core/local_url_handlers.cpp
+@@ -43,6 +43,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "data/data_birthday.h"
+ #include "data/data_channel.h"
+ #include "data/data_document.h"
++#include "data/data_peer.h"
++#include "data/data_star_gift.h"
+ #include "data/data_poll.h"
+ #include "data/data_session.h"
+ #include "data/data_user.h"
+@@ -2074,27 +2076,36 @@ bool StartUrlRequiresActivate(const QString &url) {
+ 		: !InternalPassportOrOAuthLink(url);
+ }
+ 
+-void ResolveAndShowUniqueGift(
++namespace {
++
++void ResolveAndShowUniqueGiftImpl(
+ 		std::shared_ptr<ChatHelpers::Show> show,
+ 		const QString &slug,
+-		::Settings::CreditsEntryBoxStyleOverrides st) {
++		::Settings::CreditsEntryBoxStyleOverrides st,
++		PeerId localRecipientId) {
+ 	struct Request {
+ 		base::weak_ptr<Main::Session> weak;
+ 		QString slug;
++		PeerId localRecipientId = 0;
+ 		mtpRequestId id = 0;
+ 	};
+ 	static auto request = Request();
+ 
+ 	const auto session = &show->session();
+-	if (request.weak.get() == session && request.slug == slug) {
++	if (request.weak.get() == session
++		&& request.slug == slug
++		&& request.localRecipientId == localRecipientId) {
+ 		return;
+ 	} else if (const auto strong = request.weak.get()) {
+ 		strong->api().request(request.id).cancel();
+ 	}
+ 	request.weak = session;
+ 	request.slug = slug;
++	request.localRecipientId = localRecipientId;
+ 	const auto clear = [=] {
+-		if (request.weak.get() == session && request.slug == slug) {
++		if (request.weak.get() == session
++			&& request.slug == slug
++			&& request.localRecipientId == localRecipientId) {
+ 			request = {};
+ 		}
+ 	};
+@@ -2107,12 +2118,21 @@ void ResolveAndShowUniqueGift(
+ 		session->data().processUsers(data.vusers());
+ 		if (const auto gift = Api::FromTL(session, data.vgift())) {
+ 			Core::App().hideMediaView();
++			auto presented = *gift;
++			if (localRecipientId && presented.unique) {
++				presented.unique = std::make_shared<Data::UniqueGift>(
++					*presented.unique);
++				if (presented.unique->originalDetails.recipientId) {
++					presented.unique->originalDetails.recipientId
++						= localRecipientId;
++				}
++			}
+ 
+ 			using namespace ::Settings;
+ 			show->show(Box(
+ 				GlobalStarGiftBox,
+ 				show,
+-				*gift,
++				presented,
+ 				StarGiftResaleInfo(),
+ 				st));
+ 			show->activate();
+@@ -2125,12 +2145,32 @@ void ResolveAndShowUniqueGift(
+ 	}).send();
+ }
+ 
++} // namespace
++
++void ResolveAndShowUniqueGift(
++		std::shared_ptr<ChatHelpers::Show> show,
++		const QString &slug,
++		::Settings::CreditsEntryBoxStyleOverrides st) {
++	ResolveAndShowUniqueGiftImpl(std::move(show), slug, st, PeerId());
++}
++
+ void ResolveAndShowUniqueGift(
+ 		std::shared_ptr<ChatHelpers::Show> show,
+ 		const QString &slug) {
+ 	ResolveAndShowUniqueGift(std::move(show), slug, {});
+ }
+ 
++void ResolveAndShowUniqueGiftForLocalProfile(
++		std::shared_ptr<ChatHelpers::Show> show,
++		const QString &slug,
++		not_null<PeerData*> recipient) {
++	ResolveAndShowUniqueGiftImpl(
++		std::move(show),
++		slug,
++		{},
++		recipient->id);
++}
++
+ TimeId ParseVideoTimestamp(QStringView value) {
+ 	const auto kExp = u"^(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s)?$"_q;
+ 	const auto m = QRegularExpression(kExp).match(value);
+diff --git a/Telegram/SourceFiles/core/local_url_handlers.h b/Telegram/SourceFiles/core/local_url_handlers.h
+index af9c2a4..047fc72 100644
+--- a/Telegram/SourceFiles/core/local_url_handlers.h
++++ b/Telegram/SourceFiles/core/local_url_handlers.h
+@@ -15,6 +15,8 @@ namespace ChatHelpers {
+ class Show;
+ } // namespace ChatHelpers
+ 
++class PeerData;
++
+ namespace Settings {
+ struct CreditsEntryBoxStyleOverrides;
+ } // namespace Settings
+@@ -53,6 +55,10 @@ void ResolveAndShowUniqueGift(
+ void ResolveAndShowUniqueGift(
+ 	std::shared_ptr<ChatHelpers::Show> show,
+ 	const QString &slug);
++void ResolveAndShowUniqueGiftForLocalProfile(
++	std::shared_ptr<ChatHelpers::Show> show,
++	const QString &slug,
++	not_null<PeerData*> recipient);
+ 
+ [[nodiscard]] TimeId ParseVideoTimestamp(QStringView value);
  
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
 index 6533de4..753fef5 100644
@@ -4022,7 +4227,7 @@ index 4855a6a..1339538 100644
  
  } // namespace Info::Profile
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..15d7716 100644
+index a410a35..928d38c 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4041,7 +4246,7 @@ index a410a35..15d7716 100644
  #include "ayu/utils/telegram_helpers.h"
  
  
-@@ -415,8 +417,14 @@ TopBar::TopBar(
+@@ -415,8 +417,26 @@ TopBar::TopBar(
  			std::move(badgeUpdates),
  			_badge->updated());
  
@@ -4049,16 +4254,28 @@ index a410a35..15d7716 100644
 -			::Settings::ShowEmojiStatusPremium(controller, peer);
 +		_badge->setPremiumClickCallback([=, peer = _peer] {
 +			if (_localCollectible) {
-+				Core::ResolveAndShowUniqueGift(
-+					controller->uiShow(),
-+					_localCollectible->slug);
++				const auto locallyPresented = peer->isSelf()
++					&& (Ayu::LocalProfileCloneUser(peer)
++						|| ranges::contains(
++							_localProfileGiftIds,
++							_localCollectible->id));
++				if (locallyPresented) {
++					Core::ResolveAndShowUniqueGiftForLocalProfile(
++						controller->uiShow(),
++						_localCollectible->slug,
++						peer);
++				} else {
++					Core::ResolveAndShowUniqueGift(
++						controller->uiShow(),
++						_localCollectible->slug);
++				}
 +			} else {
 +				::Settings::ShowEmojiStatusPremium(controller, peer);
 +			}
  		});
  	}
  	if (_verified) {
-@@ -430,12 +438,7 @@ TopBar::TopBar(
+@@ -430,12 +450,7 @@ TopBar::TopBar(
  			_botVerify->updated());
  	}
  	if (_exteraBadge) {
@@ -4072,7 +4289,7 @@ index a410a35..15d7716 100644
  		badgeUpdates = rpl::merge(
  			std::move(badgeUpdates),
  			_exteraBadge->updated());
-@@ -475,6 +478,7 @@ TopBar::TopBar(
+@@ -475,6 +490,7 @@ TopBar::TopBar(
  
  	rpl::merge(
  		style::PaletteChanged(),
@@ -4080,7 +4297,7 @@ index a410a35..15d7716 100644
  		_peer->session().data().giftUpdates() | rpl::filter([=](
  				const Data::GiftUpdate &update) {
  			if (update.action == Data::GiftUpdate::Action::Pin) {
-@@ -1409,8 +1413,9 @@ void TopBar::setupUniqueBadgeTooltip() {
+@@ -1409,8 +1425,9 @@ void TopBar::setupUniqueBadgeTooltip() {
  		if (_badgeCollectibleId == id) {
  			return;
  		}
@@ -4091,7 +4308,7 @@ index a410a35..15d7716 100644
  			return;
  		}
  		_badgeTooltip = std::make_unique<BadgeTooltip>(
-@@ -1489,17 +1494,29 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
+@@ -1489,17 +1506,29 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
  
  void TopBar::setLocalEmojiStatusId(EmojiStatusId emojiStatusId) {
  	_localCollectible = emojiStatusId.collectible;
@@ -4129,7 +4346,7 @@ index a410a35..15d7716 100644
  }
  
  auto TopBar::effectiveCollectible() const
-@@ -1508,7 +1525,7 @@ auto TopBar::effectiveCollectible() const
+@@ -1508,7 +1537,7 @@ auto TopBar::effectiveCollectible() const
  		? _localCollectible
  		: _localColorProfileIndex
  		? nullptr
@@ -4138,7 +4355,7 @@ index a410a35..15d7716 100644
  }
  
  void TopBar::paintEdges(QPainter &p, const QBrush &brush) const {
-@@ -2360,14 +2377,57 @@ void TopBar::setupPinnedToTopGifts(
+@@ -2360,14 +2389,63 @@ void TopBar::setupPinnedToTopGifts(
  		updateCollectibleStatus();
  		setupNewGifts(controller, gifts);
  	});
@@ -4146,6 +4363,7 @@ index a410a35..15d7716 100644
 +	const auto appendLocal = crl::guard(this, [=](
 +			std::vector<Data::SavedStarGift> gifts) mutable {
 +		const auto references = Ayu::LocalProfileGiftReferences(_peer);
++		_localProfileGiftIds.clear();
 +		Ayu::ResolveLocalProfileGifts(
 +			&_peer->session(),
 +			references,
@@ -4153,6 +4371,11 @@ index a410a35..15d7716 100644
 +					std::vector<std::shared_ptr<Data::StarGift>> local) mutable {
 +				if (references != Ayu::LocalProfileGiftReferences(_peer)) {
 +					return;
++				}
++				for (const auto &gift : local) {
++					if (gift && gift->unique) {
++						_localProfileGiftIds.push_back(gift->unique->id);
++					}
 +				}
 +				auto status = Ayu::LocalProfileEmojiStatusId(_peer);
 +				if (!local.empty() && local.front() && local.front()->unique) {
@@ -4199,12 +4422,28 @@ index a410a35..15d7716 100644
  		: CollectibleId(0);
  	auto filteredGifts = std::vector<Data::SavedStarGift>();
  	const auto subtract = emojiStatusId ? 1 : 0;
-@@ -2441,7 +2501,16 @@ void TopBar::setupNewGifts(
+@@ -2440,8 +2518,31 @@ void TopBar::setupNewGifts(
+ 		}());
  		entry.button->show();
  
- 		entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
+-		entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
 -			::Settings::ShowSavedStarGiftBox(controller, peer, giftData);
-+			if (!giftData.manageId && giftData.info.unique) {
++		const auto locallyPresented = _peer->isSelf()
++			&& (Ayu::LocalProfileCloneUser(_peer)
++				|| (gift.info.unique
++					&& ranges::contains(
++						_localProfileGiftIds,
++						gift.info.unique->id)));
++		entry.button->setClickedCallback([
++				=,
++				giftData = gift,
++				peer = _peer] {
++			if (locallyPresented && giftData.info.unique) {
++				Core::ResolveAndShowUniqueGiftForLocalProfile(
++					controller->uiShow(),
++					giftData.info.unique->slug,
++					peer);
++			} else if (!giftData.manageId && giftData.info.unique) {
 +				Core::ResolveAndShowUniqueGift(
 +					controller->uiShow(),
 +					giftData.info.unique->slug);
@@ -4217,6 +4456,18 @@ index a410a35..15d7716 100644
  		});
  
  		_pinnedToTopGifts.push_back(std::move(entry));
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.h b/Telegram/SourceFiles/info/profile/info_profile_top_bar.h
+index deaedd9..a404cd0 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.h
++++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.h
+@@ -284,6 +284,7 @@ private:
+ 	};
+ 	bool _pinnedToTopGiftsFirstTimeShowed = false;
+ 	std::vector<PinnedToTopGiftEntry> _pinnedToTopGifts;
++	std::vector<CollectibleId> _localProfileGiftIds;
+ 	std::unique_ptr<Ui::Animations::Simple> _giftsAppearing;
+ 	std::unique_ptr<Ui::Animations::Simple> _giftsHiding;
+ 	rpl::lifetime _giftsLoadingLifetime;
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 index 19c194b..e166cc3 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp

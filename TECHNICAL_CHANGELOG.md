@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895`.
-- Patch footprint: 30 source files, 3,034 insertions, and 408 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `e609844f99eb7bfe87d8d0ac25ab6fee59006133119ed74857d610f2ba66b228`.
+- Patch footprint: 35 source files, 3,128 insertions, and 421 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -25,6 +25,14 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `BuildLocalProfile` now separates clone controls, identity, usernames/bio/contact, profile photo, and collectibles with native subsection headings and dividers.
 - Removed the duplicate collectible-browser action; featured and pinned flows both enter the same native collection gallery.
 - `SetupPeerColorSample` now consumes `Ayu::LocalProfileNameValue(peer)`, so the name-color preview reacts to the local display-name setting and clone state.
+
+### Local Gift Detail Presentation
+
+- `Core::ResolveAndShowUniqueGiftForLocalProfile` reuses the existing read-only unique-gift resolver and Telegram detail box for locally featured, pinned, and cloned collectibles.
+- The resolver deep-copies the fetched `Data::UniqueGift` presentation object and substitutes only `originalDetails.recipientId` with the signed-in peer for the local detail view.
+- The recipient label consumes `Ayu::LocalProfileName`, so it shows the real display name when no local name is enabled and the local or cloned display name when one is active.
+- Telegram's existing recipient click handler therefore opens the signed-in user's short profile; that short-profile title also consumes the local name helper.
+- `ownerId`, sender, date, price, transfer, resale, and every underlying Telegram or on-chain ownership field remain unchanged. Normal non-local gift details continue through the original resolver.
 
 ### Profile Clone Fidelity And Username Editor
 
@@ -90,7 +98,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Both patch filenames have identical SHA-256 digests.
 - Clean patch application and reverse-application checks pass against the pinned baseline snapshot.
 - Added-line scans find no channel-join, profile-update, contact-import, gift-transfer, sale, purchase, or ownership mutation request.
-- The only custom network paths are the standard read-only full-peer refresh after clone selection, read-only collectible catalog/detail resolution, and optional read-only TON NFT metadata resolution.
+- The only custom network paths are the standard read-only full-peer refresh after clone selection, read-only collectible catalog/detail resolution, and optional read-only TON NFT metadata resolution; local recipient presentation reuses the same detail response without sending any write request.
 - A full local build was intentionally not run because the upstream repository's `AGENTS.md` says to avoid building the project.
 
 ### Release State
