@@ -85,10 +85,32 @@ jobs:
           done
           mapfile -d '' RELEASE_ASSETS < <(find release-assets -maxdepth 1 -type f ! -empty -print0)
           test "${#RELEASE_ASSETS[@]}" -gt 0
+          cat > release-notes.md <<'EOF'
+          ## IntelGram v6.7.8
+
+          This release contains launch-tested IntelGram packages for macOS Apple Silicon, Windows x64, and Linux x64.
+
+          ### Main features
+
+          - Client-render-only display name, UID, primary and other usernames, anonymous number, bio, and profile photo for your own account.
+          - Local profile cloning from an already-loaded peer by UID, plus cached-peer search by UID or a phone number already visible to your account.
+          - A native in-app collectible browser with Telegram's read-only live catalog, exact numbered gifts, native previews and details, and Telegram, Getgems, and TON link input.
+          - A featured local collectible backdrop and up to six pinned local collectibles around your avatar.
+          - A bundled in-app update log plus IntelGram Telegram, GitHub, product changelog, and technical changelog links.
+          - An optional supporter badge after you explicitly join `@intelgrams` through Telegram's normal channel page.
+
+          ### Local-only boundary
+
+          IntelGram does not update your Telegram name, photo, username, UID, phone, bio, emoji status, contacts, collectible ownership, or channel membership. Other Telegram users do not see these local overrides.
+
+          See the [complete feature list](https://github.com/foolspec/IntelGram/blob/main/FEATURES.md), [changelog](https://github.com/foolspec/IntelGram/blob/main/CHANGELOG.md), and [technical changelog](https://github.com/foolspec/IntelGram/blob/main/TECHNICAL_CHANGELOG.md).
+
+          Local profile and collectible override features by **fool**.
+          EOF
           gh release create "$RELEASE_TAG" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with client-render-only local display name, UID, primary and other usernames, anonymous number, bio, profile photo, UID profile cloning, cached-peer search by UID or visible phone, and a bundled in-app update log. The in-app collectible browser loads Telegram's live read-only collection catalog, uses native animated gift rendering, loads exact numbered items as you scroll, accepts Getgems and TON links, and keeps the native collectible details. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
+            --notes-file release-notes.md \
             "${RELEASE_ASSETS[@]}"
