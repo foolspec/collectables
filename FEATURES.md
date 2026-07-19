@@ -45,7 +45,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Accepts a collection number, Telegram gift slug, `t.me/nft` link, Getgems item URL, friendly or raw TON NFT address.
 - Resolves exact model, pattern, backdrop, number, and native artwork read-only.
 - Uses Telegram's native unique-gift detail surface when a rendered collectible is clicked.
-- Presents locally selected and cloned gifts as gifted to your currently rendered self name, with the recipient link opening your own profile.
+- Presents locally selected and cloned gifts as gifted to your currently rendered self name, with both the recipient link and Telegram profile chip opening your own profile.
 - Supports one local featured collectible and up to six local pinned collectibles.
 - Uses the featured collectible for the local profile backdrop and places pinned gifts around the local avatar.
 - Never changes ownership, transfers, lists, purchases, upgrades, pins, or features a gift on Telegram.

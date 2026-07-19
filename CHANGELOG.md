@@ -29,7 +29,7 @@ All notable IntelGram custom-feature changes are recorded here.
 - Cloned badge, status, and personal-channel elements now disappear locally when the source profile lacks them instead of falling back to the real self profile.
 - Clone selection now refreshes the already-known source user's full profile read-only so visible badge and personal-channel metadata is ready for local rendering.
 - The name-color preview now follows the active locally rendered display name instead of the real-profile short name.
-- Locally presented gift details now name the signed-in user with the active real or local display name and open the signed-in user's profile from the recipient link, without rewriting ownership or transaction metadata.
+- Locally presented gift details now name the signed-in user with the active real or local display name in both the recipient link and Telegram profile chip; both open the signed-in user's profile without rewriting ownership or transaction metadata.
 - Rebuilt every Windows icon as a seven-size `.ico` and added matching native macOS and Linux assets.
 - Removed the inherited Boosty and cryptocurrency donation block from **Settings -> Other**.
 - Collection thumbnails now come from Telegram's read-only catalog, with read-only sample resolution as a fallback for established collections.

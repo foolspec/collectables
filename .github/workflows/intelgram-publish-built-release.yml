@@ -99,7 +99,7 @@ jobs:
           - A native in-app collectible browser with Telegram's read-only live catalog, exact numbered gifts, native previews and details, and Telegram, Getgems, and TON link input.
           - A visual collection gallery and scrollable exact-item gallery that selects collectibles without leaving IntelGram.
           - A featured local collectible backdrop and up to six pinned local collectibles around your avatar.
-          - Local and cloned collectible details present **Gifted to** with your active rendered display name and link back to your own profile, without changing ownership data.
+          - Local and cloned collectible details present **Gifted to** and the **Telegram** profile chip with your active rendered display name; both link back to your own profile without changing ownership data.
           - Grouped local profile settings, a name-color preview that follows the local display name, and fourteen platform-native app icon choices.
           - A bundled in-app update log plus IntelGram Telegram, GitHub, product changelog, and technical changelog links.
           - An optional supporter badge after you explicitly join `@intelgrams` through Telegram's normal channel page.

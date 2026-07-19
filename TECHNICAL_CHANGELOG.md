@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `e609844f99eb7bfe87d8d0ac25ab6fee59006133119ed74857d610f2ba66b228`.
-- Patch footprint: 35 source files, 3,128 insertions, and 421 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3`.
+- Patch footprint: 37 source files, 3,137 insertions, and 423 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -30,8 +30,9 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 
 - `Core::ResolveAndShowUniqueGiftForLocalProfile` reuses the existing read-only unique-gift resolver and Telegram detail box for locally featured, pinned, and cloned collectibles.
 - The resolver deep-copies the fetched `Data::UniqueGift` presentation object and substitutes only `originalDetails.recipientId` with the signed-in peer for the local detail view.
-- The recipient label consumes `Ayu::LocalProfileName`, so it shows the real display name when no local name is enabled and the local or cloned display name when one is active.
-- Telegram's existing recipient click handler therefore opens the signed-in user's short profile; that short-profile title also consumes the local name helper.
+- `StarGiftResaleInfo::localProfileRecipientId` overrides only the detail entry's displayed Telegram host peer, so the native Telegram profile chip uses the same signed-in peer while the unique gift's actual `hostId` and `ownerId` remain intact.
+- The recipient label and peer-table value consume `Ayu::LocalProfileName`, so they show the real display name when no local name is enabled and the local or cloned display name when one is active.
+- Telegram's existing click handlers therefore open the signed-in user's short profile from either surface; that short-profile title also consumes the local name helper.
 - `ownerId`, sender, date, price, transfer, resale, and every underlying Telegram or on-chain ownership field remain unchanged. Normal non-local gift details continue through the original resolver.
 
 ### Profile Clone Fidelity And Username Editor

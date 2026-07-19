@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..9c6a0b9 100644
+index 7380587..57fa763 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,7 +37,7 @@ index 7380587..9c6a0b9 100644
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Locally featured and cloned gift details now show your rendered display name as the recipient and link back to your own profile.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
++"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Locally featured and cloned gift details now show your rendered display name in both the recipient link and Telegram profile chip, with both opening your own profile.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
 +"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram, including badges, emoji status, and personal channel.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
@@ -3311,7 +3311,7 @@ index e2d4aa8..b4a9735 100644
  			.channelLink = (hasChannel
  				? channel->session().createInternalLinkFull(channelUsername)
 diff --git a/Telegram/SourceFiles/core/local_url_handlers.cpp b/Telegram/SourceFiles/core/local_url_handlers.cpp
-index 7595146..2307c1a 100644
+index 7595146..8227156 100644
 --- a/Telegram/SourceFiles/core/local_url_handlers.cpp
 +++ b/Telegram/SourceFiles/core/local_url_handlers.cpp
 @@ -43,6 +43,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3364,7 +3364,7 @@ index 7595146..2307c1a 100644
  			request = {};
  		}
  	};
-@@ -2107,12 +2118,21 @@ void ResolveAndShowUniqueGift(
+@@ -2107,13 +2118,24 @@ void ResolveAndShowUniqueGift(
  		session->data().processUsers(data.vusers());
  		if (const auto gift = Api::FromTL(session, data.vgift())) {
  			Core::App().hideMediaView();
@@ -3383,11 +3383,15 @@ index 7595146..2307c1a 100644
  				GlobalStarGiftBox,
  				show,
 -				*gift,
+-				StarGiftResaleInfo(),
 +				presented,
- 				StarGiftResaleInfo(),
++				StarGiftResaleInfo{
++					.localProfileRecipientId = localRecipientId,
++				},
  				st));
  			show->activate();
-@@ -2125,12 +2145,32 @@ void ResolveAndShowUniqueGift(
+ 		}
+@@ -2125,12 +2147,32 @@ void ResolveAndShowUniqueGift(
  	}).send();
  }
  
@@ -4737,6 +4741,35 @@ index fbe74c4..1902d29 100644
  		}
  	});
  }
+diff --git a/Telegram/SourceFiles/settings/settings_credits_graphics.cpp b/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
+index 9ac4584..56133a2 100644
+--- a/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
++++ b/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
+@@ -2722,7 +2722,11 @@ void GlobalStarGiftBox(
+ 		CreditsEntryBoxStyleOverrides st) {
+ 	const auto selfId = show->session().userPeerId();
+ 	const auto ownerId = data.unique ? data.unique->ownerId.value : 0;
+-	const auto hostId = data.unique ? data.unique->hostId.value : 0;
++	const auto hostId = resale.localProfileRecipientId
++		? resale.localProfileRecipientId.value
++		: data.unique
++		? data.unique->hostId.value
++		: 0;
+ 	Settings::GenericCreditsEntryBox(
+ 		box,
+ 		show,
+diff --git a/Telegram/SourceFiles/settings/settings_credits_graphics.h b/Telegram/SourceFiles/settings/settings_credits_graphics.h
+index f517eb4..6723023 100644
+--- a/Telegram/SourceFiles/settings/settings_credits_graphics.h
++++ b/Telegram/SourceFiles/settings/settings_credits_graphics.h
+@@ -193,6 +193,7 @@ void CreditsPrizeBox(
+ 
+ struct StarGiftResaleInfo {
+ 	PeerId recipientId;
++	PeerId localProfileRecipientId;
+ 	bool forceTon = false;
+ };
+ void GlobalStarGiftBox(
 diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
 index 40692d9..744bccc 100644
 --- a/Telegram/SourceFiles/ui/controls/table_rows.cpp

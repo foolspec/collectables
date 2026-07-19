@@ -40,7 +40,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: e609844f99eb7bfe87d8d0ac25ab6fee59006133119ed74857d610f2ba66b228
+  PATCH_SHA256: 049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3
 
 jobs:
   macos:
@@ -98,6 +98,7 @@ jobs:
           grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
           grep -n 'ResolveAndShowUniqueGiftForLocalProfile' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
+          grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
           grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
@@ -455,6 +456,7 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp -SimpleMatch LocalProfilePersonalChannelValue
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp -SimpleMatch ResolveAndShowUniqueGiftForLocalProfile
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp -SimpleMatch 'Ayu::LocalProfileName(to)'
+          Select-String -Path tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp -SimpleMatch localProfileRecipientId
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp -SimpleMatch BadgeValueForPeer
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -SimpleMatch LoadLocalGiftCollectionFallback
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp -SimpleMatch 'LocalProfileNameValue(peer)'
@@ -560,6 +562,7 @@ jobs:
           grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
           grep -n 'ResolveAndShowUniqueGiftForLocalProfile' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
+          grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
           grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LocalProfileNameValue(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
