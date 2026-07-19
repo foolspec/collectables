@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27d71fc7cd 100644
+index 7380587..fe37ffe 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,9 +37,9 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile controls and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
++"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
-+"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
++"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram, including badges, emoji status, and personal channel.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
 +"ayu_IntelGramUpdateLogPrivacy" = "These features change only what this IntelGram installation renders for your own profile. They do not update your Telegram profile, import contacts, change collectible ownership, or join a channel automatically.";
 +"ayu_IntelGramUpdateLogCredit" = "IntelGram local profile tools by fool.";
@@ -47,7 +47,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_CategoriesHeader" = "Categories";
  "ayu_SupportHeader" = "Support";
  "ayu_SupportDescription1" = "Support Development";
-@@ -8070,8 +8087,74 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8070,8 +8087,72 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SupportBoxReceiveBadgeInfo" = "After payment verification, you will receive a unique badge that will be displayed on your profile and visible to other users.";
  "ayu_CrashReporting" = "Crash Reporting";
  "ayu_CrashReportingDescription" = "When this option is enabled, you'll be prompted to send a report after the app crashes. You can decide whether to send it or not.";
@@ -64,8 +64,6 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
 +"ayu_LocalProfileUsername" = "Local username";
 +"ayu_LocalProfileUsernames" = "Other usernames";
 +"ayu_LocalProfileUsernameEditorTitle" = "Local username";
-+"ayu_LocalProfileOriginalUsername" = "Original Telegram username: {username}";
-+"ayu_LocalProfileOriginalUsernameNone" = "None";
 +"ayu_LocalProfileUsernameEditorDescription" = "This changes only how your username appears in IntelGram. Your Telegram username and availability are not changed.";
 +"ayu_LocalProfilePhoneEnabled" = "Use local anonymous number";
 +"ayu_LocalProfilePhone" = "Local anonymous number";
@@ -80,7 +78,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
 +"ayu_LocalProfileCloneTitle" = "Clone profile locally";
 +"ayu_LocalProfileCloneId" = "Telegram UID";
 +"ayu_LocalProfileCloneUse" = "Clone locally";
-+"ayu_LocalProfileCloneDescription" = "Enter the UID of a user whose profile you have already opened in IntelGram. Their name, UID, usernames, phone if visible, bio, photo, profile colors, emoji status, and featured collectible will be mirrored only on your screen.";
++"ayu_LocalProfileCloneDescription" = "Enter the UID of a user whose profile you have already opened in IntelGram. Their name, UID, usernames, visible phone, bio, photo, profile colors, premium or verification badges, emoji status, personal channel, and featured collectible will be mirrored only on your screen. Missing fields are cleared locally.";
 +"ayu_LocalProfileCloneNotFound" = "Open that user's profile in IntelGram first, then try the UID again.";
 +"ayu_LocalProfileCloneSaved" = "{user} is now mirrored on your local profile.";
 +"ayu_LocalProfileCloneLocalOnly" = "Profile cloning changes only your own local rendering. Stop cloning to return to the individual local fields below.";
@@ -123,7 +121,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_DisableColorfulCover" = "Disable adaptive color";
  "ayu_EnableColorfulCover" = "Enable adaptive color";
  "ayu_CustomizationHeader" = "Customization";
-@@ -8130,14 +8213,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8130,14 +8211,14 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SettingsBiggerWindow" = "Bigger Window";
  "ayu_SettingsIncreaseWebviewHeight" = "Increase Content Height";
  "ayu_SettingsIncreaseWebviewWidth" = "Increase Content Width";
@@ -140,7 +138,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_ImportDataDescription" = "It will replace the current database.";
  "ayu_ImportDataConfirm" = "Yes, replace existing";
  "ayu_ImportDataCancel" = "No, close window";
-@@ -8204,7 +8287,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8204,7 +8285,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_FiltersClearPopupAltActionText" = "Clear unknown";
  "ayu_AppIconHeader" = "App Icon";
  "ayu_IconDefault" = "Default";
@@ -149,7 +147,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_IconDiscord" = "Discord";
  "ayu_IconSpotify" = "Spotify";
  "ayu_IconExtera" = "extera";
-@@ -8214,8 +8297,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8214,8 +8295,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_IconAyuTyan" = "AyuTyan";
  "ayu_WALMode" = "Enable WAL mode";
  "ayu_PushNotificationCount" = "FCM notifications received";
@@ -160,7 +158,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_TelegramCacheDatabase" = "Telegram Messages Database";
  "ayu_ConfirmationsTitle" = "Confirmations";
  "ayu_StickerConfirmation" = "For Stickers";
-@@ -8288,9 +8371,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8288,9 +8369,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_SuggestGhostModeStoryText" = "Do you want to enable **Ghost Mode** before viewing the story?";
  "ayu_SuggestGhostModeStoryActionTextYes" = "Yes";
  "ayu_SuggestGhostModeStoryActionTextNo" = "No";
@@ -172,7 +170,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
  "ayu_HideNextViewsDescriptionAyu" = "Hide my views forever, until Ghost Mode is disabled.";
  "ayu_EnableGhostModeStories" = "Enable Ghost Mode";
  "ayu_GhostModeIsActive" = "Ghost Mode is Active";
-@@ -8355,28 +8438,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -8355,28 +8436,30 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "ayu_ContextCopyID" = "Copy ID";
  "ayu_IDCopiedToast" = "ID copied to clipboard.";
  "ayu_ContextHideMessage" = "Hide";
@@ -211,7 +209,7 @@ index 7380587e74ff4f8d59ca6aab8dd30b6bbc5e6d0f..9c4f0eb72ca843079bf515d027fcfa27
 +"ayu_UpdateAyuGram" = "Update IntelGram";
  "ayu_UtilityRestartRequired" = "The app will close in 5 seconds.";
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.cpp b/Telegram/SourceFiles/ayu/ayu_settings.cpp
-index 2280020ce869c829600fe3bbacf4db26cbfe75a7..0ed18158d41d72ef2b90939164b8721716d6d670 100644
+index 2280020..0ed1815 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.cpp
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.cpp
 @@ -11,6 +11,7 @@
@@ -382,7 +380,7 @@ index 2280020ce869c829600fe3bbacf4db26cbfe75a7..0ed18158d41d72ef2b90939164b87217
  	s._showGroupReactions = j.value("showGroupReactions", defaults._showGroupReactions.current());
  	s._showPrivateChatReactions = j.value("showPrivateChatReactions", defaults._showPrivateChatReactions.current());
 diff --git a/Telegram/SourceFiles/ayu/ayu_settings.h b/Telegram/SourceFiles/ayu/ayu_settings.h
-index 97a0439215a0951bbe5e57ac52f0aeffe398c4dd..ece921506b5fa3cf595cffc0aa6f27b799dd5519 100644
+index 97a0439..ece9215 100644
 --- a/Telegram/SourceFiles/ayu/ayu_settings.h
 +++ b/Telegram/SourceFiles/ayu/ayu_settings.h
 @@ -291,6 +291,22 @@ public:
@@ -494,7 +492,7 @@ index 97a0439215a0951bbe5e57ac52f0aeffe398c4dd..ece921506b5fa3cf595cffc0aa6f27b7
  	rpl::variable<bool> _showGroupReactions = true;
  	rpl::variable<bool> _showPrivateChatReactions = true;
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
-index a4b1e7ad414afc3e214fd954027e2df337668af4..b0bde67703dc416837022582839e1c503ac17fbe 100644
+index a4b1e7a..b0bde67 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
 @@ -6,31 +6,37 @@
@@ -676,10 +674,10 @@ index a4b1e7ad414afc3e214fd954027e2df337668af4..b0bde67703dc416837022582839e1c50
  	builder.addSkip();
  }
 diff --git a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3da442e122 100644
+index 929cf46..34927bc 100644
 --- a/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
-@@ -6,33 +6,44 @@
+@@ -6,33 +6,45 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/settings/settings_other.h"
  
@@ -691,6 +689,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3d
  #include "ayu/ui/settings/settings_ayu_utils.h"
  #include "ayu/ui/settings/settings_main.h"
 +#include "ayu/ui/utils/ayu_profile_values.h"
++#include "apiwrap.h"
  #include "boxes/abstract_box.h"
 +#include "boxes/star_gift_box.h"
  #include "core/application.h"
@@ -736,7 +735,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3d
  
  namespace Settings {
  
-@@ -41,156 +52,954 @@ using namespace AyuBuilder;
+@@ -41,156 +53,955 @@ using namespace AyuBuilder;
  
  namespace {
  
@@ -1494,6 +1493,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3d
 +				return;
 +			}
 +			AyuSettings::getInstance().setLocalProfileCloneId(id);
++			controller->session().api().requestFullPeer(user);
 +			Ayu::RefreshLocalProfilePresentation(&controller->session());
 +			controller->showToast(tr::ayu_LocalProfileCloneSaved(
 +				tr::now,
@@ -1817,7 +1817,7 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3d
  }
  
  void BuildOtherThings(SectionBuilder &builder) {
-@@ -233,9 +1042,8 @@ const auto kMeta = BuildHelper({
+@@ -233,9 +1044,8 @@ const auto kMeta = BuildHelper({
  }, [](SectionBuilder &builder) {
  	auto ayu = AyuSectionBuilder(builder);
  
@@ -1829,10 +1829,10 @@ index 929cf4609b032bbf104dc3ef28ea6dc72deb37f8..cb54d1a07900e4b3296ad5313fe01c3d
  });
  
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e13b654f1 100644
+index c9d247a..199077e 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
-@@ -6,15 +6,1018 @@
+@@ -6,15 +6,1078 @@
  // Copyright @Radolyn, 2026
  #include "ayu/ui/utils/ayu_profile_values.h"
  
@@ -1842,6 +1842,8 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
  #include "ayu/utils/telegram_helpers.h"
 +#include "base/weak_ptr.h"
 +#include "boxes/abstract_box.h"
++#include "boxes/peers/edit_peer_common.h"
++#include "boxes/username_box.h"
 +#include "data/data_channel.h"
 +#include "data/data_changes.h"
 +#include "data/data_emoji_statuses.h"
@@ -2414,6 +2416,19 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
 +	return ResolveLocalProfileCloneUser(peer);
 +}
 +
++ChannelData *LocalProfilePersonalChannel(not_null<UserData*> user) {
++	const auto clone = ResolveLocalProfileCloneUser(user);
++	const auto source = clone ? clone : user.get();
++	const auto channelId = source->personalChannelId();
++	return channelId ? source->owner().channel(channelId).get() : nullptr;
++}
++
++MsgId LocalProfilePersonalChannelMessageId(not_null<UserData*> user) {
++	const auto clone = ResolveLocalProfileCloneUser(user);
++	const auto source = clone ? clone : user.get();
++	return source->personalChannelMessageId();
++}
++
 +std::shared_ptr<QImage> LocalProfilePhotoImage(
 +		not_null<PeerData*> peer) {
 +	if (!peer->isSelf()) {
@@ -2723,6 +2738,26 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
 +		: rpl::single(QString());
 +}
 +
++rpl::producer<ChannelData*> LocalProfilePersonalChannelValue(
++		not_null<UserData*> user) {
++	const auto sourceValue = [=]() -> rpl::producer<ChannelData*> {
++		const auto clone = ResolveLocalProfileCloneUser(user);
++		const auto source = clone ? clone : user.get();
++		return source->session().changes().peerFlagsValue(
++			source,
++			UpdateFlag::PersonalChannel
++		) | rpl::map([=] {
++			const auto channelId = source->personalChannelId();
++			return channelId
++				? source->owner().channel(channelId).get()
++				: nullptr;
++		});
++	};
++	return LocalProfileCloneIdValue(user) | rpl::map([=](const QString &) {
++		return sourceValue();
++	}) | rpl::flatten_latest();
++}
++
 +auto LocalProfileGiftReferencesValue(not_null<PeerData*> peer)
 +-> rpl::producer<std::vector<QString>> {
 +	if (!peer->isSelf()) {
@@ -2780,7 +2815,7 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
 +
 +void ShowLocalProfileUsernameEditor(
 +		not_null<Window::SessionController*> controller,
-+		not_null<UserData*> user) {
++		not_null<UserData*>) {
 +	controller->show(Box([=](not_null<Ui::GenericBox*> box) {
 +		box->setTitle(tr::ayu_LocalProfileUsernameEditorTitle());
 +		const auto container = box->verticalLayout();
@@ -2796,18 +2831,41 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
 +			field->setFocusFast();
 +		});
 +
-+		const auto original = user->username().isEmpty()
-+			? tr::ayu_LocalProfileOriginalUsernameNone(tr::now)
-+			: ('@' + user->username());
-+		container->add(
-+			object_ptr<Ui::FlatLabel>(
-+				container,
-+				tr::ayu_LocalProfileOriginalUsername(
-+					tr::now,
-+					lt_username,
-+					original),
-+				st::boxDividerLabel),
-+			st::boxRowPadding);
++		auto checkInfo = rpl::single(rpl::empty) | rpl::then(
++			field->changes()
++		) | rpl::map([=] {
++			auto name = field->getLastText().trimmed();
++			if (name.startsWith('@')) {
++				name.remove(0, 1);
++			}
++			if (name.isEmpty()) {
++				return UsernameCheckInfo{
++					.type = UsernameCheckInfo::Type::Default,
++				};
++			}
++			for (const auto ch : name) {
++				if ((ch < 'A' || ch > 'Z')
++					&& (ch < 'a' || ch > 'z')
++					&& (ch < '0' || ch > '9')
++					&& ch != '_') {
++					return UsernameCheckInfo{
++						.type = UsernameCheckInfo::Type::Error,
++						.text = { tr::lng_username_bad_symbols(tr::now) },
++					};
++				}
++			}
++			if (name.size() < Ui::EditPeer::kMinUsernameLength) {
++				return UsernameCheckInfo{
++					.type = UsernameCheckInfo::Type::Error,
++					.text = { tr::lng_username_too_short(tr::now) },
++				};
++			}
++			return UsernameCheckInfo{
++				.type = UsernameCheckInfo::Type::Good,
++				.text = { tr::lng_username_available(tr::now) },
++			};
++		});
++		AddUsernameCheckLabel(container, std::move(checkInfo));
 +		container->add(object_ptr<Ui::DividerLabel>(
 +			container,
 +			object_ptr<Ui::FlatLabel>(
@@ -2841,7 +2899,9 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
 +			| UpdateFlag::About
 +			| UpdateFlag::PhoneNumber
 +			| UpdateFlag::EmojiStatus
-+			| UpdateFlag::ColorProfile);
++			| UpdateFlag::ColorProfile
++			| UpdateFlag::VerifyInfo
++			| UpdateFlag::PersonalChannel);
 +}
 +
 +} // namespace Ayu
@@ -2852,7 +2912,7 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
  
  	const auto &settings = AyuSettings::getInstance();
  	if (settings.showPeerId() == PeerIdDisplay::BotApi) {
-@@ -33,8 +1036,12 @@ QString IDString(MsgId topicRootId) {
+@@ -33,8 +1096,12 @@ QString IDString(MsgId topicRootId) {
  }
  
  rpl::producer<TextWithEntities> IDValue(not_null<PeerData*> peer) {
@@ -2868,10 +2928,10 @@ index c9d247a204c67a575477c915d653ed48e2c189f4..e0b3c298ac6d8b024c0e27a1969b0a7e
  			? TextWithEntities()
  			: tr::marked(IDString(peer));
 diff --git a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
-index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb1b4c4615 100644
+index 950f22d..8f7aec9 100644
 --- a/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
 +++ b/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.h
-@@ -6,8 +6,103 @@
+@@ -6,8 +6,110 @@
  // Copyright @Radolyn, 2026
  #pragma once
  
@@ -2880,6 +2940,7 @@ index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb
 +
 +class PeerData;
 +class UserData;
++class ChannelData;
 +class QImage;
 +
 +namespace Data {
@@ -2926,6 +2987,10 @@ index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb
 +[[nodiscard]] bool LocalProfilePhotoActive(not_null<PeerData*> peer);
 +[[nodiscard]] bool LocalProfileUserpicActive(not_null<PeerData*> peer);
 +[[nodiscard]] UserData *LocalProfileCloneUser(not_null<PeerData*> peer);
++[[nodiscard]] ChannelData *LocalProfilePersonalChannel(
++	not_null<UserData*> user);
++[[nodiscard]] MsgId LocalProfilePersonalChannelMessageId(
++	not_null<UserData*> user);
 +[[nodiscard]] QString LocalProfileName(not_null<PeerData*> peer);
 +[[nodiscard]] QString LocalProfileId(not_null<PeerData*> peer);
 +[[nodiscard]] QString LocalProfileUsername(not_null<PeerData*> peer);
@@ -2953,6 +3018,8 @@ index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb
 +	not_null<PeerData*> peer);
 +[[nodiscard]] rpl::producer<QString> LocalProfileCloneIdValue(
 +	not_null<PeerData*> peer);
++[[nodiscard]] rpl::producer<ChannelData*> LocalProfilePersonalChannelValue(
++	not_null<UserData*> user);
 +[[nodiscard]] auto LocalProfileGiftReferencesValue(
 +	not_null<PeerData*> peer) -> rpl::producer<std::vector<QString>>;
 +void ResolveLocalProfileGift(
@@ -2978,7 +3045,7 @@ index 950f22d7e74c87b82aa8621fd90bde09e22e0db5..07d9cf3500ae2d7867112c0f8efc24cb
 \ No newline at end of file
 +rpl::producer<TextWithEntities> IDValue(MsgId topicRootId);
 diff --git a/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp b/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
-index d95ee873919e5483ab751699e0308ef93b7b2c87..723d28b88a6f3f414a1e8c6d0ece1b657c067c3f 100644
+index d95ee87..723d28b 100644
 --- a/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
 +++ b/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
 @@ -23,6 +23,7 @@
@@ -3133,7 +3200,7 @@ index d95ee873919e5483ab751699e0308ef93b7b2c87..723d28b88a6f3f414a1e8c6d0ece1b65
  	const auto botId = isSupporter ? regDateBotId : regDateBotFallbackId;
  	const auto botUsername = isSupporter ? regDateBotUsername : regDateBotFallbackUsername;
 diff --git a/Telegram/SourceFiles/ayu/utils/telegram_helpers.h b/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
-index 021679a64047004ca7806b37c8edeb2346794b4d..8023b0aa04e80fedff0bede46ae172062ead843b 100644
+index 021679a..8023b0a 100644
 --- a/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
 +++ b/Telegram/SourceFiles/ayu/utils/telegram_helpers.h
 @@ -62,6 +62,7 @@ ID getBareID(not_null<PeerData*> peer);
@@ -3145,7 +3212,7 @@ index 021679a64047004ca7806b37c8edeb2346794b4d..8023b0aa04e80fedff0bede46ae17206
  CustomBadge getCustomBadge(ID peerId);
  
 diff --git a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp b/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
-index 5f813d2b796d2578e569e9b24b7004cc055cc551..107a3e7f9e48d5af6d0ec8beedcb0ed69ffbf5f3 100644
+index 5f813d2..107a3e7 100644
 --- a/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
 +++ b/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
 @@ -7,9 +7,10 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3173,7 +3240,7 @@ index 5f813d2b796d2578e569e9b24b7004cc055cc551..107a3e7f9e48d5af6d0ec8beedcb0ed6
  	const auto sampleSize = st::settingsColorSampleSize;
  
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
-index 6533de425088bb632d83ceed51bdd2a7132807f2..753fef54205636e8073a85d8a5dbf034728fbbb1 100644
+index 6533de4..753fef5 100644
 --- a/Telegram/SourceFiles/data/data_peer.cpp
 +++ b/Telegram/SourceFiles/data/data_peer.cpp
 @@ -57,6 +57,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3298,7 +3365,7 @@ index 6533de425088bb632d83ceed51bdd2a7132807f2..753fef54205636e8073a85d8a5dbf034
  }
  
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
-index 9e940482f673bf8aa86a8947920e629c727154b4..09fa81eeaae84d4e932fcb84eedcc8d7d1fe8799 100644
+index 9e94048..09fa81e 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3334,7 +3401,7 @@ index 9e940482f673bf8aa86a8947920e629c727154b4..09fa81eeaae84d4e932fcb84eedcc8d7
  	_searchIn->apply({
  		{ ChatSearchTab::ThisTopic, topicIcon },
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_row.cpp b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
-index 3bcfab95352302c13815d854e6a6b119bf9bb153..2fa76d8557631d54afa021254a13e5836d385f4d 100644
+index 3bcfab9..2fa76d8 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_row.cpp
 @@ -40,6 +40,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3369,7 +3436,7 @@ index 3bcfab95352302c13815d854e6a6b119bf9bb153..2fa76d8557631d54afa021254a13e583
  	}
  	return _name;
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
-index 3061b9d6becb39b2e3da08a357b068a9de9f1273..9e3d0b7b9a5a7a38820d7e2aa91aa56c9fc69d3b 100644
+index 3061b9d..9e3d0b7 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
 @@ -168,6 +168,31 @@ struct IdSearchQuery {
@@ -3571,7 +3638,7 @@ index 3061b9d6becb39b2e3da08a357b068a9de9f1273..9e3d0b7b9a5a7a38820d7e2aa91aa56c
  		SearchRequestType type,
  		not_null<SearchProcessState*> process) {
 diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.h b/Telegram/SourceFiles/dialogs/dialogs_widget.h
-index ef6b527aa44a80b858c2478e4599421f13007aaa..2fe836a410693a0d2d25b4577d7fbea1353aa672 100644
+index ef6b527..2fe836a 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_widget.h
 +++ b/Telegram/SourceFiles/dialogs/dialogs_widget.h
 @@ -195,6 +195,7 @@ private:
@@ -3583,7 +3650,7 @@ index ef6b527aa44a80b858c2478e4599421f13007aaa..2fe836a410693a0d2d25b4577d7fbea1
  	void submit();
  	void cancelSearchRequest();
 diff --git a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
-index bc28b73e4c0aa889383206c1b613ee6ef8fe36c0..a3a61e8c8f0ca5762314db37566e095c842409c9 100644
+index bc28b73..a3a61e8 100644
 --- a/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 +++ b/Telegram/SourceFiles/dialogs/ui/dialogs_video_userpic.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3604,7 +3671,7 @@ index bc28b73e4c0aa889383206c1b613ee6ef8fe36c0..a3a61e8c8f0ca5762314db37566e095c
  	} else {
  		peer->paintUserpicLeft(p, view, x, y, outerWidth, size);
 diff --git a/Telegram/SourceFiles/history/view/history_view_about_view.cpp b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
-index c30fcf2597a07cef41534926d3f742f1da212417..f2a647a302fea2ab86b436d1481c2d5f25fb2d58 100644
+index c30fcf2..f2a647a 100644
 --- a/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_about_view.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3640,7 +3707,7 @@ index c30fcf2597a07cef41534926d3f742f1da212417..f2a647a302fea2ab86b436d1481c2d5f
  		tr::bold(parentName),
  		tr::rich);
 diff --git a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
-index 2c52f4b737bdce4efb3ecc7bae8fb4297970a596..9dcd1e7658509ca8fcde016a55124b27e9edbb42 100644
+index 2c52f4b..9dcd1e7 100644
 --- a/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_chat_section.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3665,7 +3732,7 @@ index 2c52f4b737bdce4efb3ecc7bae8fb4297970a596..9dcd1e7658509ca8fcde016a55124b27
  	});
  }
 diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegram/SourceFiles/history/view/history_view_message.cpp
-index 9d181996bff8df8a62b0f228b9f9b0812a4890e9..4e8074c54c84fd896ce9e422625815347b23b312 100644
+index 9d18199..4e8074c 100644
 --- a/Telegram/SourceFiles/history/view/history_view_message.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3704,7 +3771,7 @@ index 9d181996bff8df8a62b0f228b9f9b0812a4890e9..4e8074c54c84fd896ce9e42262581534
  	}
  	if (from->isPremium()
 diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
-index 841d23920001de13a0a564cdcbd22cdc5ca0f626..2edac8bc4e91544017e7755c7705bf71731f6daf 100644
+index 841d239..2edac8b 100644
 --- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3765,7 +3832,7 @@ index 841d23920001de13a0a564cdcbd22cdc5ca0f626..2edac8bc4e91544017e7755c7705bf71
  	return (quote
  		? tr::lng_preview_reply_to_quote
 diff --git a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
-index 63b23a43a0dc9557e7a6cb5948a4d9920dbb6202..9c7dee66ba9cd847ef4a4aae9ceafab73a0b0b12 100644
+index 63b23a4..9c7dee6 100644
 --- a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 @@ -74,6 +74,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3798,7 +3865,7 @@ index 63b23a43a0dc9557e7a6cb5948a4d9920dbb6202..9c7dee66ba9cd847ef4a4aae9ceafab7
  			_title.setText(
  				st::msgNameStyle,
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
-index 594061dbb904f1cabdc1b063dc8fd7978b14b2fd..d6028cf988f2f114b0d2fb84d81536688e6c8943 100644
+index 594061d..85a22a4 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3819,8 +3886,143 @@ index 594061dbb904f1cabdc1b063dc8fd7978b14b2fd..d6028cf988f2f114b0d2fb84d8153668
  		}, qrButton->lifetime());
  		const auto rightSkip = st::infoProfileLabeledButtonQrRightSkip;
  		fitLabelToButton(qrButton, usernameLine.text, rightSkip);
+@@ -2009,12 +2011,12 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 	const auto window = _controller->parentController();
+ 	const auto duration = st::slideWrapDuration;
+ 
+-	result->toggleOn(PersonalChannelValue(
++	result->toggleOn(Ayu::LocalProfilePersonalChannelValue(
+ 		user
+ 	) | rpl::map(rpl::mappers::_1 != nullptr));
+ 	result->finishAnimating();
+ 
+-	auto channel = PersonalChannelValue(
++	auto channel = Ayu::LocalProfilePersonalChannelValue(
+ 		user
+ 	) | rpl::start_spawning(result->lifetime());
+ 
+@@ -2045,6 +2047,9 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 		base::install_event_filter(container, [=](
+ 				not_null<QEvent*> e) {
+ 			if (e->type() == QEvent::ContextMenu) {
++				if (Ayu::LocalProfileCloneUser(user)) {
++					return base::EventFilterResult::Cancel;
++				}
+ 				const auto ce = static_cast<QContextMenuEvent*>(e.get());
+ 				state->menu = base::make_unique_q<Ui::PopupMenu>(
+ 					container,
+@@ -2068,8 +2073,8 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 				container,
+ 				object_ptr<Ui::VerticalLayout>(container)));
+ 		onlyChannelWrap->toggleOn(rpl::duplicate(channel) | rpl::map([=] {
+-			return user->personalChannelId()
+-				&& !user->personalChannelMessageId();
++			return Ayu::LocalProfilePersonalChannel(user)
++				&& !Ayu::LocalProfilePersonalChannelMessageId(user);
+ 		}));
+ 		onlyChannelWrap->finishAnimating();
+ 
+@@ -2092,8 +2097,8 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 		line.text->setClickHandlerFilter([=](
+ 				const ClickHandlerPtr &handler,
+ 				Qt::MouseButton button) {
+-			if (const auto channelId = user->personalChannelId()) {
+-				window->showPeerInfo(peerFromChannel(channelId));
++			if (const auto channel = Ayu::LocalProfilePersonalChannel(user)) {
++				window->showPeerInfo(channel->id);
+ 			}
+ 			return false;
+ 		});
+@@ -2113,8 +2118,8 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 				object_ptr<Ui::VerticalLayout>(container)));
+ 		messageChannelWrap->setDuration(duration);
+ 		messageChannelWrap->toggleOn(rpl::duplicate(channel) | rpl::map([=] {
+-			return user->personalChannelId()
+-				&& user->personalChannelMessageId();
++			return Ayu::LocalProfilePersonalChannel(user)
++				&& Ayu::LocalProfilePersonalChannelMessageId(user);
+ 		}));
+ 		messageChannelWrap->finishAnimating();
+ 		messageChannelWrap->toggledValue(
+@@ -2291,16 +2296,25 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupPersonalChannel(
+ 			if (!channel) {
+ 				return;
+ 			}
++			const auto messageId = Ayu::LocalProfilePersonalChannelMessageId(user);
++			if (!messageId) {
++				return;
++			}
+ 			const auto id = FullMsgId(
+ 				channel->id,
+-				user->personalChannelMessageId());
++				messageId);
+ 			if (const auto item = user->session().data().message(id)) {
+ 				return rebuild(item, anim::type::instant);
+ 			}
+ 			user->session().api().requestMessageData(
+ 				channel,
+-				user->personalChannelMessageId(),
++				messageId,
+ 				crl::guard(container, [=] {
++					if (Ayu::LocalProfilePersonalChannel(user) != channel
++						|| Ayu::LocalProfilePersonalChannelMessageId(user)
++							!= messageId) {
++						return;
++					}
+ 					if (const auto i = user->session().data().message(id)) {
+ 						rebuild(i, anim::type::normal);
+ 					}
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp b/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
+index 4855a6a..1339538 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "info/profile/info_profile_badge.h"
+ 
++#include "ayu/ui/utils/ayu_profile_values.h"
+ #include "data/data_changes.h"
+ #include "data/data_emoji_statuses.h"
+ #include "data/data_peer.h"
+@@ -334,16 +335,26 @@ rpl::producer<Badge::Content> VerifiedContentForPeer(
+ 
+ rpl::producer<Badge::Content> BotVerifyBadgeForPeer(
+ 		not_null<PeerData*> peer) {
+-	return peer->session().changes().peerFlagsValue(
+-		peer,
+-		Data::PeerUpdate::Flag::VerifyInfo
+-	) | rpl::map([=] {
+-		const auto info = peer->botVerifyDetails();
+-		return Badge::Content{
+-			.badge = info ? BadgeType::BotVerified : BadgeType::None,
+-			.emojiStatusId = { info ? info->iconId : DocumentId() },
+-		};
+-	});
++	const auto sourceValue = [=](
++			not_null<PeerData*> source) -> rpl::producer<Badge::Content> {
++		return source->session().changes().peerFlagsValue(
++			source,
++			Data::PeerUpdate::Flag::VerifyInfo
++		) | rpl::map([=] {
++			const auto info = source->botVerifyDetails();
++			return Badge::Content{
++				.badge = info ? BadgeType::BotVerified : BadgeType::None,
++				.emojiStatusId = { info ? info->iconId : DocumentId() },
++			};
++		});
++	};
++	if (!peer->isSelf()) {
++		return sourceValue(peer);
++	}
++	return Ayu::LocalProfileCloneIdValue(peer) | rpl::map([=](const QString &) {
++		const auto clone = Ayu::LocalProfileCloneUser(peer);
++		return sourceValue(clone ? clone : peer.get());
++	}) | rpl::flatten_latest();
+ }
+ 
+ } // namespace Info::Profile
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35caed194e55834be9ba2d298ee75fad33a..15d7716ce39eb214794e2938ebc983d1dd80bb43 100644
+index a410a35..15d7716 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4016,7 +4218,7 @@ index a410a35caed194e55834be9ba2d298ee75fad33a..15d7716ce39eb214794e2938ebc983d1
  
  		_pinnedToTopGifts.push_back(std::move(entry));
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
-index 19c194b8b98130a687d902de01c398db7d05cf01..313395178c6169c352d450c8044f8f1805ca3420 100644
+index 19c194b..e166cc3 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4129,7 +4331,30 @@ index 19c194b8b98130a687d902de01c398db7d05cf01..313395178c6169c352d450c8044f8f18
  }
  
  TextWithEntities AboutWithEntities(
-@@ -718,10 +698,12 @@ rpl::producer<EmojiStatusId> EmojiStatusIdValue(not_null<PeerData*> peer) {
+@@ -705,7 +685,7 @@ rpl::producer<BadgeType> BadgeValueFromFlags(Peer peer) {
+ 	});
+ }
+ 
+-rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {
++rpl::producer<BadgeType> BadgeValueForPeer(not_null<PeerData*> peer) {
+ 	if (const auto user = peer->asUser()) {
+ 		return BadgeValueFromFlags<UserDataFlag>(user);
+ 	} else if (const auto channel = peer->asChannel()) {
+@@ -714,14 +694,26 @@ rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {
+ 	return rpl::single(BadgeType::None);
+ }
+ 
++rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {
++	if (!peer->isSelf()) {
++		return BadgeValueForPeer(peer);
++	}
++	return Ayu::LocalProfileCloneIdValue(peer) | rpl::map([=](const QString &) {
++		const auto clone = Ayu::LocalProfileCloneUser(peer);
++		return BadgeValueForPeer(clone ? clone : peer.get());
++	}) | rpl::flatten_latest();
++}
++
+ rpl::producer<EmojiStatusId> EmojiStatusIdValue(not_null<PeerData*> peer) {
  	if (peer->isChat()) {
  		return rpl::single(EmojiStatusId());
  	}
@@ -4147,7 +4372,7 @@ index 19c194b8b98130a687d902de01c398db7d05cf01..313395178c6169c352d450c8044f8f18
  
  rpl::producer<QString> BirthdayLabelText(
 diff --git a/Telegram/SourceFiles/settings/sections/settings_information.cpp b/Telegram/SourceFiles/settings/sections/settings_information.cpp
-index 24f2034f9a14d8b029af84ffa462bc787d6a130b..db4692a46873b0bd4531fa2eabd6418312b307c6 100644
+index 24f2034..db4692a 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_information.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_information.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4194,7 +4419,7 @@ index 24f2034f9a14d8b029af84ffa462bc787d6a130b..db4692a46873b0bd4531fa2eabd64183
  		parent,
  		rpl::duplicate(text),
 diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram/SourceFiles/settings/sections/settings_main.cpp
-index fbe74c4c04c3b9d72cd8bcf673f970a9832cf738..1902d2945c8563653c4c42adc151bc56d35296bc 100644
+index fbe74c4..1902d29 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
 @@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4262,7 +4487,7 @@ index fbe74c4c04c3b9d72cd8bcf673f970a9832cf738..1902d2945c8563653c4c42adc151bc56
  	});
  }
 diff --git a/Telegram/SourceFiles/ui/controls/table_rows.cpp b/Telegram/SourceFiles/ui/controls/table_rows.cpp
-index 40692d96ea0fad05748c5a1e14b2d23bcc3edb35..744bcccbb9dd514e04f860ceffda5f31392c2d1d 100644
+index 40692d9..744bccc 100644
 --- a/Telegram/SourceFiles/ui/controls/table_rows.cpp
 +++ b/Telegram/SourceFiles/ui/controls/table_rows.cpp
 @@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4285,7 +4510,7 @@ index 40692d96ea0fad05748c5a1e14b2d23bcc3edb35..744bcccbb9dd514e04f860ceffda5f31
  
  	raw->widthValue() | rpl::on_next([=](int width) {
 diff --git a/Telegram/SourceFiles/ui/unread_badge.cpp b/Telegram/SourceFiles/ui/unread_badge.cpp
-index 297c37bdd209f0668d12bccd58009f9bbf6cb7c0..69a22b6a537d4d472cc6802bcd5b49244d775db6 100644
+index 297c37b..69a22b6 100644
 --- a/Telegram/SourceFiles/ui/unread_badge.cpp
 +++ b/Telegram/SourceFiles/ui/unread_badge.cpp
 @@ -189,7 +189,7 @@ int PeerBadge::drawGetWidth(Painter &p, Descriptor &&descriptor) {
@@ -4298,7 +4523,7 @@ index 297c37bdd209f0668d12bccd58009f9bbf6cb7c0..69a22b6a537d4d472cc6802bcd5b4924
  		&& !hidePremiumStatuses;
  	const auto paintExtera = paintExteraDev || paintExteraSupporter;
 diff --git a/Telegram/SourceFiles/window/window_main_menu.cpp b/Telegram/SourceFiles/window/window_main_menu.cpp
-index 61524ae690d1e22c69b93da56aa23dc249ced6ef..387ae7c457900a96e241ba915d96677bd5d55034 100644
+index 61524ae..387ae7c 100644
 --- a/Telegram/SourceFiles/window/window_main_menu.cpp
 +++ b/Telegram/SourceFiles/window/window_main_menu.cpp
 @@ -83,6 +83,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL

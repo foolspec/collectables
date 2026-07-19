@@ -7,7 +7,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Local display name with a dedicated enable switch.
 - Local UID with a dedicated enable switch.
 - Local primary username and up to 20 other local usernames.
-- Original Telegram username shown inside the local username editor for reference.
+- Telegram-style inline syntax and availability status in the local username editor, with no server-side availability request.
 - Local anonymous number.
 - Local bio.
 - Local profile photo selected from a file on this device.
@@ -17,7 +17,9 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 ## Local Profile Clone
 
 - Accepts the UID of a user whose profile has already been opened and loaded in IntelGram.
-- Mirrors the loaded user's visible name, UID, primary and other usernames, visible phone, bio, profile photo, profile colors, emoji status, and featured collectible.
+- Uses Telegram's standard read-only full-profile refresh for that already-known user so visible clone metadata is current.
+- Mirrors the loaded user's visible name, UID, primary and other usernames, visible phone, bio, profile photo, profile colors, premium or verification state, organization badge symbol, emoji status, personal channel, and featured collectible.
+- Clears each cloned badge, status, and personal-channel element locally when the source profile does not have it, instead of falling back to the real self profile.
 - Applies the mirror only to your own local profile rendering.
 - Can be stopped at any time to return to the individual local fields.
 - Does not fetch a hidden profile, bypass privacy, alter either account, or impersonate the user to anyone else.
@@ -53,7 +55,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Main menu identity and account switcher rows.
 - Dialog list rows, avatars, video-userpic fallbacks, and search results.
 - Chat headers, profile headers, top bars, about sections, service text, messages, forwarded/reply previews, and table rows.
-- Own-profile username, UID, phone, bio, photo, colors, emoji status, featured gift, backdrop, and pinned-gift visuals.
+- Own-profile username, UID, phone, bio, photo, colors, premium and verification badges, organization badge symbol, emoji status, personal channel, featured gift, backdrop, and pinned-gift visuals.
 - Native collectible tooltip and detail interaction.
 
 ## Product And Packaging
@@ -72,7 +74,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 
 ## Network Boundary
 
-IntelGram's custom profile values stay local. The collectible browser may issue read-only Telegram gift catalog/detail requests and a read-only TonAPI metadata lookup when resolving a raw TON NFT address. The supporter badge reads an already-known channel membership state and does not join a channel. IntelGram adds no Telegram account/profile update, contact import, collectible transaction, ownership mutation, or automatic channel join.
+IntelGram's custom profile values stay local. Clone selection may issue Telegram's standard read-only full-profile refresh for the already-known source user. The collectible browser may issue read-only Telegram gift catalog/detail requests and a read-only TonAPI metadata lookup when resolving a raw TON NFT address. The supporter badge reads an already-known channel membership state and does not join a channel. IntelGram adds no Telegram account/profile update, contact import, collectible transaction, ownership mutation, or automatic channel join.
 
 ## Credit
 

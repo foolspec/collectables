@@ -6,7 +6,7 @@ Open **IntelGram Settings -> Other -> Local profile**. The controls are grouped 
 
 ## How do I change my local username?
 
-Enable local usernames, then open the username editor. It shows your original Telegram username above the local field. Add the primary local username and, if needed, up to 20 other usernames.
+Enable local usernames, then open the username editor. Its familiar inline status checks the local value's Telegram-style syntax and marks a valid value as available inside IntelGram; it does not ask Telegram whether the public username is available. Add the primary local username and, if needed, up to 20 other usernames.
 
 ## How do I use an anonymous number or local UID?
 
@@ -18,7 +18,7 @@ Choose **Local profile photo**, select an image on this Mac or PC, and enable th
 
 ## How do I clone a profile locally?
 
-First open the other user's profile so IntelGram has loaded it. Copy their UID, choose **Clone profile locally by UID**, paste the UID, and confirm. IntelGram mirrors only the profile data already visible to you. Choose **Stop cloning profile** to return to your own local fields.
+First open the other user's profile so IntelGram has loaded it. Copy their UID, choose **Clone profile locally by UID**, paste the UID, and confirm. IntelGram refreshes that already-known profile read-only, then mirrors only data visible to you, including premium or verification badges, the organization badge symbol, emoji status, and personal channel. If the source has none of those elements, the cloned local view shows none even when your real profile has one. Choose **Stop cloning profile** to return to your own local fields.
 
 ## How do I find somebody by UID or phone?
 

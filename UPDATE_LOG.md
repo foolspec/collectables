@@ -6,15 +6,17 @@
 - Product identity: IntelGram on macOS, Windows, and Linux with separate application identifiers.
 - Source delivery: one complete client-render-only patch plus the deterministic branding script.
 - Build delivery: GitHub Actions packages macOS Apple Silicon, Windows x64, and Linux x64.
-- Latest feature scope: local profile fields, photo, profile clone, UID/phone cached-peer search, native collection and item galleries, featured gift, pinned gifts, and fourteen app-icon choices.
+- Latest feature scope: local profile fields, photo, high-fidelity profile clone, UID/phone cached-peer search, native collection and item galleries, featured gift, pinned gifts, and fourteen app-icon choices.
 - Collectible gallery: the collection screen uses native artwork tiles, each collection opens a scrollable exact-item grid, and clicking a collectible selects it without leaving IntelGram.
+- Clone fidelity: premium and verification badges, organization badge symbols, emoji status, and personal channel follow a read-only refresh of the already-known source profile; absent elements are cleared from the cloned local view.
+- Username editor: the added original-username strip is gone and Telegram's familiar inline syntax/availability row is restored without a network availability request.
 - Settings organization: local controls are grouped into identity, contact, photo, and collectible sections.
 - Dynamic preview: the name-color sample follows the currently rendered local display name.
 - Icon pack: pink primary and profile-art icons plus twelve color variants include native macOS, multi-resolution Windows, and Linux resources.
 - Settings cleanup: inherited Boosty and cryptocurrency donation rows were removed and replaced with IntelGram community, source, and changelog links.
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
-- Current source patch SHA-256: `df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819`.
+- Current source patch SHA-256: `9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895`.
 - Current release: `intelgram-v6.7.8-local-profile-20260718-2`, published from the corrected macOS, Windows, and Linux build artifacts.
 - Release validation: all package checksums, GitHub digests, patch hashes, platform reports, and launch smoke tests passed in run `29667061031`.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.

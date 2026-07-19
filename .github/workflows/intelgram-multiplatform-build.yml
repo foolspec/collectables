@@ -40,7 +40,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819
+  PATCH_SHA256: 9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895
 
 jobs:
   macos:
@@ -93,6 +93,10 @@ jobs:
           fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'AddUsernameCheckLabel(container' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'requestFullPeer(user)' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+          grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
           grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LocalProfileNameValue(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
@@ -444,6 +448,10 @@ jobs:
           if ($diff | Select-String -Pattern 'MTPchannels_JoinChannel|channels\.joinChannel|JoinChannel') { throw "Unexpected Telegram channel join reference" }
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -SimpleMatch 'AddUsernameCheckLabel(container'
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -SimpleMatch 'requestFullPeer(user)'
+          Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp -SimpleMatch LocalProfilePersonalChannelValue
+          Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp -SimpleMatch BadgeValueForPeer
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -SimpleMatch LoadLocalGiftCollectionFallback
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp -SimpleMatch 'LocalProfileNameValue(peer)'
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp -SimpleMatch 'AyuAssets::GRAPHITE_ICON'
@@ -543,6 +551,10 @@ jobs:
           fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'AddUsernameCheckLabel(container' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'requestFullPeer(user)' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+          grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
           grep -n 'LoadLocalGiftCollectionFallback' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LocalProfileNameValue(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/edit_peer_color_box.cpp
           grep -n 'AyuAssets::GRAPHITE_ICON' tdesktop/Telegram/SourceFiles/ayu/ui/components/icon_picker.cpp
@@ -648,5 +660,5 @@ jobs:
             --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with grouped client-render-only profile controls, UID profile cloning, cached-peer search by UID or visible phone, a bundled update log, and fourteen platform-native app icon choices. Its native collectible gallery shows collection artwork, pages through exact numbered items inside IntelGram, accepts Getgems and TON links, and keeps Telegram's native collectible details. The name-color sample follows the local display name. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, gift ownership, or NFT mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with grouped client-render-only profile controls, UID profile cloning with badge, emoji-status, and personal-channel fidelity, cached-peer search by UID or visible phone, a Telegram-style local username status row, a bundled update log, and fourteen platform-native app icon choices. Its native collectible gallery shows collection artwork, pages through exact numbered items inside IntelGram, accepts Getgems and TON links, and keeps Telegram's native collectible details. The name-color sample follows the local display name. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, channel, gift ownership, or NFT mutation is included." \
             "${RELEASE_ASSETS[@]}"

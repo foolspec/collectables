@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819`.
-- Patch footprint: 29 source files, 2,913 insertions, and 387 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895`.
+- Patch footprint: 30 source files, 3,034 insertions, and 408 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -25,6 +25,16 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `BuildLocalProfile` now separates clone controls, identity, usernames/bio/contact, profile photo, and collectibles with native subsection headings and dividers.
 - Removed the duplicate collectible-browser action; featured and pinned flows both enter the same native collection gallery.
 - `SetupPeerColorSample` now consumes `Ayu::LocalProfileNameValue(peer)`, so the name-color preview reacts to the local display-name setting and clone state.
+
+### Profile Clone Fidelity And Username Editor
+
+- `BadgeValue` dynamically switches its render source to `Ayu::LocalProfileCloneUser`, mirroring premium, verified, scam, and fake badge state without changing `UserData` or session entitlements.
+- `BotVerifyBadgeForPeer` uses the same reactive clone source so organization verification symbols follow the cloned profile.
+- `Ayu::LocalProfilePersonalChannelValue`, `LocalProfilePersonalChannel`, and `LocalProfilePersonalChannelMessageId` drive the own-profile personal-channel block from the clone, including the channel message preview.
+- A clone with no personal channel produces `nullptr`, which hides the block even when the real self profile has a channel; cloned-channel edit context actions are suppressed.
+- `ShowLocalProfileCloneBox` calls the existing `requestFullPeer` read path after selecting an already-loaded user so visible full-profile badge and personal-channel fields are refreshed without changing either account.
+- `ShowLocalProfileUsernameEditor` again uses `AddUsernameCheckLabel` with Telegram's native styling. Its syntax result is computed locally and never calls `MTPaccount_CheckUsername` or a username update method.
+- Removed the added `Original Telegram username` strip and its localization keys.
 
 ### Cross-Platform Icon Assets
 
@@ -62,7 +72,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 
 - `AyuSettings` persists enable flags and normalized local values for display name, UID, usernames, anonymous number, bio, photo path, clone UID, featured gift, and pinned gifts.
 - `Ayu::LocalProfileNameValue`, `LocalProfileIdValue`, `LocalProfileUsernameValue`, `LocalProfileUsernamesValue`, `LocalProfilePhoneValue`, and `LocalProfileAboutValue` provide the reactive render values.
-- `Ayu::LocalProfilePhotoImage`, `LocalProfileUserpicActive`, `LocalProfileEmojiStatusId`, and `LocalProfileGiftReferencesValue` supply local photo, clone, emoji-status, and collectible presentation data.
+- `Ayu::LocalProfilePhotoImage`, `LocalProfileUserpicActive`, `LocalProfileEmojiStatusId`, `LocalProfilePersonalChannelValue`, and `LocalProfileGiftReferencesValue` supply local photo, clone, badge-adjacent, personal-channel, emoji-status, and collectible presentation data.
 - `Ayu::RefreshLocalProfilePresentation` emits existing peer update flags so already-open UI surfaces redraw without a Telegram profile update.
 - `PeerData` userpic paths and targeted dialog, history, settings, profile, table-row, and main-menu call sites consume the local values only when the rendered peer is the signed-in user.
 
@@ -70,7 +80,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 
 - UID and phone search use `Data::Session::userLoaded` and `userByPhone`, limiting results to peers already present in the local session cache.
 - Recognized UID/phone input bypasses normal remote username and message search for that query.
-- Profile cloning accepts only a loaded non-self user and locally mirrors visible cached fields; it does not fetch private data or alter either account.
+- Profile cloning accepts only a loaded non-self user, refreshes that user's normally visible full profile read-only, and locally mirrors visible fields, badges, emoji status, and personal channel; it does not fetch hidden data or alter either account or channel.
 
 ### Validation
 
@@ -80,7 +90,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Both patch filenames have identical SHA-256 digests.
 - Clean patch application and reverse-application checks pass against the pinned baseline snapshot.
 - Added-line scans find no channel-join, profile-update, contact-import, gift-transfer, sale, purchase, or ownership mutation request.
-- The only custom network paths are read-only collectible catalog/detail resolution and optional read-only TON NFT metadata resolution.
+- The only custom network paths are the standard read-only full-peer refresh after clone selection, read-only collectible catalog/detail resolution, and optional read-only TON NFT metadata resolution.
 - A full local build was intentionally not run because the upstream repository's `AGENTS.md` says to avoid building the project.
 
 ### Release State

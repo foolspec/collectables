@@ -9,7 +9,7 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 ## Main Features
 
 - Render a local display name, UID, primary username, up to 20 other usernames, anonymous number, bio, and profile photo for your own account.
-- Clone the visible profile presentation of a user already loaded in IntelGram by entering their UID.
+- Clone the visible profile presentation of a user already loaded in IntelGram by entering their UID, including premium or verification badges, organization badge symbols, emoji status, and personal channel.
 - Find an already-loaded user by UID or by a phone number that is visible to your account, directly from the normal chat-list search field.
 - Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
 - Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
@@ -51,13 +51,13 @@ Open **IntelGram Settings -> Other -> Local profile** to configure:
 
 In the main chat-list search field, paste a UID, `id: UID`, or a visible phone number. IntelGram checks only profiles already loaded in this client and shows the matching profile row under **Found by ID or phone**. Phone and UID lookup does not import contacts or send a profile lookup request.
 
-Clicking your username in IntelGram's profile settings opens the local username editor. It displays your original Telegram username for reference before saving the IntelGram-only value.
+Clicking your username in IntelGram's profile settings opens the local username editor. The familiar inline Telegram-style status validates local syntax and shows the local value as available without sending a username check or save request to Telegram.
 
 The collectible picker opens as a native visual collection gallery. Choose a collection card to open a scrollable grid of its exact numbered collectibles, click any artwork to select it without leaving IntelGram, or paste a supported Telegram gift slug, `t.me/nft` link, Getgems item URL, or TON NFT address. IntelGram resolves the collectible read-only, shows its native `Collection #Number` profile tooltip, and uses Telegram's native collectible detail view when clicked.
 
 The local-profile page is split into focused identity, contact, photo, and collectible groups. **Settings -> Appearance -> App Icon** includes the new pink IntelGram artwork, a profile-art alternate, and twelve coordinated color variants. The name-color editor uses your currently rendered local display name in its preview.
 
-Choose a local image to replace your own profile photo throughout this IntelGram installation. Profile cloning accepts the UID of a user whose profile has already been opened and locally mirrors their visible name, UID, usernames, phone, bio, photo, profile colors, emoji status, and featured collectible. Stop cloning at any time to return to the individual local fields.
+Choose a local image to replace your own profile photo throughout this IntelGram installation. Profile cloning accepts the UID of a user whose profile has already been opened and locally mirrors their visible name, UID, usernames, phone, bio, photo, profile colors, premium or verification badges, organization badge symbol, emoji status, personal channel, and featured collectible. After selection, IntelGram performs Telegram's standard read-only full-profile refresh for that already-known user so visible badge and personal-channel metadata can render immediately. If the source profile lacks a badge, status, or personal channel, IntelGram clears that element from the cloned local view. Stop cloning at any time to return to the individual local fields.
 
 The IntelGram settings page links to [`@intelgrams`](https://t.me/intelgrams), this GitHub repository, and both changelogs. Joining the channel is an explicit Telegram action: open the channel and press Telegram's normal **Join** button. IntelGram then derives the supporter badge from the locally known membership state; it never joins a channel in the background.
 
@@ -67,7 +67,7 @@ Open **IntelGram Settings -> IntelGram -> Update log** to read the latest update
 
 These controls only change how your own profile is rendered inside this IntelGram installation. They do not change your Telegram display name, photo, bio, username, UID, phone number, emoji status, collectible ownership, or profile data. Other Telegram users do not see the local overrides.
 
-The implementation contains no Telegram account/profile mutation request and no contact import. Its collectible requests are read-only catalog/detail lookups. Normal Telegram account editing remains available whenever the corresponding IntelGram local override is disabled.
+The implementation contains no Telegram account/profile mutation request and no contact import. Clone metadata refresh and collectible catalog/detail requests are read-only. Normal Telegram account editing remains available whenever the corresponding IntelGram local override is disabled.
 
 ## Platform Builds
 
@@ -82,7 +82,7 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `df6eed978b07f9e4ebac29fd9c2f853450f24507212020de93ed58dad651f819`
+- Patch SHA-256: `9b756a29cfc413fdff6d23dfa5781cc3085d1bff1637e1b0abc8bce8f1562895`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`branding/icons`](branding/icons) contains the pink character artwork and twelve color masters with generated macOS, Windows, and Linux resources; [`generate_intelgram_character_icons.py`](generate_intelgram_character_icons.py) reproduces them.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.

@@ -18,11 +18,15 @@ All notable IntelGram custom-feature changes are recorded here.
 - Scrollable exact-number collectible browser with incremental loading.
 - Local cached-peer search by UID or visible phone number in the main chat-list search field.
 - `Found by ID or phone` result heading and normal profile-row interaction.
+- Clone fidelity for premium and verification badges, organization badge symbols, emoji status, and personal channels.
 - Complete feature inventory, conversational feature guide, and build update log.
 
 ### Changed
 
 - Reorganized the local-profile page into identity, contact, photo, and collectible sections.
+- Restored the familiar inline username-status row and removed the added original-username strip from the local editor; the status remains local and performs no Telegram availability request.
+- Cloned badge, status, and personal-channel elements now disappear locally when the source profile lacks them instead of falling back to the real self profile.
+- Clone selection now refreshes the already-known source user's full profile read-only so visible badge and personal-channel metadata is ready for local rendering.
 - The name-color preview now follows the active locally rendered display name instead of the real-profile short name.
 - Rebuilt every Windows icon as a seven-size `.ico` and added matching native macOS and Linux assets.
 - Removed the inherited Boosty and cryptocurrency donation block from **Settings -> Other**.
