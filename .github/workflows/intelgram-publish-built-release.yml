@@ -3,15 +3,18 @@ name: Publish Completed IntelGram Build
 on:
   workflow_dispatch:
     inputs:
-      run_id:
-        description: Successful IntelGram Multiplatform Build run ID
+      macos_run_id:
+        description: Successful macOS IntelGram build run ID
         required: true
-        default: "29615304415"
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/intelgram-publish-built-release.yml
+      windows_run_id:
+        description: Successful Windows IntelGram build run ID
+        required: true
+      linux_run_id:
+        description: Successful Linux IntelGram build run ID
+        required: true
+      release_tag:
+        description: New permanent release tag
+        required: true
 
 permissions:
   actions: read
@@ -22,18 +25,39 @@ jobs:
     name: Publish completed build artifacts
     runs-on: ubuntu-24.04
     env:
-      SOURCE_RUN_ID: ${{ github.event.inputs.run_id || '29615304415' }}
+      MACOS_RUN_ID: ${{ inputs.macos_run_id }}
+      WINDOWS_RUN_ID: ${{ inputs.windows_run_id }}
+      LINUX_RUN_ID: ${{ inputs.linux_run_id }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - name: Download verified macOS package
+        uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
-          run-id: ${{ env.SOURCE_RUN_ID }}
-          pattern: IntelGram-*
+          run-id: ${{ env.MACOS_RUN_ID }}
+          name: IntelGram-macOS-Apple-Silicon
           path: release-assets
-          merge-multiple: true
+
+      - name: Download verified Windows package
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.WINDOWS_RUN_ID }}
+          name: IntelGram-Windows-x64
+          path: release-assets
+
+      - name: Download verified Linux package
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.LINUX_RUN_ID }}
+          name: IntelGram-Linux-x64
+          path: release-assets
 
       - name: Publish permanent release
         env:
@@ -44,10 +68,19 @@ jobs:
           cp intelgram-local-profile-render-overrides.patch release-assets/ayugram-local-profile-render-overrides.patch
           cp build_intelgram_branding.py release-assets/
           find release-assets -maxdepth 1 -type f -print -exec ls -lh {} \;
+          for required in \
+            IntelGram-macOS-Apple-Silicon.dmg \
+            IntelGram-macOS-Apple-Silicon.zip \
+            IntelGram-Windows-x64.zip \
+            IntelGram-Linux-x64.tar.gz \
+            IntelGram-macOS-validation.txt \
+            IntelGram-Windows-validation.txt \
+            IntelGram-Linux-validation.txt; do
+            test -s "release-assets/$required"
+          done
           mapfile -d '' RELEASE_ASSETS < <(find release-assets -maxdepth 1 -type f ! -empty -print0)
           test "${#RELEASE_ASSETS[@]}" -gt 0
-          TAG="intelgram-v6.7.8-local-profile-${SOURCE_RUN_ID}"
-          gh release create "$TAG" \
+          gh release create "$RELEASE_TAG" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --latest \
