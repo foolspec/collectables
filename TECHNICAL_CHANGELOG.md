@@ -110,7 +110,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The manual release publisher accepts separate successful macOS, Windows, and Linux run IDs, verifies each required package and validation report, and combines them into one permanent release.
 - Release notes enumerate the main local-only features, supported packages, explicit supporter-join behavior, privacy boundary, credit, and links to both changelogs.
 - A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
-- Release `intelgram-v6.7.8-local-profile-20260719` combines successful macOS run `29687992660`, Windows run `29675428988`, and Linux run `29675433095`; each package records patch `049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3` and a passed launch smoke test before publication.
+- Release `intelgram-v6.7.8-local-profile-20260719` combines successful macOS run `29687992660`, Windows run `29675428988`, and Linux run `29675433095`; each package records patch `049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3` and a passed launch smoke test before publication, and public-asset validation run `29696979425` passed.
 
 ## Initial IntelGram Local Profile Implementation
 
