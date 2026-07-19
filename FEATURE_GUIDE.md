@@ -34,7 +34,7 @@ Yes. Use **Open by collectible link** and paste a supported Getgems item URL, `t
 
 ## How do I change the IntelGram app icon?
 
-Open **Settings -> Appearance -> App Icon**. Choose the pink primary artwork, the pink profile-art alternate, or one of twelve color variants. IntelGram stores the choice locally and uses the matching platform-native icon resource.
+Open **Settings -> Appearance -> App Icon**. Choose the pink primary artwork, the pink profile-art alternate, or one of twelve color variants. IntelGram stores the choice locally and uses the matching platform-native icon resource. On macOS, the Dock icon uses full-bleed artwork without an extra white frame.
 
 ## Why does the name-color preview show a different name?
 
@@ -42,7 +42,7 @@ The preview follows the name IntelGram currently renders for your own profile. C
 
 ## What happens when I click a rendered collectible?
 
-IntelGram opens Telegram's native unique-gift detail surface for that exact model and number. For a locally selected or cloned collectible, **Gifted to** and the **Telegram** profile chip use the display name IntelGram currently renders for you; clicking either opens your own profile. The local presentation does not claim ownership, rewrite the real sender or date, or create a transaction.
+IntelGram opens Telegram's native unique-gift detail surface for that exact model and number. For a locally selected or cloned collectible, **Gifted to** and the **Telegram** profile chip use the display name IntelGram currently renders for you; clicking either opens your own locally rendered profile card with the active local photo, phone, usernames, bio, and personal channel. The local presentation does not claim ownership, rewrite the real sender or date, or create a transaction.
 
 ## Can anybody else see these changes?
 

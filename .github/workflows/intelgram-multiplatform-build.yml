@@ -40,7 +40,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3
+  PATCH_SHA256: 20f927a73622e9b437b4ace61dc56b847a0c72bceb0dc986f1fc78c4a604e6c2
 
 jobs:
   macos:
@@ -97,6 +97,9 @@ jobs:
           grep -n 'requestFullPeer(user)' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
           grep -n 'ResolveAndShowUniqueGiftForLocalProfile' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
+          grep -n 'referenceMatches' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
+          grep -n 'LocalProfileUsernameActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+          grep -n 'Ayu::LocalProfilePhone(user)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
           grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
@@ -112,6 +115,8 @@ jobs:
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
           grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp
           grep -n 'QString("IntelGram Desktop v%1")' tdesktop/Telegram/SourceFiles/intro/intro_widget.cpp
+          grep -n '"scale": 1.0' tdesktop/Telegram/Telegram/AppIcon-Default.icon/icon.json
+          test -s tdesktop/Telegram/Telegram/AppIcon-Default.icon/Assets/app.png
 
       - name: Prepare core dependencies
         if: steps.macos-dependencies.outputs.cache-hit != 'true'
@@ -455,6 +460,9 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -SimpleMatch 'requestFullPeer(user)'
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp -SimpleMatch LocalProfilePersonalChannelValue
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp -SimpleMatch ResolveAndShowUniqueGiftForLocalProfile
+          Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp -SimpleMatch referenceMatches
+          Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp -SimpleMatch 'LocalProfileUsernameActive(peer)'
+          Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp -SimpleMatch 'Ayu::LocalProfilePhone(user)'
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp -SimpleMatch 'Ayu::LocalProfileName(to)'
           Select-String -Path tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp -SimpleMatch localProfileRecipientId
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp -SimpleMatch BadgeValueForPeer
@@ -561,6 +569,9 @@ jobs:
           grep -n 'requestFullPeer(user)' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'LocalProfilePersonalChannelValue' tdesktop/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
           grep -n 'ResolveAndShowUniqueGiftForLocalProfile' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
+          grep -n 'referenceMatches' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
+          grep -n 'LocalProfileUsernameActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+          grep -n 'Ayu::LocalProfilePhone(user)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
           grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
@@ -669,5 +680,5 @@ jobs:
             --target "$TARGET_SHA" \
             --latest \
             --title "IntelGram v6.7.8 - macOS, Windows, Linux" \
-            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with grouped client-render-only profile controls, UID profile cloning with badge, emoji-status, and personal-channel fidelity, cached-peer search by UID or visible phone, a Telegram-style local username status row, a bundled update log, and fourteen platform-native app icon choices. Its native collectible gallery shows collection artwork, pages through exact numbered items inside IntelGram, accepts Getgems and TON links, and keeps Telegram's native collectible details. The name-color sample follows the local display name. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, channel, gift ownership, or NFT mutation is included." \
+            --notes "IntelGram is an AyuGram Desktop v6.7.8 build with grouped client-render-only profile controls, UID profile cloning with badge, emoji-status, and personal-channel fidelity, cached-peer search by UID or visible phone, a Telegram-style local username status row, a bundled update log, and fourteen platform-native app icon choices. Its native collectible gallery shows collection artwork, pages through exact numbered items inside IntelGram, accepts Getgems and TON links, and keeps Telegram's native collectible details. Local collectible Telegram links open the fully locally rendered self profile, including local photo, phone, usernames, bio, and personal channel. macOS icons use full-bleed artwork without a duplicate white frame. The name-color sample follows the local display name. Local profile and collectible override features by fool. No Telegram profile, photo, username, UID, phone number, bio, contact, emoji status, channel, gift ownership, or NFT mutation is included." \
             "${RELEASE_ASSETS[@]}"

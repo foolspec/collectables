@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `049ebb3c864a40819fe22110d1256dfc1785825e9cdee8e38c31c238a64399f3`.
-- Patch footprint: 37 source files, 3,137 insertions, and 423 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `20f927a73622e9b437b4ace61dc56b847a0c72bceb0dc986f1fc78c4a604e6c2`.
+- Patch footprint: 37 source files, 3,165 insertions, and 430 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -32,7 +32,9 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The resolver deep-copies the fetched `Data::UniqueGift` presentation object and substitutes only `originalDetails.recipientId` with the signed-in peer for the local detail view.
 - `StarGiftResaleInfo::localProfileRecipientId` overrides only the detail entry's displayed Telegram host peer, so the native Telegram profile chip uses the same signed-in peer while the unique gift's actual `hostId` and `ownerId` remain intact.
 - The recipient label and peer-table value consume `Ayu::LocalProfileName`, so they show the real display name when no local name is enabled and the local or cloned display name when one is active.
-- Telegram's existing click handlers therefore open the signed-in user's short profile from either surface; that short-profile title also consumes the local name helper.
+- `TopBar` compares configured local gift slugs case-insensitively before asynchronous collectible IDs resolve, routing featured and pinned local gifts through the local-profile detail resolver immediately.
+- Telegram's existing click handlers therefore open the signed-in user's short profile from either surface. `PrepareShortInfoBox` consumes `LocalProfileName`, `LocalProfilePhone`, `LocalProfileUsername`, `LocalProfileAbout`, and `LocalProfilePersonalChannel`, while its existing userpic path consumes the central local-photo override.
+- Locally overridden usernames are shown without linking to an unrelated public server username; normal non-local username links remain unchanged.
 - `ownerId`, sender, date, price, transfer, resale, and every underlying Telegram or on-chain ownership field remain unchanged. Normal non-local gift details continue through the original resolver.
 
 ### Profile Clone Fidelity And Username Editor
@@ -49,6 +51,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 
 - `build_intelgram_branding.py` installs a pink primary icon, a pink profile-art alternate, and twelve color variants into the existing runtime icon picker.
 - The icon generator produces 1024px masters, seven-size Windows `.ico` files, macOS `.icns` and `.icon` resources, and Linux hicolor assets from 16px through 1024px.
+- macOS icon-composer packages now use dedicated opaque full-bleed PNGs at `1.0` scale. Character sources keep their native platform background and color variants flatten transparent corners to the icon's sampled background, preventing Icon Composer from adding a visible white shell behind an already-rounded image.
 - The primary application icon, installer resources, alternate macOS icon list, Qt resources, and picker constants are generated together from `branding/icons`.
 - Stored use of the retired duplicate `chibi2` picker slot migrates to the new primary icon.
 

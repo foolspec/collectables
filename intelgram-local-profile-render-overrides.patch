@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..57fa763 100644
+index 7380587..1a97172 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,7 +37,7 @@ index 7380587..57fa763 100644
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Gallery, profile cloning and icons**\n- Collectible collections now appear as a native thumbnail gallery.\n- Each collection opens a scrollable in-app gallery where a collectible can be selected directly.\n- Locally featured and cloned gift details now show your rendered display name in both the recipient link and Telegram profile chip, with both opening your own profile.\n- Profile cloning now mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the new pink character icons and twelve color variants.";
++"ayu_IntelGramUpdateLogCurrent" = "**Profile consistency and macOS icons**\n- A locally selected collectible now identifies your rendered profile directly, including when its network details have not finished loading.\n- Opening the collectible's Telegram row now shows your local display name, photo, phone number, usernames, bio, and personal channel instead of the original collectible owner's profile.\n- macOS app icons now use full-size platform artwork without the extra white frame or double inset.\n- Collectible collections appear as a native thumbnail gallery, with a scrollable in-app picker for individual collectibles.\n- Profile cloning mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
 +"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram, including badges, emoji status, and personal channel.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
@@ -3290,7 +3290,7 @@ index 5f813d2..107a3e7 100644
  	const auto sampleSize = st::settingsColorSampleSize;
  
 diff --git a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
-index e2d4aa8..b4a9735 100644
+index e2d4aa8..864562b 100644
 --- a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
 +++ b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
 @@ -29,6 +29,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -3301,7 +3301,21 @@ index e2d4aa8..b4a9735 100644
  #include "styles/style_info.h"
  #include "styles/style_menu_icons.h"
  
-@@ -224,7 +225,7 @@ void ProcessFullPhoto(
+@@ -214,30 +215,34 @@ void ProcessFullPhoto(
+ 			| UpdateFlag::ContactNote)
+ 	) | rpl::map([=] {
+ 		const auto user = peer->asUser();
+-		const auto username = peer->username();
+-		const auto channelId = user ? user->personalChannelId() : 0;
+-		const auto channel = channelId
+-			? user->owner().channel(channelId).get()
++		const auto username = Ayu::LocalProfileUsername(peer);
++		const auto localUsername = Ayu::LocalProfileUsernameActive(peer);
++		const auto channel = user
++			? Ayu::LocalProfilePersonalChannel(user)
+ 			: nullptr;
+ 		const auto channelUsername = channel
+ 			? channel->username()
  			: QString();
  		const auto hasChannel = !channelUsername.isEmpty();
  		return PeerShortInfoFields{
@@ -3310,6 +3324,26 @@ index e2d4aa8..b4a9735 100644
  			.channelName = hasChannel ? channel->name() : QString(),
  			.channelLink = (hasChannel
  				? channel->session().createInternalLinkFull(channelUsername)
+ 				: QString()),
+-			.phone = user ? Ui::FormatPhone(user->phone()) : QString(),
++			.phone = user
++				? Ui::FormatPhone(Ayu::LocalProfilePhone(user))
++				: QString(),
+ 			.link = ((user || username.isEmpty())
+ 				? QString()
+ 				: peer->session().createInternalLinkFull(username)),
+-			.about = Info::Profile::AboutWithEntities(peer, peer->about()),
++			.about = Info::Profile::AboutWithEntities(
++				peer,
++				Ayu::LocalProfileAbout(peer)),
+ 			.username = ((user && !username.isEmpty())
+ 				? ('@' + username)
+ 				: QString()),
+-			.usernameLink = ((user && !username.isEmpty())
++			.usernameLink = ((user && !username.isEmpty() && !localUsername)
+ 				? Info::Profile::UsernameUrl(peer, username, true)
+ 				: QString()),
+ 			.birthday = user ? user->birthday() : Data::Birthday(),
 diff --git a/Telegram/SourceFiles/core/local_url_handlers.cpp b/Telegram/SourceFiles/core/local_url_handlers.cpp
 index 7595146..8227156 100644
 --- a/Telegram/SourceFiles/core/local_url_handlers.cpp
@@ -4231,7 +4265,7 @@ index 4855a6a..1339538 100644
  
  } // namespace Info::Profile
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
-index a410a35..928d38c 100644
+index a410a35..4087aac 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
 @@ -23,6 +23,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -4250,7 +4284,7 @@ index a410a35..928d38c 100644
  #include "ayu/utils/telegram_helpers.h"
  
  
-@@ -415,8 +417,26 @@ TopBar::TopBar(
+@@ -415,8 +417,35 @@ TopBar::TopBar(
  			std::move(badgeUpdates),
  			_badge->updated());
  
@@ -4258,8 +4292,17 @@ index a410a35..928d38c 100644
 -			::Settings::ShowEmojiStatusPremium(controller, peer);
 +		_badge->setPremiumClickCallback([=, peer = _peer] {
 +			if (_localCollectible) {
++				const auto references = Ayu::LocalProfileGiftReferences(peer);
++				const auto referenceMatches = ranges::any_of(
++					references,
++					[&](const QString &reference) {
++						return reference.compare(
++							_localCollectible->slug,
++							Qt::CaseInsensitive) == 0;
++					});
 +				const auto locallyPresented = peer->isSelf()
 +					&& (Ayu::LocalProfileCloneUser(peer)
++						|| referenceMatches
 +						|| ranges::contains(
 +							_localProfileGiftIds,
 +							_localCollectible->id));
@@ -4279,7 +4322,7 @@ index a410a35..928d38c 100644
  		});
  	}
  	if (_verified) {
-@@ -430,12 +450,7 @@ TopBar::TopBar(
+@@ -430,12 +459,7 @@ TopBar::TopBar(
  			_botVerify->updated());
  	}
  	if (_exteraBadge) {
@@ -4293,7 +4336,7 @@ index a410a35..928d38c 100644
  		badgeUpdates = rpl::merge(
  			std::move(badgeUpdates),
  			_exteraBadge->updated());
-@@ -475,6 +490,7 @@ TopBar::TopBar(
+@@ -475,6 +499,7 @@ TopBar::TopBar(
  
  	rpl::merge(
  		style::PaletteChanged(),
@@ -4301,7 +4344,7 @@ index a410a35..928d38c 100644
  		_peer->session().data().giftUpdates() | rpl::filter([=](
  				const Data::GiftUpdate &update) {
  			if (update.action == Data::GiftUpdate::Action::Pin) {
-@@ -1409,8 +1425,9 @@ void TopBar::setupUniqueBadgeTooltip() {
+@@ -1409,8 +1434,9 @@ void TopBar::setupUniqueBadgeTooltip() {
  		if (_badgeCollectibleId == id) {
  			return;
  		}
@@ -4312,7 +4355,7 @@ index a410a35..928d38c 100644
  			return;
  		}
  		_badgeTooltip = std::make_unique<BadgeTooltip>(
-@@ -1489,17 +1506,29 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
+@@ -1489,17 +1515,29 @@ void TopBar::setPatternEmojiId(std::optional<DocumentId> patternEmojiId) {
  
  void TopBar::setLocalEmojiStatusId(EmojiStatusId emojiStatusId) {
  	_localCollectible = emojiStatusId.collectible;
@@ -4350,7 +4393,7 @@ index a410a35..928d38c 100644
  }
  
  auto TopBar::effectiveCollectible() const
-@@ -1508,7 +1537,7 @@ auto TopBar::effectiveCollectible() const
+@@ -1508,7 +1546,7 @@ auto TopBar::effectiveCollectible() const
  		? _localCollectible
  		: _localColorProfileIndex
  		? nullptr
@@ -4359,7 +4402,7 @@ index a410a35..928d38c 100644
  }
  
  void TopBar::paintEdges(QPainter &p, const QBrush &brush) const {
-@@ -2360,14 +2389,63 @@ void TopBar::setupPinnedToTopGifts(
+@@ -2360,14 +2398,63 @@ void TopBar::setupPinnedToTopGifts(
  		updateCollectibleStatus();
  		setupNewGifts(controller, gifts);
  	});
@@ -4426,14 +4469,22 @@ index a410a35..928d38c 100644
  		: CollectibleId(0);
  	auto filteredGifts = std::vector<Data::SavedStarGift>();
  	const auto subtract = emojiStatusId ? 1 : 0;
-@@ -2440,8 +2518,31 @@ void TopBar::setupNewGifts(
+@@ -2440,8 +2527,39 @@ void TopBar::setupNewGifts(
  		}());
  		entry.button->show();
  
 -		entry.button->setClickedCallback([=, giftData = gift, peer = _peer] {
 -			::Settings::ShowSavedStarGiftBox(controller, peer, giftData);
++		const auto references = Ayu::LocalProfileGiftReferences(_peer);
++		const auto referenceMatches = gift.info.unique
++			&& ranges::any_of(references, [&](const QString &reference) {
++				return reference.compare(
++					gift.info.unique->slug,
++					Qt::CaseInsensitive) == 0;
++			});
 +		const auto locallyPresented = _peer->isSelf()
 +			&& (Ayu::LocalProfileCloneUser(_peer)
++				|| referenceMatches
 +				|| (gift.info.unique
 +					&& ranges::contains(
 +						_localProfileGiftIds,

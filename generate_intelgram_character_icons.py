@@ -25,7 +25,34 @@ def prepare(source: Path, crop: tuple[int, int, int, int], shape: str) -> Image.
 	return image
 
 
-def write_platform_assets(name: str, image: Image.Image, output: Path) -> None:
+def prepare_macos(source: Path, crop: tuple[int, int, int, int]) -> Image.Image:
+	return (
+		Image.open(source)
+		.convert("RGBA")
+		.crop(crop)
+		.resize((1024, 1024), Image.Resampling.LANCZOS)
+	)
+
+
+def flatten_for_macos(image: Image.Image) -> Image.Image:
+	image = image.convert("RGBA")
+	width, height = image.size
+	background = image.getpixel((max(0, width // 16), height // 2))
+	if background[3] == 0:
+		background = (32, 38, 50, 255)
+	else:
+		background = (*background[:3], 255)
+	result = Image.new("RGBA", image.size, background)
+	result.alpha_composite(image)
+	return result
+
+
+def write_platform_assets(
+	name: str,
+	image: Image.Image,
+	output: Path,
+	macos_image: Image.Image,
+) -> None:
 	masters = output / "masters"
 	windows = output / "Windows"
 	macos = output / "macOS"
@@ -38,7 +65,8 @@ def write_platform_assets(name: str, image: Image.Image, output: Path) -> None:
 		format="ICO",
 		sizes=[(size, size) for size in (16, 24, 32, 48, 64, 128, 256)],
 	)
-	image.save(macos / f"{name}.icns", format="ICNS")
+	macos_image.save(macos / f"{name}.png", optimize=True)
+	macos_image.save(macos / f"{name}.icns", format="ICNS")
 
 	for size in SIZES:
 		directory = output / "Linux/hicolor" / f"{size}x{size}/apps"
@@ -58,14 +86,27 @@ def main() -> None:
 		(70, 70, 1184, 1184),
 		"circle",
 	)
-	write_platform_assets("intelgram-pink-front", front, OUTPUT)
-	write_platform_assets("intelgram-pink-profile", profile, OUTPUT)
+	front_macos = prepare_macos(
+		SOURCE / "intelgram-pink-front-source.png",
+		(60, 60, 1194, 1194),
+	)
+	profile_macos = prepare_macos(
+		SOURCE / "intelgram-pink-profile-source.png",
+		(70, 70, 1184, 1184),
+	)
+	write_platform_assets("intelgram-pink-front", front, OUTPUT, front_macos)
+	write_platform_assets("intelgram-pink-profile", profile, OUTPUT, profile_macos)
 
 	for source in sorted((COLOR_OUTPUT / "masters").glob("*.png")):
 		image = Image.open(source).convert("RGBA")
 		if image.size != (1024, 1024):
 			image = image.resize((1024, 1024), Image.Resampling.LANCZOS)
-		write_platform_assets(source.stem, image, COLOR_OUTPUT)
+		write_platform_assets(
+			source.stem,
+			image,
+			COLOR_OUTPUT,
+			flatten_for_macos(image),
+		)
 
 
 if __name__ == "__main__":

@@ -45,7 +45,9 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Accepts a collection number, Telegram gift slug, `t.me/nft` link, Getgems item URL, friendly or raw TON NFT address.
 - Resolves exact model, pattern, backdrop, number, and native artwork read-only.
 - Uses Telegram's native unique-gift detail surface when a rendered collectible is clicked.
-- Presents locally selected and cloned gifts as gifted to your currently rendered self name, with both the recipient link and Telegram profile chip opening your own profile.
+- Presents locally selected and cloned gifts as gifted to your currently rendered self name, with both the recipient link and Telegram profile chip opening your own locally rendered profile.
+- Matches configured gift slugs before asynchronous collectible IDs resolve, preventing local items from opening the original owner's profile.
+- Applies the local name, photo, phone, usernames, bio, and personal channel to the compact profile card opened from the gift detail.
 - Supports one local featured collectible and up to six local pinned collectibles.
 - Uses the featured collectible for the local profile backdrop and places pinned gifts around the local avatar.
 - Never changes ownership, transfers, lists, purchases, upgrades, pins, or features a gift on Telegram.
@@ -68,7 +70,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Optional local supporter badge after the user explicitly joins `@intelgrams` through Telegram's channel page.
 - Grouped local-profile controls for identity, contact details, profile photo, and collectibles.
 - A reactive name-color sample that follows the locally rendered display name.
-- New pink IntelGram primary and profile-art icons plus twelve color variants, with platform-native macOS, Windows, and Linux resources.
+- New pink IntelGram primary and profile-art icons plus twelve color variants, with full-bleed macOS artwork and platform-native Windows and Linux resources.
 - Separate macOS bundle identifier, Windows application identifier, and Linux desktop identifiers.
 - Packages for macOS Apple Silicon, Windows x64, and Linux x64.
 - Coexists with a normal AyuGram installation without overwriting it.

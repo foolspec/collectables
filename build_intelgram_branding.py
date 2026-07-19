@@ -72,7 +72,7 @@ def write_mac_icon(name: str, source: Path) -> None:
 				"name": "app",
 				"opacity": 1,
 				"position": {
-					"scale": 0.75,
+					"scale": 1.0,
 					"translation-in-points": [0, 0],
 				},
 			}],
@@ -473,6 +473,8 @@ for name, _, _ in COLOR_ICONS:
 
 front = BRANDING / "character/masters/intelgram-pink-front.png"
 profile = BRANDING / "character/masters/intelgram-pink-profile.png"
+front_macos = BRANDING / "character/macOS/intelgram-pink-front.png"
+profile_macos = BRANDING / "character/macOS/intelgram-pink-profile.png"
 front_ico = BRANDING / "character/Windows/intelgram-pink-front.ico"
 profile_ico = BRANDING / "character/Windows/intelgram-pink-profile.ico"
 
@@ -484,16 +486,17 @@ for name, image, ico in (
 	copy_asset(image, f"Telegram/Resources/art/ayu/{name}/app.png")
 	copy_asset(ico, f"Telegram/Resources/art/ayu/{name}/app_icon.ico")
 
-write_mac_icon("Default", front)
-write_mac_icon("Chibi", profile)
-write_mac_icon("Chibi2", front)
+write_mac_icon("Default", front_macos)
+write_mac_icon("Chibi", profile_macos)
+write_mac_icon("Chibi2", front_macos)
 
 for name, mac_name, filename in COLOR_ICONS:
 	image = BRANDING / "color/masters" / f"{filename}.png"
+	mac_image = BRANDING / "color/macOS" / f"{filename}.png"
 	ico = BRANDING / "color/Windows" / f"{filename}.ico"
 	copy_asset(image, f"Telegram/Resources/art/ayu/{name}/app.png")
 	copy_asset(ico, f"Telegram/Resources/art/ayu/{name}/app_icon.ico")
-	write_mac_icon(mac_name, image)
+	write_mac_icon(mac_name, mac_image)
 
 primary_sizes = {
 	"icon16.png": 16,
