@@ -2,7 +2,7 @@
 
 All notable IntelGram custom-feature changes are recorded here.
 
-## Unreleased
+## IntelGram v6.7.8 Local Profile Update - 2026-07-19
 
 ### Added
 

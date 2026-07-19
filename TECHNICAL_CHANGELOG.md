@@ -2,7 +2,7 @@
 
 This file records implementation-level changes to IntelGram's custom layer. Product-facing changes are summarized in [`CHANGELOG.md`](CHANGELOG.md).
 
-## Unreleased - 2026-07-18
+## IntelGram v6.7.8 Local Profile Update - 2026-07-19
 
 ### Source Baseline And Patch
 
@@ -78,7 +78,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The manual release publisher accepts separate successful macOS, Windows, and Linux run IDs, verifies each required package and validation report, and combines them into one permanent release.
 - Release notes enumerate the main local-only features, supported packages, explicit supporter-join behavior, privacy boundary, credit, and links to both changelogs.
 - A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
-- The latest published packages remain the previously validated release from build run `29615304415`; this unreleased entry describes the source revision that follows it.
+- Release `intelgram-v6.7.8-local-profile-20260718-2` combines successful macOS run `29662094032`, Windows run `29663879197`, and Linux run `29660454913`; package validation run `29667061031` passed.
 
 ## Initial IntelGram Local Profile Implementation
 
