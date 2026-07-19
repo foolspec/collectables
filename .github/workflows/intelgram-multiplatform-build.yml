@@ -19,7 +19,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1
+  PATCH_SHA256: 5039d065566b88f94918fd1972fd0dda7a6817ddb15aeece06ffc0c9ff16e764
 
 jobs:
   macos:
@@ -65,9 +65,16 @@ jobs:
             echo "Unexpected Telegram profile mutation reference."
             exit 1
           fi
+          if git -C tdesktop diff --no-ext-diff | grep -E 'MTPchannels_JoinChannel|channels\.joinChannel|JoinChannel'; then
+            echo "Unexpected Telegram channel join reference."
+            exit 1
+          fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
           grep -n 'requestStarGifts' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
+          grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
+          grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'userByPhone(phoneQuery)' tdesktop/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
           grep -n 'set(output_name "IntelGram")' tdesktop/Telegram/CMakeLists.txt
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
@@ -405,8 +412,12 @@ jobs:
           git -C tdesktop diff --check
           $diff = git -C tdesktop diff --no-ext-diff
           if ($diff | Select-String -Pattern 'updateProfile|updateUsername|MTPaccount_|MTPusers_|account\.update|users\..*update') { throw "Unexpected Telegram profile mutation reference" }
+          if ($diff | Select-String -Pattern 'MTPchannels_JoinChannel|channels\.joinChannel|JoinChannel') { throw "Unexpected Telegram channel join reference" }
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp -Pattern ayu_LocalProfileIdEnabled
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp -Pattern ShowLocalProfileUsernameEditor
+          Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_LocalProfileGiftPickerLive
+          Select-String -Path tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp -Pattern isIntelGramChannelMember
+          Select-String -Path tdesktop/Telegram/Resources/langs/lang.strings -Pattern ayu_IntelGramLinksTechnicalChangelog
           Select-String -Path tdesktop/Telegram/SourceFiles/core/version.h -Pattern 'AppFile = "IntelGram"'
           Select-String -Path tdesktop/Telegram/SourceFiles/window/main_window.cpp -Pattern 'u"IntelGram"_q'
           Select-String -Path tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp -Pattern 'IntelGram Desktop v'
@@ -493,8 +504,15 @@ jobs:
             echo "Unexpected Telegram profile mutation reference."
             exit 1
           fi
+          if git -C tdesktop diff --no-ext-diff | grep -E 'MTPchannels_JoinChannel|channels\.joinChannel|JoinChannel'; then
+            echo "Unexpected Telegram channel join reference."
+            exit 1
+          fi
           grep -n 'ayu_LocalProfileIdEnabled' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_other.cpp
           grep -n 'ShowLocalProfileUsernameEditor' tdesktop/Telegram/SourceFiles/ayu/ui/utils/ayu_profile_values.cpp
+          grep -n 'ayu_LocalProfileGiftPickerLive' tdesktop/Telegram/Resources/langs/lang.strings
+          grep -n 'isIntelGramChannelMember' tdesktop/Telegram/SourceFiles/ayu/utils/telegram_helpers.cpp
+          grep -n 'ayu_IntelGramLinksTechnicalChangelog' tdesktop/Telegram/Resources/langs/lang.strings
           grep -n 'AppFile = "IntelGram"' tdesktop/Telegram/SourceFiles/core/version.h
           grep -n 'u"IntelGram"_q' tdesktop/Telegram/SourceFiles/window/main_window.cpp
           grep -n 'QString("IntelGram Desktop v")' tdesktop/Telegram/SourceFiles/ayu/ui/settings/settings_main.cpp

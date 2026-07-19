@@ -26,7 +26,7 @@ Use the normal search field above the chat list. Paste a UID, `id: UID`, or a ph
 
 ## How do I browse collectible gifts?
 
-Choose **Featured collectible gift** or **Manage pinned collectible gifts**, then open the collection picker. The first screen shows live collection art. Select a collection and scroll through its numbered gifts; more load as you reach the end. Click a tile to apply it locally.
+Choose **Featured collectible gift** or **Manage pinned collectible gifts**, then open the collection picker. The first screen always shows the available collection names, with live native preview art underneath when it loads. Select a collection and scroll through its numbered gifts; more load as you reach the end. Click a tile to apply it locally.
 
 ## Can I paste a Getgems or TON link?
 
@@ -39,3 +39,7 @@ IntelGram opens Telegram's native unique-gift detail surface for that exact mode
 ## Can anybody else see these changes?
 
 No. They are visible only in this IntelGram installation. Screenshots will naturally show what IntelGram rendered, but Telegram and other users receive none of these local values.
+
+## How do I get the IntelGram supporter badge?
+
+Open **IntelGram Settings -> IntelGram -> Telegram**, then press Telegram's normal **Join** button on `@intelgrams`. IntelGram reads that locally known membership state and displays the badge on your own profile. It does not join the channel automatically, and leaving the channel removes the local membership-derived badge after Telegram updates the channel state.

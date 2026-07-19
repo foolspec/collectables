@@ -6,6 +6,10 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Added
 
+- A guaranteed visible collection list at the top of the collectible chooser, independent of live catalog availability.
+- IntelGram Telegram, GitHub, changelog, and technical changelog links inside the app.
+- A local supporter badge derived from membership in `@intelgrams` after the user joins through Telegram's normal channel page.
+- A detailed technical changelog covering source hooks, persistence, network boundaries, and validation.
 - Live collection chooser populated from Telegram's complete read-only star-gift catalog.
 - Native visual collection tiles with an eight-collection offline fallback.
 - Scrollable exact-number collectible browser with incremental loading.
@@ -15,6 +19,8 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Changed
 
+- Removed the inherited Boosty and cryptocurrency donation block from **Settings -> Other**.
+- Live collectible tiles now appear beneath the stable collection choices instead of leaving an empty chooser when catalog loading is unavailable.
 - UID and phone queries now stay inside the local peer cache instead of entering normal remote message, topic, or username search.
 - Main README now leads with IntelGram's custom features and links to the full documentation.
 - Product-facing main-window, settings, version, and notification-preview titles now consistently use IntelGram.
@@ -23,6 +29,7 @@ All notable IntelGram custom-feature changes are recorded here.
 
 ### Privacy
 
+- No automatic channel join was added; `@intelgrams` membership requires the user's normal Telegram **Join** action.
 - No Telegram profile/account mutation was added.
 - No contact import or address-book lookup was added.
 - Collectible catalog, item, and TON metadata resolution remains read-only.

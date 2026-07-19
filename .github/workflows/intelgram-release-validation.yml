@@ -13,7 +13,8 @@ permissions:
   contents: read
 
 env:
-  PATCH_SHA256: 5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1
+  SOURCE_PATCH_SHA256: 5039d065566b88f94918fd1972fd0dda7a6817ddb15aeece06ffc0c9ff16e764
+  RELEASE_PATCH_SHA256: 5b12d98645e17587b842356c56d55cdc7dc9210d5466e46993a5780dab5f5ae1
 
 jobs:
   verify-release:
@@ -26,8 +27,8 @@ jobs:
       - name: Verify source patch
         run: |
           set -euo pipefail
-          test "$(sha256sum intelgram-local-profile-render-overrides.patch | awk '{print $1}')" = "$PATCH_SHA256"
-          test "$(sha256sum ayugram-local-profile-render-overrides.patch | awk '{print $1}')" = "$PATCH_SHA256"
+          test "$(sha256sum intelgram-local-profile-render-overrides.patch | awk '{print $1}')" = "$SOURCE_PATCH_SHA256"
+          test "$(sha256sum ayugram-local-profile-render-overrides.patch | awk '{print $1}')" = "$SOURCE_PATCH_SHA256"
           cmp intelgram-local-profile-render-overrides.patch ayugram-local-profile-render-overrides.patch
 
       - name: Verify latest release and package digests
@@ -52,8 +53,8 @@ jobs:
           verify_asset "IntelGram-macOS-Apple-Silicon.zip" "2a822877392f6d207671f1dad01faf1dc1f7bf502843c5183347c5ce21126a36"
           verify_asset "IntelGram-Windows-x64.zip" "7431e9ee35c089856638f75aa26184a08041d404322118e313330b9fbad2bee6"
           verify_asset "IntelGram-Linux-x64.tar.gz" "f940160541dc268dec285d7ff2f7041d2c6fe00c0469e1dbb173c8fe5d2cd6ea"
-          verify_asset "intelgram-local-profile-render-overrides.patch" "$PATCH_SHA256"
-          verify_asset "ayugram-local-profile-render-overrides.patch" "$PATCH_SHA256"
+          verify_asset "intelgram-local-profile-render-overrides.patch" "$RELEASE_PATCH_SHA256"
+          verify_asset "ayugram-local-profile-render-overrides.patch" "$RELEASE_PATCH_SHA256"
 
           for asset in \
             IntelGram-macOS-sha256.txt \

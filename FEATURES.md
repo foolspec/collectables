@@ -34,8 +34,9 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 
 ## Collectible Browser
 
+- Always shows a stable collection list immediately, even if the live catalog cannot load.
 - Loads all collection types currently returned by Telegram's read-only star-gift catalog.
-- Shows native collection preview art in an in-app gift grid.
+- Shows native live collection preview art beneath the stable choices in an in-app gift grid.
 - Falls back to Scared Cat, Plush Pepe, Toy Bear, Chill Flame, Precious Peach, Heart Locket, Diamond Ring, and Astral Shard if the live catalog is unavailable.
 - Opens a scrollable native item grid for the selected collection.
 - Loads exact numbered collectibles in pages as the user scrolls.
@@ -58,6 +59,8 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 ## Product And Packaging
 
 - Visible IntelGram product name.
+- In-app links to `@intelgrams`, the IntelGram GitHub repository, and both changelogs.
+- Optional local supporter badge after the user explicitly joins `@intelgrams` through Telegram's channel page.
 - Separate macOS bundle identifier, Windows application identifier, and Linux desktop identifiers.
 - Packages for macOS Apple Silicon, Windows x64, and Linux x64.
 - Coexists with a normal AyuGram installation without overwriting it.
@@ -65,7 +68,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 
 ## Network Boundary
 
-IntelGram's custom profile values stay local. The collectible browser may issue read-only Telegram gift catalog/detail requests and a read-only TonAPI metadata lookup when resolving a raw TON NFT address. It adds no Telegram account/profile update, contact import, collectible transaction, or ownership mutation.
+IntelGram's custom profile values stay local. The collectible browser may issue read-only Telegram gift catalog/detail requests and a read-only TonAPI metadata lookup when resolving a raw TON NFT address. The supporter badge reads an already-known channel membership state and does not join a channel. IntelGram adds no Telegram account/profile update, contact import, collectible transaction, ownership mutation, or automatic channel join.
 
 ## Credit
 
