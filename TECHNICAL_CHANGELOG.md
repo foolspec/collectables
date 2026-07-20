@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `20f927a73622e9b437b4ace61dc56b847a0c72bceb0dc986f1fc78c4a604e6c2`.
-- Patch footprint: 37 source files, 3,165 insertions, and 430 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9`.
+- Patch footprint: 37 source files, 3,183 insertions, and 432 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -33,7 +33,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `StarGiftResaleInfo::localProfileRecipientId` overrides only the detail entry's displayed Telegram host peer, so the native Telegram profile chip uses the same signed-in peer while the unique gift's actual `hostId` and `ownerId` remain intact.
 - The recipient label and peer-table value consume `Ayu::LocalProfileName`, so they show the real display name when no local name is enabled and the local or cloned display name when one is active.
 - `TopBar` compares configured local gift slugs case-insensitively before asynchronous collectible IDs resolve, routing featured and pinned local gifts through the local-profile detail resolver immediately.
-- Telegram's existing click handlers therefore open the signed-in user's short profile from either surface. `PrepareShortInfoBox` consumes `LocalProfileName`, `LocalProfilePhone`, `LocalProfileUsername`, `LocalProfileAbout`, and `LocalProfilePersonalChannel`, while its existing userpic path consumes the central local-photo override.
+- Telegram's existing click handlers therefore open the signed-in user's short profile from either surface. `PrepareShortInfoBox` consumes `LocalProfileName`, `LocalProfilePhone`, `LocalProfileUsername`, `LocalProfileAbout`, and `LocalProfilePersonalChannel`; when a local or cloned userpic is active, `ProcessCurrent` bypasses the real Telegram photo-history item and renders the central override as the card's single large, fully loaded photo instead of a blurred server-photo placeholder.
 - Locally overridden usernames are shown without linking to an unrelated public server username; normal non-local username links remain unchanged.
 - `ownerId`, sender, date, price, transfer, resale, and every underlying Telegram or on-chain ownership field remain unchanged. Normal non-local gift details continue through the original resolver.
 

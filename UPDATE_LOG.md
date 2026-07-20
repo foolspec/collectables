@@ -9,7 +9,7 @@
 - Latest feature scope: local profile fields, photo, high-fidelity profile clone, UID/phone cached-peer search, native collection and item galleries, featured gift, pinned gifts, and fourteen app-icon choices.
 - Collectible gallery: the collection screen uses native artwork tiles, each collection opens a scrollable exact-item grid, and clicking a collectible selects it without leaving IntelGram.
 - Local gift recipient: featured, pinned, and cloned collectible details match local gift slugs immediately, use your active real or local display name for **Gifted to** and the **Telegram** profile chip, and open your own locally rendered profile without changing real ownership data.
-- Compact profile consistency: the collectible's Telegram row now opens a card using your local display name, photo, phone, usernames, bio, and personal channel instead of the collectible owner's server profile.
+- Compact profile consistency: the collectible's Telegram row now opens a card using your local display name, large profile photo, phone, usernames, bio, and personal channel instead of the collectible owner's server profile.
 - Clone fidelity: premium and verification badges, organization badge symbols, emoji status, and personal channel follow a read-only refresh of the already-known source profile; absent elements are cleared from the cloned local view.
 - Username editor: the added original-username strip is gone and Telegram's familiar inline syntax/availability row is restored without a network availability request.
 - Settings organization: local controls are grouped into identity, contact, photo, and collectible sections.
@@ -18,7 +18,7 @@
 - Settings cleanup: inherited Boosty and cryptocurrency donation rows were removed and replaced with IntelGram community, source, and changelog links.
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
-- Current source patch SHA-256: `20f927a73622e9b437b4ace61dc56b847a0c72bceb0dc986f1fc78c4a604e6c2`.
+- Current source patch SHA-256: `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9`.
 - Previous published release: `intelgram-v6.7.8-local-profile-20260719`, assembled from final macOS run `29687992660`, Windows run `29675428988`, and Linux run `29675433095`.
 - Previous release validation: all package checksums, GitHub digests, patch hashes, platform reports, and launch smoke tests passed against the published assets in run `29696979425`. A replacement macOS package for the current patch is being validated before publication.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.

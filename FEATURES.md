@@ -47,7 +47,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Uses Telegram's native unique-gift detail surface when a rendered collectible is clicked.
 - Presents locally selected and cloned gifts as gifted to your currently rendered self name, with both the recipient link and Telegram profile chip opening your own locally rendered profile.
 - Matches configured gift slugs before asynchronous collectible IDs resolve, preventing local items from opening the original owner's profile.
-- Applies the local name, photo, phone, usernames, bio, and personal channel to the compact profile card opened from the gift detail.
+- Applies the local name, large profile photo, phone, usernames, bio, and personal channel to the compact profile card opened from the gift detail.
 - Supports one local featured collectible and up to six local pinned collectibles.
 - Uses the featured collectible for the local profile backdrop and places pinned gifts around the local avatar.
 - Never changes ownership, transfers, lists, purchases, upgrades, pins, or features a gift on Telegram.

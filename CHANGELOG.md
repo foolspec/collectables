@@ -31,7 +31,7 @@ All notable IntelGram custom-feature changes are recorded here.
 - The name-color preview now follows the active locally rendered display name instead of the real-profile short name.
 - Locally presented gift details now name the signed-in user with the active real or local display name in both the recipient link and Telegram profile chip; both open the signed-in user's profile without rewriting ownership or transaction metadata.
 - Local collectible clicks now recognize configured gift slugs before asynchronous collectible IDs resolve, so the Telegram row cannot fall back to the original owner's profile.
-- The compact profile opened from a local collectible now consumes the local display name, photo, phone, usernames, bio, and personal channel.
+- The compact profile opened from a local collectible now consumes the local display name, large profile photo, phone, usernames, bio, and personal channel.
 - Rebuilt every Windows icon as a seven-size `.ico` and added matching native macOS and Linux assets.
 - Rebuilt macOS icon-composer sources as full-bleed platform artwork at 100% scale, removing the extra white shell and double inset around the Dock icon.
 - Removed the inherited Boosty and cryptocurrency donation block from **Settings -> Other**.

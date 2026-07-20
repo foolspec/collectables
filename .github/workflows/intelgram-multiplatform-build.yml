@@ -40,7 +40,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: 20f927a73622e9b437b4ace61dc56b847a0c72bceb0dc986f1fc78c4a604e6c2
+  PATCH_SHA256: 56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9
 
 jobs:
   macos:
@@ -100,6 +100,7 @@ jobs:
           grep -n 'referenceMatches' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
           grep -n 'LocalProfileUsernameActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfilePhone(user)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+          grep -n 'Ayu::LocalProfileUserpicActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
           grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
@@ -463,6 +464,7 @@ jobs:
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp -SimpleMatch referenceMatches
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp -SimpleMatch 'LocalProfileUsernameActive(peer)'
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp -SimpleMatch 'Ayu::LocalProfilePhone(user)'
+          Select-String -Path tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp -SimpleMatch 'Ayu::LocalProfileUserpicActive(peer)'
           Select-String -Path tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp -SimpleMatch 'Ayu::LocalProfileName(to)'
           Select-String -Path tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp -SimpleMatch localProfileRecipientId
           Select-String -Path tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp -SimpleMatch BadgeValueForPeer
@@ -572,6 +574,7 @@ jobs:
           grep -n 'referenceMatches' tdesktop/Telegram/SourceFiles/info/profile/info_profile_top_bar.cpp
           grep -n 'LocalProfileUsernameActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfilePhone(user)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+          grep -n 'Ayu::LocalProfileUserpicActive(peer)' tdesktop/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
           grep -n 'Ayu::LocalProfileName(to)' tdesktop/Telegram/SourceFiles/boxes/gift_premium_box.cpp
           grep -n 'localProfileRecipientId' tdesktop/Telegram/SourceFiles/settings/settings_credits_graphics.cpp
           grep -n 'BadgeValueForPeer' tdesktop/Telegram/SourceFiles/info/profile/info_profile_values.cpp
