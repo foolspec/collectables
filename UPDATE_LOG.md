@@ -19,8 +19,8 @@
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
 - Current source patch SHA-256: `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9`.
-- Previous published release: `intelgram-v6.7.8-local-profile-20260719`, assembled from final macOS run `29687992660`, Windows run `29675428988`, and Linux run `29675433095`.
-- Previous release validation: all package checksums, GitHub digests, patch hashes, platform reports, and launch smoke tests passed against the published assets in run `29696979425`. A replacement macOS package for the current patch is being validated before publication.
+- Final replacement packages: macOS run `29701604530`, Windows run `29701679512`, and Linux run `29701680681`. All three record patch `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9` and a passed isolated launch smoke test.
+- Release target: `intelgram-v6.7.8-local-profile-20260720`; public-asset validation is run after publication and recorded here once complete.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
 - Login and platform branding: the login footer, application menus, About and crash dialogs, tray labels, updater identity, and Windows shortcut metadata now consistently use IntelGram.
@@ -45,4 +45,4 @@
 - `IntelGram-Windows-x64.zip`
 - `IntelGram-Linux-x64.tar.gz`
 
-The latest completed result and exact checksums are attached to [`intelgram-v6.7.8-local-profile-20260719`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260719).
+The final packages and exact checksums are attached to [`intelgram-v6.7.8-local-profile-20260720`](https://github.com/foolspec/IntelGram/releases/tag/intelgram-v6.7.8-local-profile-20260720).
