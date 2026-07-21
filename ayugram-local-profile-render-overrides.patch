@@ -1,5 +1,5 @@
 diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
-index 7380587..1a97172 100644
+index 7380587..e0ba578 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
 @@ -7971,9 +7971,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
@@ -37,7 +37,7 @@ index 7380587..1a97172 100644
 +"ayu_IntelGramUpdateLogLabel" = "Open in IntelGram";
 +"ayu_IntelGramUpdateLogTitle" = "IntelGram update log";
 +"ayu_IntelGramUpdateLogCurrentTitle" = "Latest update";
-+"ayu_IntelGramUpdateLogCurrent" = "**Profile consistency and macOS icons**\n- A locally selected collectible now identifies your rendered profile directly, including when its network details have not finished loading.\n- Opening the collectible's Telegram row now shows your local display name, photo, phone number, usernames, bio, and personal channel instead of the original collectible owner's profile.\n- macOS app icons now use full-size platform artwork without the extra white frame or double inset.\n- Collectible collections appear as a native thumbnail gallery, with a scrollable in-app picker for individual collectibles.\n- Profile cloning mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the pink character icons and twelve color variants.";
++"ayu_IntelGramUpdateLogCurrent" = "**Profile consistency and macOS icons**\n- Collectible username and anonymous-number owner chips now show your active local or cloned display name instead of the underlying Telegram peer label.\n- A locally selected collectible now identifies your rendered profile directly, including when its network details have not finished loading.\n- Opening the collectible's Telegram row now shows your local display name, photo, phone number, usernames, bio, and personal channel instead of the original collectible owner's profile.\n- macOS app icons now use full-size platform artwork without the extra white frame or double inset.\n- Collectible collections appear as a native thumbnail gallery, with a scrollable in-app picker for individual collectibles.\n- Profile cloning mirrors premium and verification badges, emoji status, and the personal channel, clearing fields the source profile does not have.\n- The local username editor uses Telegram's familiar inline syntax and availability status without making a server request.\n- Local profile controls are grouped into clear identity, contact, photo and collectible sections.\n- The name-color preview follows the locally rendered display name.\n- IntelGram includes the pink character icons and twelve color variants.";
 +"ayu_IntelGramUpdateLogFeaturesTitle" = "Main IntelGram features";
 +"ayu_IntelGramUpdateLogFeatures" = "**Local profile presentation**\n- Display name, UID, primary and other usernames, anonymous number, bio, and profile photo.\n- Local profile cloning from a user already loaded in IntelGram, including badges, emoji status, and personal channel.\n- Cached user search by UID or a phone number visible to your account.\n- One featured collectible and up to six pinned collectibles with native detail views.";
 +"ayu_IntelGramUpdateLogPrivacyTitle" = "Local-only boundary";
@@ -4957,3 +4957,24 @@ index 61524ae..387ae7c 100644
  			Ui::NameTextOptions());
  		moveBadge();
  	}
+diff --git a/Telegram/SourceFiles/window/window_session_controller.cpp b/Telegram/SourceFiles/window/window_session_controller.cpp
+index 3cb7dc4..c8cb3cd 100644
+--- a/Telegram/SourceFiles/window/window_session_controller.cpp
++++ b/Telegram/SourceFiles/window/window_session_controller.cpp
+@@ -129,6 +129,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ 
+ // AyuGram includes
+ #include "ayu/ayu_settings.h"
++#include "ayu/ui/utils/ayu_profile_values.h"
+ 
+ 
+ namespace Window {
+@@ -217,7 +218,7 @@ private:
+ 			? QString()
+ 			: owner->session().createInternalLinkFull(entity)),
+ 		.ownerUserpic = Ui::MakeUserpicThumbnail(owner, true),
+-		.ownerName = owner->name(),
++		.ownerName = Ayu::LocalProfileName(owner),
+ 		.cryptoAmount = data.vcrypto_amount().v,
+ 		.amount = data.vamount().v,
+ 		.cryptoCurrency = qs(data.vcrypto_currency()),

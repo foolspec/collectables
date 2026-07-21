@@ -9,8 +9,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9`.
-- Patch footprint: 37 source files, 3,183 insertions, and 432 deletions relative to the local baseline snapshot.
+- Patch SHA-256: `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7`.
+- Patch footprint: 38 source files, 3,185 insertions, and 433 deletions relative to the local baseline snapshot.
 
 ### Native Collectible Galleries
 
@@ -46,6 +46,11 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `ShowLocalProfileCloneBox` calls the existing `requestFullPeer` read path after selecting an already-loaded user so visible full-profile badge and personal-channel fields are refreshed without changing either account.
 - `ShowLocalProfileUsernameEditor` again uses `AddUsernameCheckLabel` with Telegram's native styling. Its syntax result is computed locally and never calls `MTPaccount_CheckUsername` or a username update method.
 - Removed the added `Original Telegram username` strip and its localization keys.
+
+### Collectible Username And Number Presentation
+
+- `SessionNavigation::resolveCollectible` keeps Telegram's existing read-only collectible lookup and passes the resolved owner peer into the native information box.
+- The collectible parser now supplies `Ayu::LocalProfileName(owner)` to the owner chip, pairing the already locally rendered avatar with the active local or cloned display name. Non-self peers continue to fall back to their normal Telegram name.
 
 ### Cross-Platform Icon Assets
 
@@ -114,6 +119,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Release notes enumerate the main local-only features, supported packages, explicit supporter-join behavior, privacy boundary, credit, and links to both changelogs.
 - A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
 - Release `intelgram-v6.7.8-local-profile-20260720` combines successful macOS run `29701604530`, Windows run `29701679512`, and Linux run `29701680681`; each package records patch `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9` and a passed launch smoke test before publication. Publisher run `29775866172` assembled the permanent release, and public-asset validation run `29775945944` passed every digest, checksum, report, and patch-hash check.
+- Patch `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7` adds collectible owner-name consistency; replacement packages are built and validated before a new permanent release is published.
 
 ## Initial IntelGram Local Profile Implementation
 

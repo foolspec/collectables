@@ -14,6 +14,7 @@ IntelGram is a cross-platform AyuGram Desktop build focused on local-only profil
 - Browse every collection reported by Telegram's live collectible catalog, inspect exact numbered gifts in a scrollable native grid, and paste Telegram, Getgems, or TON item links.
 - Feature one collectible as the local profile backdrop and pin up to six around the local avatar.
 - Open locally featured and cloned gift details with your currently rendered display name in both the recipient link and Telegram profile chip; the compact profile card also uses your local photo, phone, usernames, bio, and personal channel.
+- Show your active local or cloned display name beside the local avatar in collectible username and anonymous-number owner chips.
 - Work through grouped **Identity**, **Usernames, bio and contact**, **Profile photo**, and **Collectibles** settings instead of one long control list.
 - Keep the name-color preview synchronized with the locally rendered display name.
 - Choose the pink IntelGram icon, its profile-art variant, or any of twelve supplied color variants from the in-app icon picker.
@@ -83,7 +84,7 @@ IntelGram uses its own visible application name, macOS bundle ID, Windows applic
 ## Source And Verification
 
 - [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch) contains the client-render-only implementation.
-- Patch SHA-256: `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9`
+- Patch SHA-256: `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7`
 - [`build_intelgram_branding.py`](build_intelgram_branding.py) applies the cross-platform IntelGram product identity.
 - [`branding/icons`](branding/icons) contains the pink character artwork and twelve color masters with generated macOS, Windows, and Linux resources; [`generate_intelgram_character_icons.py`](generate_intelgram_character_icons.py) reproduces them.
 - [`.github/workflows/intelgram-multiplatform-build.yml`](.github/workflows/intelgram-multiplatform-build.yml) performs clean macOS, Windows, and Linux builds.

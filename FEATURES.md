@@ -61,6 +61,7 @@ This document covers IntelGram's custom additions. IntelGram also retains the up
 - Chat headers, profile headers, top bars, about sections, service text, messages, forwarded/reply previews, and table rows.
 - Own-profile username, UID, phone, bio, photo, colors, premium and verification badges, organization badge symbol, emoji status, personal channel, featured gift, backdrop, and pinned-gift visuals.
 - Native collectible tooltip and detail interaction, including self-recipient rendering for local and cloned gifts.
+- Collectible username and anonymous-number owner chips use the active local or cloned display name alongside the locally rendered avatar.
 
 ## Product And Packaging
 
