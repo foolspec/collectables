@@ -119,7 +119,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - Release notes enumerate the main local-only features, supported packages, explicit supporter-join behavior, privacy boundary, credit, and links to both changelogs.
 - A launch test that produces no console output is retained as an explicit silent-launch success log instead of being omitted from release assets.
 - Release `intelgram-v6.7.8-local-profile-20260720` combines successful macOS run `29701604530`, Windows run `29701679512`, and Linux run `29701680681`; each package records patch `56e12dad016d54f7c7f917409fba34c4ca935ba746b261ac8383ed710b9762e9` and a passed launch smoke test before publication. Publisher run `29775866172` assembled the permanent release, and public-asset validation run `29775945944` passed every digest, checksum, report, and patch-hash check.
-- Release `intelgram-v6.7.8-local-profile-20260720-2` combines successful macOS run `29777684364`, Windows run `29777689027`, and Linux run `29777686484`; each package records patch `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7` and a passed isolated launch smoke test. It replaces the previous package set with collectible owner-name consistency.
+- Release `intelgram-v6.7.8-local-profile-20260720-2` combines successful macOS run `29777684364`, Windows run `29777689027`, and Linux run `29777686484`; each package records patch `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7` and a passed isolated launch smoke test. Publisher run `29789518828` assembled the replacement release, and public-asset validation run `29789551493` passed every digest, checksum, report, and patch-hash check.
 
 ## Initial IntelGram Local Profile Implementation
 

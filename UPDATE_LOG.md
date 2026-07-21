@@ -22,6 +22,7 @@
 - Current source patch SHA-256: `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7`.
 - Replacement packages: macOS run `29777684364`, Windows run `29777689027`, and Linux run `29777686484` record patch `ae6e8dbdfc3c9daee6c565800e8ef55c840a8b29172d6dd0d5d55790b5415de7` and passed isolated launch smoke tests.
 - The replacement release publishes these packages together as `intelgram-v6.7.8-local-profile-20260720-2`.
+- Publisher run `29789518828` and public-release validation run `29789551493` completed successfully.
 - Privacy boundary: no Telegram profile mutation, no contact import, and no collectible ownership transaction.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
 - Login and platform branding: the login footer, application menus, About and crash dialogs, tray labels, updater identity, and Windows shortcut metadata now consistently use IntelGram.
