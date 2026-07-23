@@ -3423,10 +3423,10 @@ index 000000000..e5c4d1713
 +} // namespace IntelGram::Vault
 diff --git a/Telegram/SourceFiles/ayu/data/intelgram_vault.h b/Telegram/SourceFiles/ayu/data/intelgram_vault.h
 new file mode 100644
-index 000000000..103d0dc31
+index 000000000..b38fa07a8
 --- /dev/null
 +++ b/Telegram/SourceFiles/ayu/data/intelgram_vault.h
-@@ -0,0 +1,241 @@
+@@ -0,0 +1,239 @@
 +// This is the source code of AyuGram for Desktop.
 +//
 +// We do not and cannot prevent the use of our code,
@@ -3434,8 +3434,6 @@ index 000000000..103d0dc31
 +//
 +// Copyright @Radolyn, 2026
 +#pragma once
-+
-+#include "base/functional.h"
 +
 +#include <QtCore/QByteArray>
 +#include <QtCore/QString>

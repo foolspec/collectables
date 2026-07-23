@@ -28,7 +28,7 @@
 - Settings cleanup: inherited Boosty and cryptocurrency donation rows were removed and replaced with IntelGram community, source, and changelog links.
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
-- Current source patch SHA-256: `05fb4e01511ec67165e3428001bae0716f6cec3ef2de3538028bfe04ccd95ffb`.
+- Current source patch SHA-256: `e9088cde6981066fdde575dc4d2b5f624e6ec1e9410e949698ec8ede42558be2`.
 - Privacy boundary: no Telegram profile mutation, contact import, automatic channel join, collectible transaction, or protected-content bypass.
 - Protected content: Restrict Saving Content and self-destructing items remain metadata-only jump-back references; bodies, links, filenames, revisions, and media are excluded from rules, exports, and backups.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
