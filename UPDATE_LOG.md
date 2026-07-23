@@ -6,6 +6,7 @@
 - Product identity: IntelGram on macOS, Windows, and Linux with separate application identifiers.
 - Source delivery: one complete IntelGram patch plus deterministic branding and validation scripts.
 - Build delivery: GitHub Actions packages macOS Apple Silicon, Windows x64, and Linux x64.
+- Build reliability: macOS and Windows dependency preparation uses bounded cache stages, so a clean GitHub runner can finish without relying on an older warm cache.
 - Universal vault: local FTS search covers received messages, media metadata, links, and filenames, with current-account, all-account, and unified-inbox views.
 - Timeline tools: jump-to-date, conversation statistics, compact media history, saved moments, and locally observed edit/deletion history.
 - Organization: smart folders, private contact notes and reminders, note history, opt-in public identity snapshots, and account-scoped local rules.

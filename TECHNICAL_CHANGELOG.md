@@ -65,6 +65,8 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `validate_intelgram_patch.py` checks required feature hooks, resources, Qt 6.2 compatibility, no-forward enforcement, protected media checks, and added-line mutation references on every platform.
 - `git diff --check`, localization-key uniqueness, QRC XML parsing, and all three theme ZIP integrity checks pass locally.
 - Both public patch names have the same SHA-256 and produce a byte-identical diff after clean application to the pinned official source.
+- Cold-cache macOS dependency preparation is split into six bounded, cumulative cache stages before the independent application compile and launch-test job.
+- Completed macOS and Windows dependency-run IDs can be reused explicitly while their exact caches remain available; missing caches fail closed instead of silently building against a partial dependency tree.
 - The upstream `AGENTS.md` instruction to avoid a local full build is preserved; macOS, Windows, and Linux compiles and isolated launch tests run in GitHub Actions.
 
 ## IntelGram v6.7.8 Local Profile Update - 2026-07-19
