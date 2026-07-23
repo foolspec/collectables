@@ -665,7 +665,7 @@ jobs:
         run: |
           set -euxo pipefail
           # shellcheck disable=SC2016
-          sed -i 's/cmake --build ..\\/out --config "${CONFIG:-Release}"/cmake --build ..\\/out --config "${CONFIG:-Release}" -- -k 0/' \
+          sed -i 's|cmake --build ../out --config "${CONFIG:-Release}"|cmake --build ../out --config "${CONFIG:-Release}" -- -k 0|' \
             tdesktop/Telegram/build/docker/centos_env/build.sh
           # shellcheck disable=SC2016
           grep -F -- 'cmake --build ../out --config "${CONFIG:-Release}" -- -k 0' \
