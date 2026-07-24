@@ -60,7 +60,7 @@ permissions:
 
 env:
   SOURCE_TAG: v6.7.8
-  PATCH_SHA256: e9088cde6981066fdde575dc4d2b5f624e6ec1e9410e949698ec8ede42558be2
+  PATCH_SHA256: 566f49ca3979c62366bb8ebb4543d3cc7694037aa5781eaa4db031ec1b78b94d
 
 jobs:
   macos_dependencies_1:

@@ -7,11 +7,11 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 ### Source Baseline And Patch
 
 - Upstream source: official AyuGram Desktop `v6.7.8`, commit `b25513a06ff88be0b3f4c928252b56c3da39cec7`, with required submodules.
-- Source commit: `9ca2b5146` on the recovered local implementation branch.
+- Source commit: `2abc8dc30` on the recovered local implementation branch.
 - Delivery patch: [`intelgram-local-profile-render-overrides.patch`](intelgram-local-profile-render-overrides.patch).
 - Compatibility alias: [`ayugram-local-profile-render-overrides.patch`](ayugram-local-profile-render-overrides.patch), byte-for-byte identical.
-- Patch SHA-256: `e9088cde6981066fdde575dc4d2b5f624e6ec1e9410e949698ec8ede42558be2`.
-- Patch footprint: 63 files, 7,091 insertions, and 461 deletions relative to the pinned source.
+- Patch SHA-256: `566f49ca3979c62366bb8ebb4543d3cc7694037aa5781eaa4db031ec1b78b94d`.
+- Patch footprint: 63 files, 7,106 insertions, and 461 deletions relative to the pinned source.
 
 ### Vault Storage And Indexing
 
@@ -66,7 +66,9 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - `git diff --check`, localization-key uniqueness, QRC XML parsing, and all three theme ZIP integrity checks pass locally.
 - Both public patch names have the same SHA-256 and produce a byte-identical diff after clean application to the pinned official source.
 - The Linux compiler pass removed a stale `base/functional.h` include that is not present in the pinned source tree; `not_null` remains supplied by Telegram Desktop's standard precompiled header.
+- The full Linux diagnostic compile corrected the vault passphrase wrapper, pinned-revision menu icon names, and plural-count producer in `settings_vault.cpp`.
 - Cold-cache macOS dependency preparation is split into six bounded, cumulative cache stages before the independent application compile and launch-test job.
+- macOS and Windows dependency cache creation is serialized to stay within GitHub's repository cache quota, installed Qt source trees are removed after a verified install, and macOS can resume from a completed Qt-stage cache.
 - Completed macOS and Windows dependency-run IDs can be reused explicitly while their exact caches remain available; missing caches fail closed instead of silently building against a partial dependency tree.
 - The upstream `AGENTS.md` instruction to avoid a local full build is preserved; macOS, Windows, and Linux compiles and isolated launch tests run in GitHub Actions.
 

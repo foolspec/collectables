@@ -6,7 +6,7 @@
 - Product identity: IntelGram on macOS, Windows, and Linux with separate application identifiers.
 - Source delivery: one complete IntelGram patch plus deterministic branding and validation scripts.
 - Build delivery: GitHub Actions packages macOS Apple Silicon, Windows x64, and Linux x64.
-- Build reliability: macOS and Windows dependency preparation uses bounded cache stages, so a clean GitHub runner can finish without relying on an older warm cache.
+- Build reliability: macOS and Windows dependency preparation uses bounded cache stages, platform cache creation is serialized, installed Qt source trees are pruned, and macOS can resume directly from a completed Qt stage.
 - Universal vault: local FTS search covers received messages, media metadata, links, and filenames, with current-account, all-account, and unified-inbox views.
 - Timeline tools: jump-to-date, conversation statistics, compact media history, saved moments, and locally observed edit/deletion history.
 - Organization: smart folders, private contact notes and reminders, note history, opt-in public identity snapshots, and account-scoped local rules.
@@ -28,7 +28,7 @@
 - Settings cleanup: inherited Boosty and cryptocurrency donation rows were removed and replaced with IntelGram community, source, and changelog links.
 - Community badge: joining `@intelgrams` through Telegram's normal channel page unlocks a local supporter badge; IntelGram performs no automatic join request.
 - In-app update log: **IntelGram Settings -> IntelGram -> Update log** opens a bundled native summary without requiring GitHub.
-- Current source patch SHA-256: `e9088cde6981066fdde575dc4d2b5f624e6ec1e9410e949698ec8ede42558be2`.
+- Current source patch SHA-256: `566f49ca3979c62366bb8ebb4543d3cc7694037aa5781eaa4db031ec1b78b94d`.
 - Privacy boundary: no Telegram profile mutation, contact import, automatic channel join, collectible transaction, or protected-content bypass.
 - Protected content: Restrict Saving Content and self-destructing items remain metadata-only jump-back references; bodies, links, filenames, revisions, and media are excluded from rules, exports, and backups.
 - Branding consistency: product-facing window, settings, version, and notification-preview titles use IntelGram while upstream attribution remains intact.
