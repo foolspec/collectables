@@ -161,6 +161,15 @@ jobs:
           fi
           echo "STAGE_COMPLETE=1" >> "$GITHUB_ENV"
 
+      - name: Prune installed Qt source tree from cache
+        if: ${{ env.STAGE_COMPLETE == '1' }}
+        run: |
+          set -euo pipefail
+          if [[ -d Libraries/qt_6.2.13 && -d Libraries/local/Qt-6.2.13 ]]; then
+            du -sh Libraries/qt_6.2.13 Libraries/local/Qt-6.2.13
+            rm -rf Libraries/qt_6.2.13
+          fi
+
       - name: Save accumulated dependencies
         if: ${{ env.STAGE_COMPLETE == '1' }}
         uses: actions/cache/save@v4
