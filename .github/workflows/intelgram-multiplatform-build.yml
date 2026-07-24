@@ -335,6 +335,7 @@ jobs:
   windows_dependencies_2:
     name: Windows dependencies 2 of 9
     needs: windows_dependencies_1
+    if: ${{ always() && needs.windows_dependencies_1.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-2-${{ github.run_id }}-${{ github.run_attempt }}
@@ -351,6 +352,7 @@ jobs:
   windows_dependencies_3:
     name: Windows dependencies 3 of 9
     needs: windows_dependencies_2
+    if: ${{ always() && needs.windows_dependencies_2.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-3-${{ github.run_id }}-${{ github.run_attempt }}
@@ -367,6 +369,7 @@ jobs:
   windows_dependencies_4:
     name: Windows dependencies 4 of 9
     needs: windows_dependencies_3
+    if: ${{ always() && needs.windows_dependencies_3.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-4-${{ github.run_id }}-${{ github.run_attempt }}
@@ -385,6 +388,7 @@ jobs:
   windows_dependencies_breakpad:
     name: Windows dependencies 5 of 9 - Breakpad
     needs: windows_dependencies_4
+    if: ${{ always() && needs.windows_dependencies_4.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-breakpad-${{ github.run_id }}-${{ github.run_attempt }}
@@ -401,6 +405,7 @@ jobs:
   windows_dependencies_angle:
     name: Windows dependencies 6 of 9 - ANGLE
     needs: windows_dependencies_breakpad
+    if: ${{ always() && needs.windows_dependencies_breakpad.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-angle-${{ github.run_id }}-${{ github.run_attempt }}
@@ -417,6 +422,7 @@ jobs:
   windows_dependencies_owt:
     name: Windows dependencies 7 of 9 - WebRTC
     needs: windows_dependencies_angle
+    if: ${{ always() && needs.windows_dependencies_angle.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-owt-${{ github.run_id }}-${{ github.run_attempt }}
@@ -433,6 +439,7 @@ jobs:
   windows_dependencies_final_libraries:
     name: Windows dependencies 8 of 9 - final libraries
     needs: windows_dependencies_owt
+    if: ${{ always() && needs.windows_dependencies_owt.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-final-libraries-${{ github.run_id }}-${{ github.run_attempt }}
@@ -449,6 +456,7 @@ jobs:
   windows_dependencies_complete:
     name: Windows dependencies 9 of 9 - complete
     needs: windows_dependencies_final_libraries
+    if: ${{ always() && needs.windows_dependencies_final_libraries.result == 'success' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-final-v2-${{ github.run_id }}-${{ github.run_attempt }}

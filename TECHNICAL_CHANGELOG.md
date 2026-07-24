@@ -69,6 +69,7 @@ This file records implementation-level changes to IntelGram's custom layer. Prod
 - The full Linux diagnostic compile corrected the vault passphrase wrapper, pinned-revision menu icon names, and plural-count producer in `settings_vault.cpp`.
 - Cold-cache macOS dependency preparation is split into six bounded, cumulative cache stages before the independent application compile and launch-test job.
 - macOS and Windows dependency cache creation is serialized to stay within GitHub's repository cache quota, installed Qt source trees are removed after a verified install, and macOS can resume from a completed Qt-stage cache.
+- Every Windows dependency caller uses an explicit success-gated `always()` condition so a Windows-only run continues after the intentionally skipped macOS job instead of reporting a misleading success after stage one.
 - Completed macOS and Windows dependency-run IDs can be reused explicitly while their exact caches remain available; missing caches fail closed instead of silently building against a partial dependency tree.
 - The upstream `AGENTS.md` instruction to avoid a local full build is preserved; macOS, Windows, and Linux compiles and isolated launch tests run in GitHub Actions.
 
