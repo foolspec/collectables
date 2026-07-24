@@ -309,7 +309,8 @@ jobs:
 
   windows_dependencies_1:
     name: Windows dependencies 1 of 9
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows') && inputs.windows_dependency_run_id == '' }}
+    needs: macos
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'windows') && inputs.windows_dependency_run_id == '' }}
     uses: ./.github/workflows/intelgram-windows-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-windows2022-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
