@@ -39,6 +39,16 @@ on:
         required: false
         default: "1"
         type: string
+      macos_stage5_run_id:
+        description: Optional run ID containing a completed macOS Qt-stage cache
+        required: false
+        default: ""
+        type: string
+      macos_stage5_run_attempt:
+        description: Run attempt for the reusable macOS Qt-stage cache
+        required: false
+        default: "1"
+        type: string
 
 concurrency:
   group: intelgram-multiplatform-build-${{ github.event_name == 'workflow_dispatch' && inputs.platform || 'all' }}
@@ -55,7 +65,7 @@ env:
 jobs:
   macos_dependencies_1:
     name: macOS dependencies 1 of 6
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'macos') && inputs.macos_dependency_run_id == '' }}
+    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'macos') && inputs.macos_dependency_run_id == '' && inputs.macos_stage5_run_id == '' }}
     uses: ./.github/workflows/intelgram-macos-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-macos26-libraries-stage-1-${{ github.run_id }}-${{ github.run_attempt }}
@@ -136,14 +146,15 @@ jobs:
   macos_dependencies_final:
     name: macOS dependencies 6 of 6 - complete
     needs: macos_dependencies_final_1
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.platform == 'all' || inputs.platform == 'macos') && inputs.macos_dependency_run_id == '' && (inputs.macos_stage5_run_id != '' || needs.macos_dependencies_final_1.result == 'success') }}
     uses: ./.github/workflows/intelgram-macos-dependency-stage.yml
     with:
       cache_key: intelgram-v6.7.8-macos26-libraries-final-v3-${{ github.run_id }}-${{ github.run_attempt }}
       restore_key: |
         intelgram-v6.7.8-macos26-libraries-final-v3-${{ github.run_id }}-
         intelgram-v6.7.8-macos26-libraries-final-v3-
-        intelgram-v6.7.8-macos26-libraries-final-1-${{ github.run_id }}-${{ github.run_attempt }}
-      prerequisite_cache_key: intelgram-v6.7.8-macos26-libraries-final-1-${{ github.run_id }}-${{ github.run_attempt }}
+        intelgram-v6.7.8-macos26-libraries-final-1-${{ inputs.macos_stage5_run_id || github.run_id }}-${{ inputs.macos_stage5_run_id != '' && inputs.macos_stage5_run_attempt || github.run_attempt }}
+      prerequisite_cache_key: intelgram-v6.7.8-macos26-libraries-final-1-${{ inputs.macos_stage5_run_id || github.run_id }}-${{ inputs.macos_stage5_run_id != '' && inputs.macos_stage5_run_attempt || github.run_attempt }}
       prerequisite_marker: macos-dependencies-final-1.complete
       stages: tg_owt ada tde2e
       completion_marker: macos-dependencies-final.complete
